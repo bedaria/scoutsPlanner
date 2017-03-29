@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import Checkbox from './Checkbox.js'
 
 export default class EventInvite extends Component {
   constructor(props) {
@@ -8,15 +9,13 @@ export default class EventInvite extends Component {
       jobs: "job1, job2, job3",
       selectedCheckBoxes: new Set()
     }
-
-    this.toggleCheckBox = this.toggleCheckBox.bind(this)
    }
 
   handleOptionChange = (event) => {
     this.setState({attending: event.target.value})
   }
 
-  toggleCheckBox(event){
+  toggleCheckBox = (event) => {
     if(this.state.selectedCheckBoxes.has(event.target.value))
       this.state.selectedCheckBoxes.delete(event.target.value)
     else {
@@ -26,10 +25,7 @@ export default class EventInvite extends Component {
 
   createCheckBox = (label) => {
     return (
-      <div>
-        <label> {label} </label>
-        <input type="checkbox" value={label} onChange={this.toggleCheckBox}/>
-      </div>
+      <Checkbox label={label} toggleCheckBox={this.toggleCheckBox}></Checkbox>
     )
   }
 
