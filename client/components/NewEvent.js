@@ -9,16 +9,13 @@ export default class NewEvent extends Component {
       message: '',
       sendTo: ''
     }
-
-    this.handleChange = this.handleChange.bind(this)
-    this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  handleChange(event) {
+  handleChange = (event) => {
     this.setState({[event.target.id]: event.target.value})
   }
 
-  handleSubmit(event) {
+  handleSubmit = (event) => {
     console.log("You're about to send to: ", this.state.sendTo)
     console.log("Hey ", this.state.eventName, " is coming up!")
     console.log("Will you be attending? Yes/No ")
