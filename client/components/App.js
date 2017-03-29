@@ -7,6 +7,7 @@ export default class App extends Component {
     return (
       <div>
         <NewEvent> </NewEvent>
+        <EventInvite> </EventInvite>
       </div>
     )
   }
