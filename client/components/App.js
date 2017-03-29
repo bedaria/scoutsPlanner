@@ -1,7 +1,13 @@
 import React, { Component } from 'react'
+import NewEvent from './NewEvent.js'
+import EventInvite from './EventInvite'
 
 export default class App extends Component {
   render() {
-    return <div> oh, hey there </div>
+    return (
+      <div>
+        <NewEvent> </NewEvent>
+      </div>
+    )
   }
 }
