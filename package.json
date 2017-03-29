@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "mocha setup.js ./client/componentsSpecs/*.spec.js",
-    "w": "webpack-dev-server --content-base client "
+    "server": "webpack-dev-server --content-base client ",
+    "webpack": "webpack --watch"
   },
-  "author": "Daria B.",
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "babel-core": "^6.24.0",
