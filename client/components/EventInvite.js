@@ -6,7 +6,7 @@ export default class EventInvite extends Component {
     super(props)
     this.state = {
       attending: "Yes",
-      jobs: "job1, job2, job3",
+      tasks: "job1, job2, job3",
       selectedCheckBoxes: new Set()
     }
    }
@@ -16,11 +16,12 @@ export default class EventInvite extends Component {
   }
 
   toggleCheckBox = (event) => {
-    if(this.state.selectedCheckBoxes.has(event.target.value))
-      this.state.selectedCheckBoxes.delete(event.target.value)
-    else {
-      this.state.selectedCheckBoxes.add(event.target.value)
-    }
+    let checked = event.target.value
+    let selectedCheckBoxes = this.state.selectedCheckBoxes
+    if(selectedCheckBoxes.has(checked))
+      selectedCheckBoxes.delete(checked)
+    else
+      selectedCheckBoxes.add(checked)
   }
 
   createCheckBox = (label) => {
@@ -30,7 +31,7 @@ export default class EventInvite extends Component {
   }
 
   createCheckBoxes = () => {
-    return this.state.jobs.split(',').map(label => this.createCheckBox(label.trim()))
+    return this.state.tasks.split(',').map(label => this.createCheckBox(label.trim()))
   }
 
   handleSubmit = (event) => {
@@ -51,6 +52,7 @@ export default class EventInvite extends Component {
           <label> Will you attend? </label>
           <input type="radio" value="Yes" checked={"Yes" === this.state.attending} onChange={this.handleOptionChange} />
           <input type="radio" value="No" checked={"No" === this.state.attending} onChange={this.handleOptionChange} />
+          <input type="radio" value="Maybe" checked={"Maybe" === this.state.attending} onChange={this.handleOptionChange} />
           {this.createCheckBoxes()}
           <input type="submit"/>
         </form>
