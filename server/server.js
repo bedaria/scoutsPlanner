@@ -4,7 +4,7 @@ const logger = require('morgan')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const port = require('./config/config.js').port
-const DB = require('./config/db.js')
+const db = require('./models/index.js')
 
 const app = express()
 
@@ -14,6 +14,7 @@ app.use(cors())
 
 app.set('port', port)
 
+db.sequelize.sync()
 app.listen(app.get('port'), () =>
   console.log('Express server listening on port: ', app.get('port'))
 )
