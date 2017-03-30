@@ -8,3 +8,6 @@ npm-debug.log*
 
 # Dist
 bundle.js
+
+# env
+.env
