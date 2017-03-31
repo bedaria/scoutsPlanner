@@ -1,7 +1,7 @@
 'use strict'
 
-module.exports = function(DB, DataTypes) {
-  var Group = DB.define('Group', {
+module.exports = function(sequelize, DataTypes) {
+  var Group = sequelize.define('Group', {
     name: DataTypes.STRING
   }, {
     classMethods: {

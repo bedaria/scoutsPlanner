@@ -1,7 +1,7 @@
 'use strict'
 
-module.exports = function(DB, DataTypes) {
-  var Task = DB.define('Task', {
+module.exports = function(sequelize, DataTypes) {
+  var Task = sequelize.define('Task', {
     name: DataTypes.STRING,
     description: DataTypes.STRING
   }, {

@@ -1,7 +1,7 @@
 'use strict'
 
-module.exports = function(DB, DataTypes) {
-  var User = DB.define('User', {
+module.exports = function(sequelize, DataTypes) {
+  var User = sequelize.define('User', {
     name: DataTypes.STRING
   }, {
     classMethods: {

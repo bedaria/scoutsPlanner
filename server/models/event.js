@@ -1,7 +1,7 @@
 'use strict'
 
-module.exports = function(DB, DataTypes) {
-  var Event = DB.define('Event', {
+module.exports = function(sequelize, DataTypes) {
+  var Event = sequelize.define('Event', {
     name: DataTypes.STRING,
     startTime: DataTypes.STRING,
     endTime: DataTypes.STRING
