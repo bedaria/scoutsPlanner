@@ -2,7 +2,10 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Task = sequelize.define('Task', {
-    name: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     description: DataTypes.STRING
   }, {
     classMethods: {

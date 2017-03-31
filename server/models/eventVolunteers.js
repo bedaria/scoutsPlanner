@@ -5,7 +5,10 @@ module.exports = function(sequelize, DataTypes) {
     startTime: DataTypes.STRING,
     endTime: DataTypes.STRING,
     attending: DataTypes.BOOLEAN,
-    seen: DataTypes.BOOLEAN
+    seen: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    }
   })
   return EventVolunteers
 }

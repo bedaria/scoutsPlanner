@@ -2,7 +2,10 @@
 
 module.exports = function(sequelize, DataTypes) {
   var Event = sequelize.define('Event', {
-    name: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     startTime: DataTypes.STRING,
     endTime: DataTypes.STRING
   }, {

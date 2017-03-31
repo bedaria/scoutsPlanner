@@ -2,7 +2,10 @@
 
 module.exports = function(sequelize, DataTypes) {
   var VolunteerTasks = sequelize.define('VolunteerTasks', {
-    event_id: DataTypes.NUMBER
+    eventId: {
+      type: DataTypes.INTEGER,
+      allowNull: false
+    }
   })
   return VolunteerTasks
 }
