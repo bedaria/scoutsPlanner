@@ -4,7 +4,7 @@ module.exports = function(sequelize, DataTypes) {
   var EventVolunteers = sequelize.define('EventVolunteers', {
     startTime: DataTypes.STRING,
     endTime: DataTypes.STRING,
-    attending: {
+    isAttending: {
       type: DataTypes.ENUM,
       values: ['Yes', 'No', 'Maybe', null],
       defaultValue: null
