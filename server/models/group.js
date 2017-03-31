@@ -6,7 +6,7 @@ module.exports = function(DB, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        Group.belongsTo(models.User, {as: 'owner'})
+        Group.belongsTo(models.User, {as: 'admin'})
         Group.belongsToMany(models.User, {as: 'member', through: 'GroupMembers'})
       }
     }

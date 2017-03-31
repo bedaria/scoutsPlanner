@@ -8,7 +8,7 @@ module.exports = function(DB, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        Event.belongsTo(models.User, {as: 'owner'})
+        Event.belongsTo(models.User, {as: 'admin'})
         Event.belongsToMany(models.User, {as: 'volunteer', through: 'EventVolunteers'})
         Event.hasMany(models.Task)
       }
