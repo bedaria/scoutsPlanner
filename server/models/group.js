@@ -15,5 +15,12 @@ module.exports = function(sequelize, DataTypes) {
     }
   })
 
+  // Group.afterCreate(function(group, options, fn) {
+  //   group.getAdmin()
+  //     .then(admin => {
+  //       if(!admin)
+  //         console.log("ERROR (in ../models/server.js 22 ): Group ", group.name, " must have an admin")
+  //     })
+  // })
   return Group
 }
