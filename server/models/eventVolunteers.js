@@ -6,8 +6,7 @@ module.exports = function(sequelize, DataTypes) {
     endTime: DataTypes.STRING,
     isAttending: {
       type: DataTypes.ENUM,
-      values: ['Yes', 'No', 'Maybe', null],
-      defaultValue: null
+      values: ['Yes', 'No', 'Maybe']
     },
     seen: {
       type: DataTypes.BOOLEAN,
