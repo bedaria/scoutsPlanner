@@ -11,3 +11,6 @@ bundle.js
 
 # env
 .env
+
+#testing stuff
+server/testDatabase.js
