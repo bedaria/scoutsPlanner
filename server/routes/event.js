@@ -1,9 +1,8 @@
 'use strict'
 
-const express = require('express')
-var router = express.Router()
+const router = require('express').Router()
 
-var controllers = require('../controllers/event.js')
+const controllers = require('../controllers/event.js')
 
 router.post('/events', controllers.event.create)
 
