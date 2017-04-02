@@ -13,7 +13,7 @@ module.exports = function(sequelize, DataTypes) {
       associate: function(models) {
         Event.belongsTo(models.User, {as: 'mainAdmin'})
         // Event.belongsToMany(models.User, {through: 'EventAdmins'})
-        Event.belongsToMany(models.User, {through: models.EventVolunteer})
+        Event.belongsToMany(models.User, {as: 'volunteer', through: models.EventVolunteer})//will as volunteer change functionality
         Event.hasMany(models.Task)
       }
     }
