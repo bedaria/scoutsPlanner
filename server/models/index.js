@@ -21,8 +21,10 @@ fs
   })
 
 Object.keys(db).forEach(modelName => {
-  if("associate" in db[modelName])
+  if("associate" in db[modelName]){
+    console.log("associating: ", modelName)
     db[modelName].associate(db)
+  }
 })
 
 db.sequelize = sequelize

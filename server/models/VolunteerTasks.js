@@ -1,11 +1,11 @@
 'use strict'
 
 module.exports = function(sequelize, DataTypes) {
-  var VolunteerTasks = sequelize.define('VolunteerTasks', {
+  var VolunteerTask = sequelize.define('VolunteerTask', {
     eventId: {
       type: DataTypes.INTEGER,
       allowNull: false
     }
   })
-  return VolunteerTasks
+  return VolunteerTask
 }

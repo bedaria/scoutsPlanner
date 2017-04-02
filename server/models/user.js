@@ -10,8 +10,8 @@ module.exports = function(sequelize, DataTypes) {
     classMethods: {
       associate: function(models) {
         User.belongsToMany(models.Group, {through: 'GroupMembers'})
-        User.belongsToMany(models.Event, {through: 'EventVolunteers'})
-        User.belongsToMany(models.Task, {through: 'VolunteerTasks'})
+        User.belongsToMany(models.Event, {through: models.EventVolunteer})
+        User.belongsToMany(models.Task, {through: models.VolunteerTask})
       }
     }
   })

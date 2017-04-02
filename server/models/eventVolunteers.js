@@ -1,7 +1,7 @@
 'use strict'
 
 module.exports = function(sequelize, DataTypes) {
-  var EventVolunteers = sequelize.define('EventVolunteers', {
+  var EventVolunteer = sequelize.define('EventVolunteer', {
     startTime: DataTypes.STRING,
     endTime: DataTypes.STRING,
     isAttending: {
@@ -13,5 +13,6 @@ module.exports = function(sequelize, DataTypes) {
       defaultValue: false
     }
   })
-  return EventVolunteers
+
+  return EventVolunteer
 }
