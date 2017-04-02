@@ -17,7 +17,7 @@ const sendInvite = function(req, res) {
       const users = results[0]
       const event = results[1]
 
-      return event.addUser(users)
+      return event.addVolunteer(users)
     })
     .then(success => {
       //invites have already been sent
@@ -33,7 +33,7 @@ const sendInvite = function(req, res) {
       res.json({sentTo: sentTo}).status(200).end()
     })
     .catch(err => {
-      console.log("(.server/controllers/event/sendInvite) ERROR: ", err)
+      console.log("ERROR: ", err)
       res.status(500).end()
     })
 }

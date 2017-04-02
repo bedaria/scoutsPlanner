@@ -13,11 +13,9 @@ const checkEvent = function(req, res) {
   //event.getUsers
   models.Event.findOne({where: {id: req.params.event}})
     .then(event => {
-      console.log("adminId: ", event.dataValues.mainAdminId)
-      console.log("and we havee: ", req.user.id )
       var isAdminOfEvent = event.dataValues.mainAdminId === req.user.id
       if(isAdminOfEvent)
-        return event.getUsers()
+        return event.getVolunteer()
       else
         throw new Error(`Not an admin!`)
     })
@@ -45,8 +43,8 @@ const checkEvent = function(req, res) {
       res.json({users: users, attendance: attendance}).status(200).end()
     })
     .catch(err => {
-      console.log("(./server/controllers/event/checkEvent) ERROR: ", err)
-      res.status(300).end()
+      console.log("ERROR: ", err)
+      res.status(500).end()
     })
 }
 

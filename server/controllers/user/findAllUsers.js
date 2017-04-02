@@ -4,8 +4,8 @@ const models = require('../../models/index.js')
 
 //Finds all the users we have
 //INPUT:
-//OUTPUT: <arra> models.User
-const findAll = function(req, res) {
+//OUTPUT: <array> models.User
+const findAllUsers = function(req, res) {
     models.User.findAll()
     .then(users => {
 
@@ -15,9 +15,9 @@ const findAll = function(req, res) {
       res.json({user: users}).status(200).end()
     })
     .catch(err => {
-      console.log("(.server/controllers/user/findAll) ERROR: ", err)
+      console.log("ERROR: ", err)
       res.status(500).end()
     })
 }
 
-module.exports = findAll
+module.exports = findAllUsers

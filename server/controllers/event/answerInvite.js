@@ -16,7 +16,7 @@ const answerInvite = function(req, res) {
         res.json({isUpdated: false}).status(200).end()
     })
     .catch(err => {
-      console.log("(./server/controllers/event/answerInvite) ERROR: ", err)
+      console.log("ERROR: ", err)
       res.status(500).end()
     })
 }
