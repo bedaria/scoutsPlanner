@@ -10,19 +10,17 @@ const routes = require('./routes/index.js')
 
 const app = express()
 
-
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(cors())
 
-app.use('/users/:name', authentication.isAuthenticated, routes.event)
-app.use('/admins/:name', authentication.isAdmin, routes.event)
-
-app.use('/', routes.user)
+app.use('/users/:name', authentication.isAuthenticated, routes.standard.event)
+app.use('/users/admin/:name', authentication.isAdmin, routes.admin.event)
 
 app.set('port', port)
 
-db.sequelize.sync()
+// db.sequelize.sync({force: true})
+// require('./testDatabase.js')
 app.listen(app.get('port'), () =>
   console.log('Express server listening on port: ', app.get('port'))
 )

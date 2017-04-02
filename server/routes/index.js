@@ -2,12 +2,19 @@
 
 const fs = require('fs')
 const path = require('path')
+const admin = require('./admin/index.js')
+const standard = require('./standard/index.js')
 
-fs
-  .readdirSync(__dirname)
-  .filter(file => file.indexOf(".") !== 0 && file !== "index.js")
-  .forEach(file => {
-    const name = file.slice(0, file.length-3)
-    const toRequire = './' + file
-    module.exports[name] = require(toRequire)
-  })
+module.exports = {
+  admin: admin,
+  standard: standard
+}
+
+//Admin routes
+// POST /users/admin/:user/events        | controllers.event.create
+// POST /users/admin/:user/events/:event | controllers.event.sendInvite
+
+//Standard routes
+// GET /users/:user/events               | controllers.event.findAll
+// GET /users/:user/events/:event        | controllers.event.findOne
+// Get /users                            | controllers.users.findAll
