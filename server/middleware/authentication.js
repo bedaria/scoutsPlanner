@@ -1,6 +1,7 @@
 const isAuthenticated =  function (req, res, next) {
   req.user = {}
   req.user.name = req.params.name
+  req.user.id = 1
   next()
 }
 
