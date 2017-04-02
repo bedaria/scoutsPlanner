@@ -19,7 +19,7 @@ app.use('/users/admin/:name', authentication.isAdmin, routes.admin.event)
 app.use('/users/admin/', authentication.isAdmin, routes.admin.user)
 app.set('port', port)
 
-// db.sequelize.sync({force: true})
+db.sequelize.sync()
 // require('./testDatabase.js')
 app.listen(app.get('port'), () =>
   console.log('Express server listening on port: ', app.get('port'))
