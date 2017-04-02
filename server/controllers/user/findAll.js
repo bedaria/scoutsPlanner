@@ -8,7 +8,7 @@ const models = require('../../models/index.js')
 const findAll = function(req, res) {
     models.User.findAll()
     .then(users => {
-      var users = []
+
       if(users)
         users = users.map(user => user.dataValues)
 

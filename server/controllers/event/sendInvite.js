@@ -2,10 +2,9 @@
 
 const models = require('../../models/index.js')
 
-//Adds events to a user if they were invited
-//INPUT: <array<integers>> arrayOfUserIds
-//       <integer> eventId
-//OUTPUT: <array> invitees
+//Adds models.Event to models.User (s) if the users were invited
+//INPUT: {invited: <array<integers>>} arrayOfUserIds
+//OUTPUT: {sentTo: <array> invitees}
 const sendInvite = function(req, res) {
   const invitedUsers = JSON.parse(req.body.invited)// <array<integers>>
   const event = req.params.event
@@ -22,10 +21,14 @@ const sendInvite = function(req, res) {
     })
     .then(success => {
       //invites have already been sent
-      var sentTo = {sentTo: []}
+      var sentTo = []
 
-      if(success)
-        sentTo = success[0].map(result => result.dataValues)
+      if(Array.isArray(success[0]))
+        sentTo = success[0]
+      else if(Array.isArray(success))
+        sentTo = success
+
+      sentTo = sentTo.map(result => result.dataValues)
 
       res.json({sentTo: sentTo}).status(200).end()
     })

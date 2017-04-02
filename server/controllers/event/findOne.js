@@ -3,9 +3,8 @@
 const models = require('../../models/index.js')
 
 //Finds an event a user has been invited to or is attending
-//INPUT: <integer> userId (required)
-//       <integer> eventId (required)
-//OUTPUT: models.Event
+//INPUT:
+//OUTPUT: {event: models.Event.dataValues}
 const findOne = function(req, res) {
   const updateEvent = models.EventVolunteer.update({ seen: true},
     { where: {UserId: req.user.id, EventId: req.params.event}
