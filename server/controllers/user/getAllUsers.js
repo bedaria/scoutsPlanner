@@ -2,10 +2,10 @@
 
 const models = require('../../models/index.js')
 
-//Finds all the users we have
+//Finds all the users.
 //INPUT:
 //OUTPUT: <array> models.User
-const findAllUsers = function(req, res) {
+const getAllUsers = function(req, res) {
     models.User.findAll()
     .then(users => {
 
@@ -20,4 +20,4 @@ const findAllUsers = function(req, res) {
     })
 }
 
-module.exports = findAllUsers
+module.exports = getAllUsers
