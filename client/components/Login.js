@@ -25,13 +25,15 @@ export default class Login extends Component {
       return <Redirect to='/events/newEvent'/>
 
     return (
-      <div>
-        LOG IN
-        <form onSubmit={this.handleSubmit}>
-          <input type="text" id="username" placeholder="Enter username: " value={this.state.username} onChange={this.handleChange}/>
-          <input type="text" id="password" placeholder="Enter password: " value={this.state.password} onChange={this.handleChange}/>
-          <input type="submit" />
-        </form>
+      <div className="container">
+        <div className="item">
+        <span> Log In </span>
+          <form onSubmit={this.handleSubmit}>
+            <input type="text" id="username" placeholder="Enter username: " value={this.state.username} onChange={this.handleChange}/>
+            <input type="text" id="password" placeholder="Enter password: " value={this.state.password} onChange={this.handleChange}/>
+            <input className="button" type="submit" value="Log in" />
+          </form>
+        </div>
       </div>
     )
   }
