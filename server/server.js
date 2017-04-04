@@ -10,6 +10,7 @@ const routes = require('./routes/index.js')
 
 const app = express()
 
+app.use(express.static(path.join('./client')))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(cors())
@@ -17,6 +18,10 @@ app.use(cors())
 app.use('/users/:name', authentication.isAuthenticated, routes.standard.event)
 app.use('/users/admin/:name', authentication.isAdmin, routes.admin.event)
 app.use('/users/admin/', authentication.isAdmin, routes.admin.user)
+app.get('/', (req, res) => {
+  res.sendFile('index.html')
+})
+
 app.set('port', port)
 
 db.sequelize.sync()
