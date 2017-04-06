@@ -5,23 +5,10 @@ import Profile from './Profile'
 import EventInvite from './EventInvite'
 import EventList from './EventList'
 import { BrowserRouter, Route } from 'react-router-dom'
-import thunkMiddleware from 'redux-thunk'
-import createLogger from 'redux-logger'
-import { createStore, applyMiddleware } from 'redux'
-//import actions
-//import reducers rootReducer
-
-const loggerMiddleware = createLogger()
-let store = createStore(
-  rootReducer,
-  applyMiddlware(thunkMiddleware,
-    loggerMiddleware
-  )
-)
 
 const App = () => (
-   <BrowserRouter>
-     <div>
+    <BrowserRouter>
+      <div>
           <Route path="/" component={Login}/>
           <Route path="/profile" component={Profile}/>
           <Route path="/newEvent" component={NewEvent}/>
@@ -29,6 +16,6 @@ const App = () => (
           <Route path="/anEvent" component={EventInvite}/>
       </div>
     </BrowserRouter>
-  )
+)
 
 export default App
