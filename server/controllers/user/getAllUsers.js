@@ -4,7 +4,7 @@ const models = require('../../models/index.js')
 
 //Finds all the users.
 //INPUT:
-//OUTPUT: <array> models.User
+//OUTPUT: <array> models.User.dataValues
 const getAllUsers = function(req, res) {
     models.User.findAll()
     .then(users => {
@@ -12,7 +12,7 @@ const getAllUsers = function(req, res) {
       if(users)
         users = users.map(user => user.dataValues)
 
-      res.json({user: users}).status(200).end()
+      res.json({users: users}).status(200).end()
     })
     .catch(err => {
       console.log("ERROR: ", err)

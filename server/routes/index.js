@@ -13,10 +13,10 @@ module.exports = {
 //Admin routes
 // POST /users/admin/:user/events        | controllers.event.createEvent
 // POST /users/admin/:user/events/:event | controllers.event.sendInvite
-// GET  /users/admin/                    | controllers.user.findAllUsers
+// GET  /users/admin           | controllers.user.getAllUsers
 // GET /users/admin/:user/events/event   | controllers.event.checkEvent
 
 //Standard routes
-// GET  /users/:user/events               | controllers.event.findAllUserEvents
-// GET  /users/:user/events/:event        | controllers.event.findUserEvent
+// GET  /users/:user/events               | controllers.event.getAllUserEvents
+// GET  /users/:user/events/:event        | controllers.event.getUserEvent
 // POST /user/:user/events/:event         | controllers.event.answerInvite
