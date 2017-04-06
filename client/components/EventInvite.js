@@ -44,10 +44,8 @@ export default class EventInvite extends Component {
 
   render() {
     return (
-      <div >
-        Hey!
-        An event is coming up,
-        Note: a message
+      <div className="container">
+        <div className="item">
         <form onSubmit={this.handleSubmit}>
           <label> Will you attend? </label>
           <input type="radio" value="Yes" checked={"Yes" === this.state.attending} onChange={this.handleOptionChange} />
@@ -56,6 +54,7 @@ export default class EventInvite extends Component {
           {this.createCheckBoxes()}
           <input type="submit" />
         </form>
+        </div>
       </div>
     )
   }

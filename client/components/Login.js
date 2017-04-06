@@ -22,7 +22,7 @@ export default class Login extends Component {
 
   render() {
     if(this.state.isLoggedIn)
-      return <Redirect to='/events/newEvent'/>
+      return <Redirect to='/profile'/>
 
     return (
       <div className="container">
