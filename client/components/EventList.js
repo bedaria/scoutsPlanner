@@ -1,26 +1,29 @@
 import React, { Component } from 'react'
-import Event from './Event.js'
 
-export default class EventList extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      eventList: ['Eat', 'Sleep', 'Hunt']
-    }
-  }
-
-  render() {
-    return (
+export const EventList = (props) => (
       <div className="container">
         <div className="item">
           <div className="profile">
             <div className="hello">
-            <div> {localStorage.username}'s Events</div>
-              {this.state.eventList.map( event => (<Event eventName={event}/>))}
+              {props.eventList.map( event => {
+                if(event.EventVolunteer.seen)
+                  return (
+                      <div>
+                        {event.name} on {event.startDate} at {event.startTime} - {event.endTime }
+                        <span> :{event.EventVolunteer.isAttending}</span>
+                      </div>
+                  )
+                else
+                  return (
+                      <div>
+                        {event.name} on {event.startDate} at {event.startTime} - {event.endTime }
+                        <span> Answer Invite</span>
+                      </div>
+                  )
+                }
+              )}
             </div>
           </div>
          </div>
       </div>
     )
-  }
-}

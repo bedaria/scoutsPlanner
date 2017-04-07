@@ -1,7 +1,9 @@
 import axios from 'axios'
 
-const createEventAndInvite = (state) => {
-  axios.post('/users/admin/Copper/events', {
+const username = localStorage.username
+
+export const createEventAndInvite = (state, done) => {
+  axios.post('/users/admin/'+ username + '/events', {
     name: state.name,
     startTime: state.startTime,
     endTime: state.endTime,
@@ -16,14 +18,26 @@ const createEventAndInvite = (state) => {
       Promise.reject(eventData.error)
     }
     else
-      return axios.post('/users/admin/Copper/events/' + eventData.data.dataValues.id, {
+      return axios.post('/users/admin/' + usernae + '/events/' + eventData.data.dataValues.id, {
         invited: state.invited
       })
   })
   .then(successfullyInvited => {
-    console.log("Invites successfully sent")
+    done("success")
   })
-  .catch(err => console.log("Error: ", err))
+  .catch(err => {
+    console.log("ERROR creating/sending event: ", err)
+    done(err)
+  })
 }
 
-export default createEventAndInvite
+export const getUserEvents = (updateEvents) => {
+  axios.get('/users/' + username + '/events')
+    .then(events => {
+      updateEvents({events: events.data.events, gotEvents: true})
+    })
+    .catch(error => {
+      console.log("Error retrieving events: ", error)
+      updateEvents({error: "Error retrieving events."})
+    })
+}
