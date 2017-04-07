@@ -3,8 +3,7 @@
 const models = require('../../models/index.js')
 
 // Returns all of the Events that a User has been invited and/or is attending to.
-//INPUT:
-//OUTPUT: {events: <array> models.Events.dataValues}
+//res will ahve: {events: <array <models.Events.dataValues>>}
 const getAllUserEvents = function(req, res) {
 
   models.User.findOne({
