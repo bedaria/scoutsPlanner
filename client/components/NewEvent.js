@@ -7,28 +7,19 @@ export default class NewEvent extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      eventName: '',
+      name: '',
       message: '',
+      startTime: '',
+      endTime: '',
+      startDate: '',
+      endDate: '',
       sendTo: [],
-      friends: [],
       redirect: false,
-      redirectTo: ''
+      redirectTo: '',
+      valid: true,
+      sameDayEvent: true,
+      errorMessage: ''
     }
-  }
-
-  componentDidMount = () => {
-    axios.get('/users/admin/')
-      .then(res => {
-        if(res.data.users) {
-          const friends = res.data.users.map(friend => ({name: friend.name, id: friend.id}))
-          this.setState({friends: friends, sendTo: friends})
-        }
-        else
-          this.setState({friends: [{label: "No friends found", value: null}]})
-      })
-      .catch(err => {
-        console.log('Error: ', err)
-      })
   }
 
   handleChange = (event) => {
@@ -36,39 +27,101 @@ export default class NewEvent extends Component {
   }
 
   handleSubmit = (event) => {
-    this.setState({redirect: true, redirectTo: '/profile'})
-    console.log("You're about to send to: ", this.state.sendTo)
-    console.log("Hey ", this.state.eventName, " is coming up!")
-    console.log("Some Notes: ", this.state.message)
     event.preventDefault()
+    console.log("name: ", this.state.name)
+    if(this.validateTimeDateRange()) {
+      axios.post('/users/admin/Copper/events', {
+        name: this.state.name,
+        startTime: this.state.startTime,
+        endTime: this.state.endTime,
+        startDate: this.state.startDate,
+        endDate: this.getEndDate(),
+        message: this.state.message
+      })
+      .then(resp => console.log("Event created, send it out: ", resp))
+      .catch(err => console.log("Error: ", err))
+    }
+    else {
+      this.setState({error: true, errorMessage: 'Invalid times'})
+    }
+  }
+
+  getEndDate() {
+    return this.state.sameDayEvent ? this.state.startDate : this.state.endDate
+  }
+
+  validateTimeDateRange = () => {
+    const startTime = this.state.startTime.split(":").map(timePart => Number(timePart))
+    const endTime = this.state.endTime.split(":").map(timePart => Number(timePart))
+    const [startHour, startMinutes] = startTime
+    const [endHour, endMinutes] = endTime
+
+    if(this.state.sameDayEvent)
+      return (startHour < endHour) || (startHour === endHour && startMinutes < endMinutes)
+    else
+      return true
+  }
+
+  toggleRadioButton = (event) => {
+    this.setState({sameDayEvent: !this.state.sameDayEvent, endDate: ''})
+  }
+
+  getToday = () => {
+    const today = new Date()
+    return this.getYYYYMMDD(today)
+  }
+
+  getTomorrow = () => {
+    const today = new Date()
+    const tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
+    return this.getYYYYMMDD(tomorrow)
+  }
+
+  getYYYYMMDD = (date) => {
+    const yyyy = date.getFullYear().toString()
+    const month = (date.getMonth() + 1)
+    const mm = month > 9 ? month.toString() : '0' + month.toString()
+    const day = date.getDate()
+    const dd = day > 9 ? day.toString() : '0' + day.toString()
+
+    return yyyy + "-" + mm + "-" + dd
   }
 
   render() {
     if(this.state.redirect)
      return <Redirect to='/profile'/>
-
-    if(this.state.friends.length){
-      console.log("sending: ", this.state.friends)
-      return (
-        <div className="container">
-          <div className="item">
-          <div> Create Event </div>
-          <div> Sending to: All </div>
-            <form onSubmit={this.handleSubmit}>
-              <input type="text" id="eventName" placeholder="Event Name: " value={this.state.eventName} onChange={this.handleChange} />
-              <input type="text" placeholder="Names will go here: "/>
-              <input type="text" id="message" placeholder="Add message: " value={this.state.message} onChange={this.handleChange} />
-              <input className="button" type="submit" value="Create Event"/>
-            </form>
-          </div>
-        </div>
-      )}
     else {
       return (
         <div className="container">
           <div className="item">
           <div> Create Event </div>
-          <div> Waiting... </div>
+          <div> Sending to: All </div>
+            <form onSubmit={this.handleSubmit} id="eventInfo">
+              <input type="text" id="name" placeholder="Event Name: " value={this.state.name} onChange={this.handleChange} required />
+              <input type="text" placeholder="Frankie, Aidan"/>
+              <textarea id="message" placeholder="Add message (optional): " value={this.state.message} onChange={this.handleChange} form="eventInfo" />
+              <label>
+                Start date:
+                <input type="date" id="startDate" min={this.getToday()} value={this.state.startDate} onChange={this.handleChange} required />
+              </label>
+              <label>
+                End date:
+                <input type="date" id="endDate" min={this.getTomorrow()} value={this.state.endDate} onChange={this.handleChange} disabled={this.state.sameDayEvent} required />
+              </label>
+              <label>
+                <input type="radio" id="sameDay" value="sameDayEvent" checked={this.state.sameDayEvent} onChange={this.toggleRadioButton}/>
+                 Same day event
+              </label>
+              <label>
+                Start time:
+                <input type="time" id="startTime" value={this.state.startTime} onChange={this.handleChange} required />
+              </label>
+              <label>
+                End time:
+                <input type="time" id="endTime" value={this.state.endTime} onChange={this.handleChange} required />
+              </label>
+              <input className="button" type="submit" value="Send Event"/>
+            </form>
           </div>
         </div>
       )
