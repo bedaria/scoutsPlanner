@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import SelectMultiple from './SelectMultiple'
 import { Redirect } from 'react-router-dom'
 import axios from 'axios'
-import createEventAndInvite from '../helpers.js'
+import { createEventAndInvite } from '../helpers.js'
 
 export default class NewEvent extends Component {
   constructor(props) {
