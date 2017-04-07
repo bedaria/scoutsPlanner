@@ -9,26 +9,27 @@ export default class Profile extends Component {
       redirectTo: ''
     }
   }
-  
+
   handleClick = (event) => {
     event.preventDefault()
-    if(event.target.id === 'myEvents' )
+    switch(event.target.id){
+      case 'myEvents':
         this.setState({redirect: true, redirectTo: '/myEvent'})
-    else if(event.target.id === 'createEvents')
+        break
+      case 'createEvents':
         this.setState({redirect: true, redirectTo: '/newEvent'})
-    else if(event.target.id === 'myFriends')
-        console.log('get my friends')
-    else
-      console.log("hmm...")
+        break
+      case 'myFriends':
+        console.log("getting friends")
+      default:
+        console.log("oops")
+      }
     }
 
-
   render() {
-
-    if(this.state.redirect) {
-      console.log('this.state.redirectTo: ', this.state.redirectTo)
-     return <Redirect to={this.state.redirectTo}/>
-  } else {
+    if(this.state.redirect)
+     return <Redirect push to={this.state.redirectTo}/>
+    else {
       return(
         <div className="container">
           <div className="item">
