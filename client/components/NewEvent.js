@@ -24,6 +24,20 @@ export default class NewEvent extends Component {
     }
   }
 
+  showErrorMessage = () => {
+    if(this.state.errorMessage)
+      return <div className="red"> Sorry: {this.state.errorMessage} </div>
+    else
+      return <div> All good. </div>
+  }
+
+  whenDone = (message) => {
+    if(message === "success")
+      this.setState({redirect: true})
+    else
+      this.setState({errorMessage: "Error creating event: " + message})
+  }
+
   handleChange = (event) => {
     this.setState({[event.target.id]: event.target.value})
   }
@@ -32,9 +46,9 @@ export default class NewEvent extends Component {
     event.preventDefault()
 
     if(this.validateTimeDateRange())
-      createEventAndInvite(this.state)
+      createEventAndInvite(this.state, this.whenDone)
     else
-      this.setState({error: true, errorMessage: 'Invalid times'})
+      this.setState({errorMessage: 'Invalid times'})
   }
 
   validateTimeDateRange = () => {
@@ -81,6 +95,7 @@ export default class NewEvent extends Component {
       return (
         <div className="container">
           <div className="item">
+          {this.showErrorMessage()}
           <div> Create Event </div>
           <div> Sending to: All </div>
             <form onSubmit={this.handleSubmit} id="eventInfo">
