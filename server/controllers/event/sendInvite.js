@@ -3,15 +3,16 @@
 const models = require('../../models/index.js')
 
 //Adds models.Event to models.User (s) if the users were invited
-//INPUT: {invited: <array<integers>>} arrayOfUserIds
-//OUTPUT: {sentTo: <array> invitees}
+//req.body should have:
+//        {invited: <array<integers>>}
+//res will have: {sentTo: <array<Users>>}
 const sendInvite = function(req, res) {
   if(!req.body.invited || !Array.isArray(req.body.invited))
     res.json({"error": "Invalid input."}).status(200).end()
   else if(!Number.isInteger(Number(req.params.event)))
     res.json({"error": "Invalid eventId parameter."}).status(200).end()
   else {
-    const invitedUsers = JSON.parse(req.body.invited)
+    const invitedUsers = req.body.invited
     const event = req.params.event
 
     const getUsers = models.User.findAll({where: {id: {$in: invitedUsers}}})

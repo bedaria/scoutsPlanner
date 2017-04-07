@@ -6,8 +6,17 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false
     },
-    startTime: DataTypes.STRING,
-    endTime: DataTypes.STRING
+    startTime: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    endTime: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    message: DataTypes.STRING,
+    startDate: DataTypes.STRING,
+    endDate: DataTypes.STRING
   }, {
     classMethods: {
       associate: function(models) {

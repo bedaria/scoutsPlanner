@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import SelectMultiple from './SelectMultiple'
 import { Redirect } from 'react-router-dom'
 import axios from 'axios'
+import createEventAndInvite from '../helpers.js'
 
 export default class NewEvent extends Component {
   constructor(props) {
@@ -18,7 +19,8 @@ export default class NewEvent extends Component {
       redirectTo: '',
       valid: true,
       sameDayEvent: true,
-      errorMessage: ''
+      errorMessage: '',
+      invited: [1,3]
     }
   }
 
@@ -28,26 +30,11 @@ export default class NewEvent extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
-    console.log("name: ", this.state.name)
-    if(this.validateTimeDateRange()) {
-      axios.post('/users/admin/Copper/events', {
-        name: this.state.name,
-        startTime: this.state.startTime,
-        endTime: this.state.endTime,
-        startDate: this.state.startDate,
-        endDate: this.getEndDate(),
-        message: this.state.message
-      })
-      .then(resp => console.log("Event created, send it out: ", resp))
-      .catch(err => console.log("Error: ", err))
-    }
-    else {
-      this.setState({error: true, errorMessage: 'Invalid times'})
-    }
-  }
 
-  getEndDate() {
-    return this.state.sameDayEvent ? this.state.startDate : this.state.endDate
+    if(this.validateTimeDateRange())
+      createEventAndInvite(this.state)
+    else
+      this.setState({error: true, errorMessage: 'Invalid times'})
   }
 
   validateTimeDateRange = () => {
@@ -89,7 +76,7 @@ export default class NewEvent extends Component {
 
   render() {
     if(this.state.redirect)
-     return <Redirect to='/profile'/>
+     return <Redirect push to='/profile'/>
     else {
       return (
         <div className="container">

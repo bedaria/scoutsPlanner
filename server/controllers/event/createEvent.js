@@ -3,11 +3,16 @@
 const models = require('../../models/index.js')
 
 //Create an event. Creating an event automatically makes the user and admin.
-//INPUT: {name: <string> eventName} (required)
-//       {startTime: <strings> startTime, endTime: endTime (optional)
-//OUTPUT {dataValues: models.Event.dataValues}
+//req.body should have:
+//       {name: <string>,
+//        startTime: <string>,
+//        endTime: <string>,
+//        startDate: <string>,
+//        endDate: <string>
+//        message: <string> (optional)}
+//res will have: { dataValues: models.Event.dataValues }
 const createEvent = function(req, res){
-  if(!req.body.name)
+  if(!req.body.name || !req.body.startTime || !req.body.endTime || !req.body.startDate)
     res.json({"error": "Incorrect input."}).status(200).end()
   else {
     const createEvent = models.Event.create(req.body)
