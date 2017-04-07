@@ -16,6 +16,9 @@
   overflow-x: hidden;
 }
 
+.red {
+  background: red;
+}
 .text {
   background: #fff;
   color: black;
