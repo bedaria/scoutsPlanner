@@ -12,7 +12,6 @@ const App = () => (
           <Route path="/" component={Login}/>
           <Route path="/profile" component={Profile}/>
           <Route path="/newEvent" component={NewEvent}/>
-          <Route path="/myEvent" component={EventList}/>
           <Route path="/anEvent" component={EventInvite}/>
       </div>
     </BrowserRouter>
