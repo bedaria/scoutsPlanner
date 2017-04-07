@@ -13,7 +13,7 @@ module.exports = {
 //Admin routes
 // POST /users/admin/:user/events        | controllers.event.createEvent
 // POST /users/admin/:user/events/:event | controllers.event.sendInvite
-// GET  /users/admin           | controllers.user.getAllUsers
+// GET  /users/admin                     | controllers.user.getAllUsers
 // GET /users/admin/:user/events/event   | controllers.event.checkEvent
 
 //Standard routes
