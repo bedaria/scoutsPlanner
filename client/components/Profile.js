@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { getUserEvents } from '../helpers.js'
-import EventList  from './EventList.js'
+import { EventList } from './EventList.js'
 
 export default class Profile extends Component {
   constructor(props) {
