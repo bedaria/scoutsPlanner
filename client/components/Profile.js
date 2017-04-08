@@ -34,8 +34,12 @@ export default class Profile extends Component {
   }
 
   showEvents = () => {
-    if(this.state.gotEvents)
-      return  <EventList eventList={this.state.events}/>
+    if(this.state.gotEvents){
+      if(this.state.events.length > 0)
+        return <EventList eventList={this.state.events}/>
+      else
+        return <div> You have no events yet. </div>
+    }      
     else
       return <div> Retrieving events... </div>
   }

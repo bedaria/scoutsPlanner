@@ -19,4 +19,4 @@ module.exports = {
 //Standard routes
 // GET  /users/:user/events               | controllers.event.getAllUserEvents
 // GET  /users/:user/events/:event        | controllers.event.getUserEvent
-// POST /user/:user/events/:event         | controllers.event.answerInvite
+// POST /users/:user/events/:event         | controllers.event.updateInvite

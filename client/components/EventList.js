@@ -6,25 +6,12 @@ export const EventList = (props) => (
       <div className="item">
         <div className="profile">
           <div className ="hello">
-          {props.eventList.map(event => {
-            const eventInfo = {
-              name: event.name,
-              id: event.id,
-              startDate: event.startDate,
-              endDate: event.endDate,
-              message: event.message,
-              startTime: event.startTime,
-              endTime: event.endTime,
-              eventSeen: event.EventVolunteer.seen }
-              
-            const volunteerInfo = {
-              volunteerFrom: event.EventVolunteer.startTime,
-              volunteerTill: event.EventVolunteer.endTime,
-              isAttending: event.EventVolunteer.isAttending
-            }
-
-            return <Event volunteerInfo={volunteerInfo} eventInfo={eventInfo} />
-          })}
+          {props.eventList.map(event => (
+            <Event
+              volunteerInfo={event.volunteerInfo}
+              eventInfo={event.eventInfo} />
+            )
+          )}
           </div>
         </div>
       </div>

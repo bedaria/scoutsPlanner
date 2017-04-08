@@ -18,12 +18,15 @@ export default class EventInfo  extends Component {
   }
 
   showAnswer = () => {
+  
     const attendingTime = this.props.volunteerFrom + "-" + this.props.volunteerTill
     const attendingInfo = "You are a" + this.props.isAttending + ": " + attendingTime
     const notAnswered = "Please Answer"
 
     if(this.state.isAnswerOpen)
-      return <Answer startTime={this.props.eventInfo.startTime}
+      return <Answer
+          eventId={this.props.eventInfo.id}
+          startTime={this.props.eventInfo.startTime}
           endTime={this.props.eventInfo.endTime}
           updateAttendance={this.props.updateAttendance}
           closeAnswer={this.openAnswer}/>
