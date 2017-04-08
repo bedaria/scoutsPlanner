@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { getUserEvents } from '../helpers.js'
-import { EventList } from './EventList.js'
+import EventList  from './EventList.js'
 
 export default class Profile extends Component {
   constructor(props) {
@@ -35,7 +35,7 @@ export default class Profile extends Component {
 
   showEvents = () => {
     if(this.state.gotEvents)
-      return <EventList eventList={this.state.events}/>
+      return  <EventList eventList={this.state.events}/>
     else
       return <div> Retrieving events... </div>
   }
@@ -46,8 +46,6 @@ export default class Profile extends Component {
       case 'createEvents':
         this.setState({redirect: true, redirectTo: '/newEvent'})
         break
-      case 'myFriends':
-        console.log("getting friends")
       default:
         console.log("oops")
       }
@@ -65,7 +63,6 @@ export default class Profile extends Component {
               {this.showErrorMessage()}
                   <div> {localStorage.getItem('username')}s profile </div>
                   <div><button id="createEvents" type="button" onClick={this.handleClick}>Create Event</button></div>
-                  <div><button id="myFriends" type="button" onClick={this.handleClick}>My Friends</button></div>
                   <hr/>
                   <div> My events: </div>
                   {this.showEvents()}
