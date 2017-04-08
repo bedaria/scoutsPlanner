@@ -16,8 +16,9 @@ export default class Login extends Component {
   }
 
   handleSubmit = (event) => {
-    this.setState({isLoggedIn: true})
     localStorage.setItem('username', this.state.username)
+    this.setState({isLoggedIn: true})
+
   }
 
   render() {

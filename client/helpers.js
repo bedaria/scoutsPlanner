@@ -1,8 +1,9 @@
 import axios from 'axios'
 
-const username = localStorage.username
+
 
 export const createEventAndInvite = (state, done) => {
+  const username = localStorage.username
   axios.post('/users/admin/'+ username + '/events', {
     name: state.name,
     startTime: state.startTime,
@@ -32,12 +33,43 @@ export const createEventAndInvite = (state, done) => {
 }
 
 export const getUserEvents = (updateEvents) => {
+  const username = localStorage.username
+  console.log("username: ", username)
   axios.get('/users/' + username + '/events')
     .then(events => {
       updateEvents({events: events.data.events, gotEvents: true})
     })
     .catch(error => {
-      console.log("Error retrieving events: ", error)
       updateEvents({error: "Error retrieving events."})
     })
+}
+
+
+// Need
+// {isAttending: <valueIn ['Yes', 'Maybe', 'No']>,
+//                        startTime: <string>,
+//                        endTime: <string>,
+//                        seen: boolean }
+//updateAttendance:
+//closeAnswer:
+export const updateInvite = (infoToUpdate, eventId, updateAttendance, closeAnswer) => {
+ const username = localStorage.username
+  axios.post('/users/' + username + '/events/' + eventId, infoToUpdate)
+    .then(updated => {
+      const volunteerInfo = updated.data.volunteerInfo
+
+      if(!infoToUpdate.seen){
+        closeAnswer()
+        updateAttendance({
+          isAttending: volunteerInfo.isAttending,
+          volunteerFrom: volunteerInfo.startTime,
+          volunteerTill: volunteerInfo.endTime
+        })
+      }
+
+    })
+    .catch(error => {
+      updateAttendance({error: "Couldn't update event: " + eventId})
+    })
+
 }
