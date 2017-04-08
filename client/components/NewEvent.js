@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import SelectMultiple from './SelectMultiple'
 import { Redirect } from 'react-router-dom'
 import axios from 'axios'
 import { createEventAndInvite } from '../helpers.js'
