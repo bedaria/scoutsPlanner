@@ -33,13 +33,9 @@ export const EventList = (props) => {
   }
 
   return (
-    <div className="container">
-      <div className="item">
         <div className="profile">
           {showEvents()}
           {showAdminEvents()}
         </div>
-      </div>
-    </div>
   )
 }

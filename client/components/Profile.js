@@ -24,7 +24,7 @@ export default class Profile extends Component {
     if(this.state.errorMessage)
       return <div className="red"> Sorry: {this.state.errorMessage} </div>
     else
-      return <div> All good. </div>
+      return <div></div>
   }
 
   updateEvents = (data) => {
@@ -40,7 +40,8 @@ export default class Profile extends Component {
 
   showEvents = () => {
     if(this.state.gotEvents)
-      return <EventList eventList={this.state.userEvents} adminEventList={this.state.adminEvents} />
+      return <EventList eventList={this.state.userEvents}
+                        adminEventList={this.state.adminEvents} />
     else
       return <div> Retrieving events... </div>
   }
@@ -61,20 +62,16 @@ export default class Profile extends Component {
      return <Redirect push to={this.state.redirectTo}/>
     else {
       return(
-        <div className="container">
-          <div className="item">
-            <div className="profile">
-              <div className="hello">
+              <div>
               {this.showErrorMessage()}
                   <div> {localStorage.getItem('username')}s profile </div>
-                  <div><button id="createEvents" type="button" onClick={this.handleClick}>Create Event</button></div>
+                  <div className="container">
+                    <button id="createEvents" type="button" onClick={this.handleClick}>Create Event</button>
+                  </div>
                   <hr/>
                   <div> My events: </div>
                   {this.showEvents()}
               </div>
-            </div>
-          </div>
-        </div>
       )
     }
   }

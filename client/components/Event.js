@@ -7,8 +7,8 @@ export default class Event extends Component {
     super(props)
     this.state = {
       isAttending: this.props.volunteerInfo.isAttending,
-      volunteerFrom: this.props.volunteerInfo.volunteerFrom,
-      volunteerTill: this.props.volunteerInfo.volunteerTill,
+      volunteerFrom: this.props.volunteerInfo.volunteeringFrom,
+      volunteerTill: this.props.volunteerInfo.volunteeringTill,
       open: false
     }
   }
@@ -47,11 +47,10 @@ export default class Event extends Component {
     const answered = this.props.eventInfo.name
 
     return (
-      <div>
+      <div className="container">
         <button onClick={this.openEventInfo}> {this.state.isAttending ? answered: notAnswered } </button>
         {this.showEventInfo()}
       </div>
     )
   }
-
 }

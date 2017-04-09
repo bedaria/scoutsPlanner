@@ -18,16 +18,14 @@ export default class Login extends Component {
   handleSubmit = (event) => {
     localStorage.setItem('username', this.state.username)
     this.setState({isLoggedIn: true})
-
   }
 
   render() {
     if(this.state.isLoggedIn)
-      return <Redirect to='/profile'/>
+      return <Redirect push to='/profile'/>
 
     return (
-      <div className="container">
-        <div className="item">
+        <div className="container">
         <span> Log In </span>
           <form onSubmit={this.handleSubmit}>
             <input type="text" id="username" placeholder="Enter username: " value={this.state.username} onChange={this.handleChange}/>
@@ -35,7 +33,6 @@ export default class Login extends Component {
             <input className="button" type="submit" value="Log in" />
           </form>
         </div>
-      </div>
     )
   }
 }

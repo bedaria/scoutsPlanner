@@ -92,8 +92,7 @@ export default class NewEvent extends Component {
      return <Redirect push to='/profile'/>
     else {
       return (
-        <div className="container">
-          <div className="item">
+          <div>
           {this.showErrorMessage()}
           <div> Create Event </div>
           <div> Sending to: All </div>
@@ -123,7 +122,6 @@ export default class NewEvent extends Component {
               </label>
               <input className="button" type="submit" value="Send Event"/>
             </form>
-          </div>
         </div>
       )
     }

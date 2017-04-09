@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, { Component } from 'react'
 import { updateInvite } from '../helpers.js'
 
 export default class Answer extends Component {
@@ -27,7 +27,7 @@ export default class Answer extends Component {
       startTime: this.state.startTime,
       endTime: this.state.endTime
     }
-    console.log("answer updateAttendance: ", this.props.updateAttendance)
+
     updateInvite(attendanceInfo, this.props.eventId, this.props.updateAttendance, this.props.closeAnswer)
   }
 

@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import Answer from './Answer'
 
-export default class EventInfo  extends Component {
+export default class EventInfo extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -18,9 +18,8 @@ export default class EventInfo  extends Component {
   }
 
   showAnswer = () => {
-  
     const attendingTime = this.props.volunteerFrom + "-" + this.props.volunteerTill
-    const attendingInfo = "You are a" + this.props.isAttending + ": " + attendingTime
+    const attendingInfo = "You are a " + this.props.isAttending + ": " + attendingTime
     const notAnswered = "Please Answer"
 
     if(this.state.isAnswerOpen)
@@ -33,7 +32,6 @@ export default class EventInfo  extends Component {
     else
       return <button onClick={this.openAnswer}> {this.props.isAttending ? attendingInfo: notAnswered} </button>
   }
-
 
   render() {
       return (
