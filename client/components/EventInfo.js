@@ -35,7 +35,7 @@ export default class EventInfo extends Component {
 
   render() {
       return (
-        <div>
+        <div className="container">
         <hr/>
           <div> Date: {this.props.eventInfo.startDate }</div>
           <div> Time: {this.props.eventInfo.startTime} - {this.props.eventInfo.endTime}</div>

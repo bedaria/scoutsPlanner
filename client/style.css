@@ -1,49 +1,11 @@
+form {
+  display: flex;
+  flex-flow: column nowrap;
+  width: 500px;
+}
 
 .container {
   display: flex;
   flex-flow: column nowrap;
-  height: 600px;
-  background-color: #f5f5dc;
-  font-weight: 900;
-}
-
-.scroll {
-  background: #fff;
-  border: 2px;
-  color: #999;
-  height:35px;
-  overflow-y: scroll;
-  overflow-x: hidden;
-}
-
-.red {
-  background: red;
-}
-.text {
-  background: #fff;
-  color: black;
-}
-
-.item {
-  text-align: center;
-  color: black;
-  /*background-color: rgb(179, 0, 0);*/
-}
-
-form, .profile {
-  display: flex;
-  flex-flow: column nowrap;
-}
-
-input, .hello , textarea{
-  margin-top: 10px;
-  margin-bottom: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 5px;
-}
-
-button, .button {
-  background: rgba(255, 255, 255, 0.5);
-  color: black;
+  width: 500px;
 }
