@@ -42,7 +42,6 @@ export default class Event extends Component {
 
   }
 
-
   render() {
     const notAnswered = this.props.eventInfo.name + "(Not answered yet)"
     const answered = this.props.eventInfo.name

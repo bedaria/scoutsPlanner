@@ -1,7 +1,5 @@
 import axios from 'axios'
 
-
-
 export const createEventAndInvite = (state, done) => {
   const username = localStorage.username
   axios.post('/users/admin/'+ username + '/events', {

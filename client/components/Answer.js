@@ -70,34 +70,3 @@ export default class Answer extends Component {
       )
   }
 }
-
-
-/*  constructor(props) {
-    super(props)
-    this.state = {
-      attending: "Yes",
-      startTime: '06:00',
-      endTime: '17:30',
-      entireEvent: true,
-      isAttending: this.props.eventInfo.EventVolunteer.isAttending,
-      eventId: this.props.eventInfo.id
-    }
-  }
-
-  handleOptionChange = (event) => {
-    this.setState({[event.target.id]: event.target.value})
-  }
-
-  toggleRadioButton = (event) => {
-    this.setState({entireEvent: !this.state.entireEvent})
-  }
-
-  submitAnswer = (event) => {
-    event.preventDefault()
-    this.setState({isAttending: this.state.attending})
-    if(this.state.entireEvent)
-      console.log("updating info: entire time + ", this.state.attending)
-    else
-      console.log("updating info: ", this.state.startTime, this.state.endTime, this.state.attending)
-  }
-*/
