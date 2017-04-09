@@ -9,7 +9,8 @@ export const EventList = (props) => (
           {props.eventList.map(event => (
             <Event
               volunteerInfo={event.volunteerInfo}
-              eventInfo={event.eventInfo} />
+              eventInfo={event.eventInfo}
+               />
             )
           )}
           </div>

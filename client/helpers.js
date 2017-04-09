@@ -34,10 +34,13 @@ export const createEventAndInvite = (state, done) => {
 
 export const getUserEvents = (updateEvents) => {
   const username = localStorage.username
-  console.log("username: ", username)
+
   axios.get('/users/' + username + '/events')
     .then(events => {
-      updateEvents({events: events.data.events, gotEvents: true})
+      updateEvents({
+        userEvents: events.data.userEvents,
+        adminEvents: events.data.adminEvents,
+        gotEvents: true})
     })
     .catch(error => {
       updateEvents({error: "Error retrieving events."})
