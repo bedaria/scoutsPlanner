@@ -3,7 +3,7 @@ import Event from './Event'
 import { AdminEvent } from './AdminEvent'
 
 export const EventList = (props) => {
-  
+
   const showEvents = () => {
     if(props.eventList.length > 0)
       return (

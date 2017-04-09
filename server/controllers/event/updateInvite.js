@@ -1,7 +1,6 @@
 'use strict'
 
 const models = require('../../models/index.js')
-const helpers = require('../helperFunctions.js')
 //Updates models.EventVolunteer
 //req.body should have at elast one:
 //                       {isAttending: <valueIn ['Yes', 'Maybe', 'No']>,

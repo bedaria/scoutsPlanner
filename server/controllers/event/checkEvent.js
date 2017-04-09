@@ -3,13 +3,15 @@
 const models = require('../../models/index.js')
 
 //Gets updated info on event for an admin
-//INPUT:
-//OUTPUT: <array> {userInfo: models.Event.dataValues,
+//resp.body will have:
+//        <array> {userInfo: models.Event.dataValues,
 //                 attendanceInfo: models.EventVolunteer.dataValues,
 //                 attendance: {totalAttending: <int>, totalMaybe: <int>,
 //                 totalNo: <int>, totalNotChecked}:<int>}
 const checkEvent = function(req, res) {
-  //are you the admin for this event?
+  if(!req.user)
+    Promise.reject("User must be logged in.")
+
   if(!Number.isInteger(Number(req.params.event)))
     res.json({"error": "Invalid eventId parameter."}).status(200).end()
   else {

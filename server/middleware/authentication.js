@@ -12,7 +12,6 @@ const isAuthenticated =  function (req, res, next) {
 }
 
 const isAdmin = function(req, res, next) {
-  req.user = {}
   req.user.name = req.params.name
   req.user.id = users[req.user.name]
   next()

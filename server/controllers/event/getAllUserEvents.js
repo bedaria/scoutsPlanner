@@ -12,7 +12,7 @@ const models = require('../../models/index.js')
 //   }
 const getAllUserEvents = function(req, res) {
   if(!req.user || !req.user.id || !req.user.name)
-    Promise.reject("User not found.")
+    Promise.reject("User must be signed in.")
 
   var getAdminEvents = models.Event.findAll({
     where: { mainAdminId: req.user.id }
