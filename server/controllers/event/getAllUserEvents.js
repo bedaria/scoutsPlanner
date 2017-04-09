@@ -28,7 +28,7 @@ const getAllUserEvents = function(req, res) {
       var adminEvents = results[0]
       var userEvents = results[1]
       var events = []
-      var adminEvents = []
+      var adEvents = []
 
       if(userEvents === null)
        return Promise.reject("No user: ", req.user.id, "found")
@@ -63,9 +63,9 @@ const getAllUserEvents = function(req, res) {
      }
 
      if(adminEvents.length > 0)
-       adminEvents = adminEvents.map(event => ({id: event.dataValues.id, name: event.dataValues.name , isAdmin: true}))
+       adEvents = adminEvents.map(event => ({id: event.dataValues.id, name: event.dataValues.name , isAdmin: true}))
 
-      res.json({adminEvents,  userEvents: events}).status(200).end()
+      res.json({adminEvents: adEvents,  userEvents: events}).status(200).end()
     })
     .catch(err => {
       console.log(__filename, " ERROR: ", err)

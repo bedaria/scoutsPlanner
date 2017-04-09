@@ -10,6 +10,7 @@ export default class Profile extends Component {
       redirect: false,
       redirectTo: '',
       userEvents: [],
+      adminEvents: [],
       errorMessage: '',
       gotEvents: false
     }
@@ -30,16 +31,16 @@ export default class Profile extends Component {
     if(data.error)
       this.setState({errorMessage: 'Error retrieving events.'})
     else
-      this.setState({userEvents: data.userEvents, gotEvents: data.gotEvents})
+      this.setState({
+        userEvents: data.userEvents,
+        gotEvents: data.gotEvents,
+        adminEvents: data.adminEvents
+      })
   }
 
   showEvents = () => {
-    if(this.state.gotEvents){
-      if(this.state.userEvents.length > 0)
-        return <EventList eventList={this.state.userEvents}/>
-      else
-        return <div> You have no events yet. </div>
-    }
+    if(this.state.gotEvents)
+      return <EventList eventList={this.state.userEvents} adminEventList={this.state.adminEvents} />
     else
       return <div> Retrieving events... </div>
   }
