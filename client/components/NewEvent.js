@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { createEventAndInvite, getUsers } from '../helpers'
-import SelectMultiple from './SelectMultiple'
+import { SelectMultiple }  from './SelectMultiple'
 
 export default class NewEvent extends Component {
   constructor(props) {
@@ -20,19 +20,41 @@ export default class NewEvent extends Component {
       sameDayEvent: false,
       errorMessage: '',
       invited: [1,3],
-      users: []
+      users: [],
+      selectedUsers: [],
+      selected: 'All'
     }
   }
 
   componentWillMount = () => {
-    getUsers(this.getUsers)
+    getUsers(this.updateUsers)
   }
 
-  getUsers = (data) => {
+  updateUsers = (data) => {
     if(data.error)
-      console.log("Retrying to get friends")
+      this.setState({errorMessage: data.error})
     else
       this.setState({users: data.users})
+  }
+
+  deleteFromSelected = (event) => {
+    event.preventDefault()
+    var selectedUsers = this.state.selectedUsers.slice()
+    const idx = selectedUsers.indexOf(event.target.id)
+    selectedUsers = selectedUsers.slice(0,idx).concat(selectedUsers.slice(idx+1))
+    this.setState({selectedUsers})
+  }
+
+  addToSelected = (event) => {
+    const selectedUsers = this.state.selectedUsers.slice()
+    const found = selectedUsers.reduce((found, user) => (
+      found || user === event.target.value
+    ), false)
+
+    if(!found){
+      selectedUsers.push(event.target.value)
+      this.setState({selectedUsers})
+    }
   }
 
   showErrorMessage = () => {
@@ -111,7 +133,11 @@ export default class NewEvent extends Component {
           <div> Sending to: All </div>
             <form onSubmit={this.handleSubmit} id="eventInfo">
               <input type="text" id="name" placeholder="Event Name: " value={this.state.name} onChange={this.handleChange} required />
-              <input type="text" placeholder="Frankie, Aidan"/>
+              <SelectMultiple selectedUsers={this.state.selectedUsers}
+                              users={this.state.users}
+                              addToSelected={this.addToSelected}
+                              selected={this.state.selected}
+                              deleteFromSelected={this.deleteFromSelected} />
               <textarea id="message" placeholder="Add message (optional): " value={this.state.message} onChange={this.handleChange} form="eventInfo" />
               <label>
                 Start date:
