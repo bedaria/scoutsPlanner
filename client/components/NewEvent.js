@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import axios from 'axios'
-import { createEventAndInvite } from '../helpers.js'
+import { createEventAndInvite } from '../helpers'
 
 export default class NewEvent extends Component {
   constructor(props) {

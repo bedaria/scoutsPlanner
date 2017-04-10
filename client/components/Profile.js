@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
-import { getUserEvents } from '../helpers.js'
-import { EventList } from './EventList.js'
+import { getUserEvents } from '../helpers'
+import { EventList } from './EventList'
+import AdminEventList from './AdminEventList'
 
 export default class Profile extends Component {
   constructor(props) {
@@ -39,11 +40,7 @@ export default class Profile extends Component {
   }
 
   showEvents = () => {
-    if(this.state.gotEvents)
-      return <EventList eventList={this.state.userEvents}
-                        adminEventList={this.state.adminEvents} />
-    else
-      return <div> Retrieving events... </div>
+
   }
 
   handleClick = (event) => {
@@ -60,8 +57,8 @@ export default class Profile extends Component {
   render() {
     if(this.state.redirect)
      return <Redirect push to={this.state.redirectTo}/>
-    else {
-      return(
+
+    return (
               <div>
               {this.showErrorMessage()}
                   <div> {localStorage.getItem('username')}s profile </div>
@@ -70,9 +67,15 @@ export default class Profile extends Component {
                   </div>
                   <hr/>
                   <div> My events: </div>
-                  {this.showEvents()}
+                  {
+                    this.state.gotEvents?
+                      (<div>
+                          <AdminEventList events={this.state.adminEvents} />
+                          <EventList events={this.state.userEvents} />
+                        </div>) :
+                       (<div> Retrieving events... </div>)
+                  }
               </div>
       )
     }
-  }
 }

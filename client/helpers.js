@@ -2,6 +2,7 @@ import axios from 'axios'
 
 export const createEventAndInvite = (state, done) => {
   const username = localStorage.username
+
   axios.post('/users/admin/'+ username + '/events', {
     name: state.name,
     startTime: state.startTime,
@@ -46,13 +47,6 @@ export const getUserEvents = (updateEvents) => {
 }
 
 
-// Need
-// {isAttending: <valueIn ['Yes', 'Maybe', 'No']>,
-//                        startTime: <string>,
-//                        endTime: <string>,
-//                        seen: boolean }
-//updateAttendance:
-//closeAnswer:
 export const updateInvite = (infoToUpdate, eventId, updateAttendance, closeAnswer) => {
  const username = localStorage.username
   axios.post('/users/' + username + '/events/' + eventId, infoToUpdate)
@@ -72,5 +66,16 @@ export const updateInvite = (infoToUpdate, eventId, updateAttendance, closeAnswe
     .catch(error => {
       updateAttendance({error: "Couldn't update event: " + eventId})
     })
+  }
 
-}
+  export const getAdminEvent = (eventId, callback) => {
+    const username = localStorage.username
+    axios.get('/users/admin/' + username + '/events/' + eventId)
+      .then(eventInfo => {
+        console.log('got event')
+        callback(eventInfo.data, eventId)
+      })
+      .catch(error => {
+        callback({error: "Error retrieving event."})
+      })
+  }
