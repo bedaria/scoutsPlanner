@@ -7,6 +7,7 @@ export default class NewEvent extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      myName: localStorage.getItem('username'),
       name: '',
       message: '',
       startTime: '',
@@ -32,8 +33,11 @@ export default class NewEvent extends Component {
   updateUsers = (data) => {
     if(data.error)
       this.setState({errorMessage: data.error})
-    else
-      this.setState({users: data.users})
+    else {
+      const users = data.users.filter(user => user.name !== this.state.myName)
+      this.setState({users})
+    }
+
   }
 
   deleteFromSelected = (event) => {
