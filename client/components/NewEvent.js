@@ -17,7 +17,7 @@ export default class NewEvent extends Component {
       redirect: false,
       redirectTo: '',
       valid: true,
-      sameDayEvent: true,
+      sameDayEvent: false,
       errorMessage: '',
       invited: [1,3]
     }
@@ -63,7 +63,8 @@ export default class NewEvent extends Component {
   }
 
   toggleRadioButton = (event) => {
-    this.setState({sameDayEvent: !this.state.sameDayEvent, endDate: ''})
+    const endDate = this.state.sameDayEvent ? '' : this.state.startDate
+    this.setState({sameDayEvent: !this.state.sameDayEvent, endDate: endDate})
   }
 
   getToday = () => {
