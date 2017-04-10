@@ -1,5 +1,18 @@
 import axios from 'axios'
 
+export const getUsers = (callback) => {
+  const username = localStorage.username
+
+  axios.get('/users/admin/')
+    .then(users => {
+      callback({users: users.data.users})
+    })
+    .catch(error => {
+      console.log("error: ", error)
+      callback({error: "Couldn't get firends:()"})
+    })
+}
+
 export const createEventAndInvite = (state, done) => {
   const username = localStorage.username
 
@@ -12,17 +25,18 @@ export const createEventAndInvite = (state, done) => {
     message: state.message
   })
   .then(eventData => {
-
+    console.log("eventData: ", eventData)
     if(eventData.error){
       this.setState({errorMessage: eventData.error})
       Promise.reject(eventData.error)
     }
     else
-      return axios.post('/users/admin/' + usernae + '/events/' + eventData.data.dataValues.id, {
+      return axios.post('/users/admin/' + username + '/events/' + eventData.data.dataValues.id, {
         invited: state.invited
       })
   })
   .then(successfullyInvited => {
+    console.log("successfullyInvited: ", successfullyInvited)
     done("success")
   })
   .catch(err => {
@@ -72,7 +86,6 @@ export const updateInvite = (infoToUpdate, eventId, updateAttendance, closeAnswe
     const username = localStorage.username
     axios.get('/users/admin/' + username + '/events/' + eventId)
       .then(eventInfo => {
-        console.log('got event')
         callback(eventInfo.data, eventId)
       })
       .catch(error => {

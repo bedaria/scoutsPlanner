@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
-import axios from 'axios'
-import { createEventAndInvite } from '../helpers'
+import { createEventAndInvite, getUsers } from '../helpers'
+import SelectMultiple from './SelectMultiple'
 
 export default class NewEvent extends Component {
   constructor(props) {
@@ -19,8 +19,20 @@ export default class NewEvent extends Component {
       valid: true,
       sameDayEvent: false,
       errorMessage: '',
-      invited: [1,3]
+      invited: [1,3],
+      users: []
     }
+  }
+
+  componentWillMount = () => {
+    getUsers(this.getUsers)
+  }
+
+  getUsers = (data) => {
+    if(data.error)
+      console.log("Retrying to get friends")
+    else
+      this.setState({users: data.users})
   }
 
   showErrorMessage = () => {
