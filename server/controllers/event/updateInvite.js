@@ -46,11 +46,9 @@ const updateInvite = function(req, res) {
       const eventInfo = user.dataValues.Events[0]
       const eventVolunteer = eventInfo.dataValues.EventVolunteer
 
-      console.log("sending in: ", req.body)
       return eventVolunteer.update(req.body)
     })
     .then(update => {
-      console.log("sendint: ", update.dataValues)
       res.json({message: "Update successful.", volunteerInfo: update.dataValues})
         .status(200).end()
     })
