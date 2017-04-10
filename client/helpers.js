@@ -5,11 +5,12 @@ export const getUsers = (callback) => {
 
   axios.get('/users/admin/')
     .then(users => {
+      console.log("got users from back")
       callback({users: users.data.users})
     })
     .catch(error => {
       console.log("error: ", error)
-      callback({error: "Couldn't get firends:()"})
+      callback({error: "Couldn't get your friends, hold on...."})
     })
 }
 
@@ -32,7 +33,7 @@ export const createEventAndInvite = (state, done) => {
     }
     else
       return axios.post('/users/admin/' + username + '/events/' + eventData.data.dataValues.id, {
-        invited: state.invited
+        invited: state.selected
       })
   })
   .then(successfullyInvited => {

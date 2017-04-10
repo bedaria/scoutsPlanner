@@ -19,7 +19,6 @@ export default class NewEvent extends Component {
       valid: true,
       sameDayEvent: false,
       errorMessage: '',
-      invited: [1,3],
       users: [],
       selectedUsers: [],
       selected: 'All'
