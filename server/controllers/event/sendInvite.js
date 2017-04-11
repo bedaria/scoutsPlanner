@@ -5,12 +5,12 @@ const models = require('../../models/index.js')
 //Adds models.Event to models.User (s) if the users were invited
 //req.body should have:
 //        {invited: <array<integers>>}
-//res will have: {sentTo: <array<Users>>}
+//res will have: {sentTo: <array<UserIds>>}
 const sendInvite = function(req, res) {
   if(!req.user)
     Promise.reject("User not found.")
-  if(!req.body.invited || !Array.isArray(req.body.invited))
-    res.json({"error": "Attribute invited must be of type array."}).status(200).end()
+  if(!Array.isArray(req.body.invited) || typeof req.body.invited[0] !== 'number')
+    res.json({"error": "Attribute invited must be an array of integers."}).status(200).end()
   else if(!Number.isInteger(Number(req.params.event)))
     res.json({"error": "Invalid eventId parameter."}).status(200).end()
   else {
@@ -28,17 +28,16 @@ const sendInvite = function(req, res) {
         return event.addVolunteer(users)
       })
       .then(success => {
-        //invites have already been sent
         var sentTo = []
 
-        if(Array.isArray(success[0]))
+        if(Array.isArray(success[0])) //mulitple users invited
           sentTo = success[0]
-        else if(Array.isArray(success))
+        else if(Array.isArray(success)) //one user invited
           sentTo = success
 
-        sentTo = sentTo.map(result => result.dataValues)
+        sentTo = sentTo.map(result => result.dataValues.UserId)
 
-        res.json({sentTo: sentTo}).status(200).end()
+        res.json({sentTo}).status(200).end()
       })
       .catch(err => {
         console.log(__filename, " ERROR: ", err)

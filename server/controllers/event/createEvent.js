@@ -10,17 +10,17 @@ const models = require('../../models/index.js')
 //        startDate: <string>,
 //        endDate: <string>
 //        message: <string> (optional)}
-//res will have: { dataValues: models.Event.dataValues }
+//res will have: { eventId: <integer> }
 const createEvent = function(req, res){
   if(!req.user)
-    Promise.reject("User not found.")
-  console.log("req.body: ", req.body.message, typeof req.body.message, typeof req.body.message !== 'string')
+    Promise.reject("User needs to be logged in!")
+
   var areCorrectTypes = ['name', 'startTime', 'endTime', 'startDate', 'endDate'].reduce((isCorrectType, attribute) => {
       return isCorrectType && (typeof attribute === 'string')
     }, true)
 
   if(!req.body.name || !req.body.startTime || !req.body.endTime || !req.body.startDate)
-      res.json({"error": "Must have name, startTime, endTime, startDate, endDate and/or message."}).status(200).end()
+    res.json({"error": "Must have name, startTime, endTime, startDate, endDate and/or message."}).status(200).end()
   else if(typeof req.body.message !== 'string')
     res.json({"error": "Attribute message must be of type string."}).status(200).end()
   else if(!areCorrectTypes)
@@ -37,7 +37,7 @@ const createEvent = function(req, res){
         return event.setMainAdmin(user)
       })
       .then(event =>
-        res.json({dataValues: event.dataValues}).status(200).end()
+        res.json({eventId: event.dataValues.id}).status(200).end()
       )
       .catch(err => {
         console.log(__filename, " ERROR: ", err)
