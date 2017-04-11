@@ -6,7 +6,9 @@ const models = require('../../models/index.js')
 //INPUT:
 //OUTPUT: <array> models.User.dataValues
 const getAllUsers = function(req, res) {
-    models.User.findAll()
+    models.User.findAll({
+      attributes: ['name', 'id']
+    })
     .then(users => {
 
       if(users)
