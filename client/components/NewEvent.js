@@ -16,7 +16,10 @@ export default class NewEvent extends Component {
       redirect: false,
       sameDayEvent: false,
       errorMessage: '',
-      selectedUsers: []
+      selectedUsers: [],
+      successMessage: '',
+      today: (new Date()).toISOString().slice(0,10),
+      tomorrow: (new Date(new Date().getTime() + (24 * 60 * 60 * 1000))).toISOString().slice(0,10)
     }
   }
 
@@ -24,15 +27,14 @@ export default class NewEvent extends Component {
     if(this.state.errorMessage)
       return <div className="red"> Sorry: {this.state.errorMessage} </div>
     else
-      return <div> All good. </div>
+      return <div></div>
   }
 
-  //check this, still redirects even if no one was invited
-  whenDone = (message) => {
-    if(message === "success")
-      this.setState({redirect: true})
+  done = (data) => {
+    if(data.errorMessage)
+      this.setState({errorMessage: data.errorMessage})
     else
-      this.setState({errorMessage: "Error creating event: " + message})
+      this.setState({redirect: true})
   }
 
   handleChange = (event) => {
@@ -41,23 +43,7 @@ export default class NewEvent extends Component {
 
   handleSubmit = (event) => {
     event.preventDefault()
-
-    if(this.validateTimeDateRange())
-      createEventAndInvite(this.state, this.whenDone)
-    else
-      this.setState({errorMessage: 'Invalid times'})
-  }
-
-  validateTimeDateRange = () => {
-    const startTime = this.state.startTime.split(":").map(timePart => Number(timePart))
-    const endTime = this.state.endTime.split(":").map(timePart => Number(timePart))
-    const [startHour, startMinutes] = startTime
-    const [endHour, endMinutes] = endTime
-
-    if(this.state.sameDayEvent)
-      return (startHour < endHour) || (startHour === endHour && startMinutes < endMinutes)
-    else
-      return true
+    createEventAndInvite(this.state, this.done)
   }
 
   toggleRadioButton = (event) => {
@@ -77,18 +63,17 @@ export default class NewEvent extends Component {
           <div>
           {this.showErrorMessage()}
           <div> Create Event </div>
-          <div> Sending to: All </div>
             <form onSubmit={this.handleSubmit} id="eventInfo">
               <input type="text" id="name" placeholder="Event Name: " value={this.state.name} onChange={this.handleChange} required />
               <SelectMultiple getSelectedUsers={this.getSelectedUsers}/>
               <textarea id="message" placeholder="Add message (optional): " value={this.state.message} onChange={this.handleChange} form="eventInfo" />
               <label>
                 Start date:
-                <input type="date" id="startDate" min={getToday()} value={this.state.startDate} onChange={this.handleChange} required />
+                <input type="date" id="startDate" min={this.state.today} value={this.state.startDate} onChange={this.handleChange} required />
               </label>
               <label>
                 End date:
-                <input type="date" id="endDate" min={getTomorrow()} value={this.state.endDate} onChange={this.handleChange} disabled={this.state.sameDayEvent} required />
+                <input type="date" id="endDate" min={this.state.tomorrow} value={this.state.endDate} onChange={this.handleChange} disabled={this.state.sameDayEvent} required />
               </label>
               <label>
                 <input type="radio" id="sameDay" value="sameDayEvent" checked={this.state.sameDayEvent} onChange={this.toggleRadioButton}/>
@@ -100,7 +85,7 @@ export default class NewEvent extends Component {
               </label>
               <label>
                 End time:
-                <input type="time" id="endTime" value={this.state.endTime} onChange={this.handleChange} required />
+                <input type="time" id="endTime" min={this.state.sameDayEvent? this.state.startTime:''} value={this.state.endTime} onChange={this.handleChange} required />
               </label>
               <input className="button" type="submit" value="Send Event"/>
             </form>
@@ -108,25 +93,4 @@ export default class NewEvent extends Component {
       )
     }
   }
-}
-
-const getToday = () => {
-  const today = new Date()
-  return getYYYYMMDD(today)
-}
-
-const getTomorrow = () => {
-  const today = new Date()
-  const tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
-  return getYYYYMMDD(tomorrow)
-}
-
-const getYYYYMMDD = (date) => {
-  const yyyy = date.getFullYear().toString()
-  const month = (date.getMonth() + 1)
-  const mm = month > 9 ? month.toString() : '0' + month.toString()
-  const day = date.getDate()
-  const dd = day > 9 ? day.toString() : '0' + day.toString()
-
-  return yyyy + "-" + mm + "-" + dd
 }

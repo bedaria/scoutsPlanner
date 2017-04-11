@@ -19,8 +19,11 @@ export default class SelectMultiple extends Component {
   addUsersToState = (data) => {
     if(data.hasError)
       this.setState({hasError: true})
-    else
-      this.setState({users: data.users.filter(user => user.name !== localStorage.getItem('username'))})
+    else {
+      const users = data.users.filter(user => user.name !== localStorage.getItem('username'))
+      this.props.getSelectedUsers(users.map(user => user.id))
+      this.setState({users})
+    }
   }
 
   deleteFromSelected = (event) => {
@@ -28,7 +31,12 @@ export default class SelectMultiple extends Component {
     var selectedUsers = this.state.selectedUsers.slice()
     const idx = selectedUsers.indexOf(event.target.id)
     selectedUsers = selectedUsers.slice(0,idx).concat(selectedUsers.slice(idx+1))
-    this.props.getSelectedUsers(selectedUsers.map(user => Number(user)))
+
+    if(!selectedUsers.length)
+      this.props.getSelectedUsers(this.state.users.map(user => user.id))
+    else
+      this.props.getSelectedUsers(selectedUsers.map(user => Number(user)))
+
     this.setState({selectedUsers})
   }
 

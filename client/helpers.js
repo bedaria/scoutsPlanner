@@ -5,16 +5,24 @@ export const getUsers = (callback) => {
 
   axios.get('/users/admin/')
     .then(users => {
-      console.log("got users from back")
-      callback({users: users.data.users})
+      if(!Array.isArray(users.data.users) || users.data.users.length < 1) {
+        callback({hasError: true})
+        return Promise.reject(new Error("Returned users were wrong in getUsers"))
+      }
+      else if(typeof users.data.users[0].name !== 'string' || typeof users.data.users[0].id !== 'number') {
+        callback({hasError: true})
+        return Promise.reject(new Error("Returned users should be of form: {name, id}"))
+      }
+      else
+        callback({users: users.data.users})
     })
     .catch(error => {
-      console.log("error: ", error)
-      callback({error: "Couldn't get your friends, hold on...."})
+      console.log("Error in getUsers: ", error)
+      callBack({hasError: true})
     })
 }
 
-export const createEventAndInvite = (state, done) => {
+export const createEventAndInvite = (state, callback) => {
   const username = localStorage.username
 
   axios.post('/users/admin/'+ username + '/events', {
@@ -25,24 +33,19 @@ export const createEventAndInvite = (state, done) => {
     endDate: state.endDate,
     message: state.message
   })
-  .then(eventData => {
-    console.log("eventData: ", eventData)
-    if(eventData.error){
-      this.setState({errorMessage: eventData.error})
-      Promise.reject(eventData.error)
-    }
-    else
-      return axios.post('/users/admin/' + username + '/events/' + eventData.data.dataValues.id, {
-        invited: state.selected
-      })
+  .then(({data}) => {
+      const path = '/users/admin/' + username + '/events/' + data.eventId
+      return axios.post(path, {invited: state.selectedUsers})
   })
-  .then(successfullyInvited => {
-    console.log("successfullyInvited: ", successfullyInvited)
-    done("success")
+  .then(({data}) => {
+    if(!data.sentTo.length || data.sentTo.length !== state.selectedUsers.length)
+      console.log("data.sentTo came back empty or a different length in createAndInvite")
+
+      callback({message: "Successfully invited people!"})
   })
-  .catch(err => {
-    console.log("ERROR creating/sending event: ", err)
-    done(err)
+  .catch(error => {
+    console.log("Error in createEventAndInvite: ", error)
+    callback({errorMessage: "Oops, something went wrong..hold on."})
   })
 }
 
