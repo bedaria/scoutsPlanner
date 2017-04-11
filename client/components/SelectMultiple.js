@@ -1,23 +1,72 @@
-import React from 'react'
+import React, { Component } from 'react'
+import { getUsers } from  '../helpers'
 
-export const SelectMultiple = ({selectedUsers, users, addToSelected, selected, deleteFromSelected}) => {
-  if(users.length)
-    return (
-      <div>
+export default class SelectMultiple extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      users: [],
+      selectedUsers: [],
+      selected: 'All',
+      hasError: false
+    }
+  }
+
+  componentWillMount = () => {
+    getUsers(this.addUsersToState)
+  }
+
+  addUsersToState = (data) => {
+    if(data.hasError)
+      this.setState({hasError: true})
+    else
+      this.setState({users: data.users.filter(user => user.name !== localStorage.getItem('username'))})
+  }
+
+  deleteFromSelected = (event) => {
+    event.preventDefault()
+    var selectedUsers = this.state.selectedUsers.slice()
+    const idx = selectedUsers.indexOf(event.target.id)
+    selectedUsers = selectedUsers.slice(0,idx).concat(selectedUsers.slice(idx+1))
+    this.props.getSelectedUsers(selectedUsers.map(user => Number(user)))
+    this.setState({selectedUsers})
+  }
+
+  addToSelected = (event) => {
+    const selectedUsers = this.state.selectedUsers.slice()
+    const found = selectedUsers.reduce((found, user) => (
+      found || user === event.target.value
+    ), false)
+
+    if(!found){
+      selectedUsers.push(event.target.value)
+      this.props.getSelectedUsers(selectedUsers.map(user => Number(user)))
+      this.setState({selectedUsers})
+    }
+  }
+
+  render() {
+    if(this.state.hasError)
+      return <div> Hold on, still getting users....</div>
+
+    if(this.state.users.length)
+      return (
         <div>
-          {
-            selectedUsers.length ?
-              selectedUsers.map(selected => (<Selected user={selected}
-                                                       deleteFromSelected={deleteFromSelected} /> )) : ''
-          }
+          <div>
+            {
+              this.state.selectedUsers.length ?
+                this.state.selectedUsers.map(selected => (<Selected user={selected}
+                                                         deleteFromSelected={this.deleteFromSelected} /> )) : ''
+            }
+          </div>
+          <select value={this.state.selected} onChange={this.addToSelected} form="eventInfo">
+            <option value='All'>All</option>
+            {this.state.users.map(user => (<option value={user.id}>{user.id}</option>))}
+          </select>
         </div>
-        <select value={selected} onChange={addToSelected} form="eventInfo">
-          <option value='All'>All</option>
-          {users.map(user => (<option value={user.name}>{user.name}</option>))}
-        </select>
-      </div>
-    )
-  else return <select></select>
+      )
+    else return <select></select>
+  }
 }
 
 const Selected = ({user, deleteFromSelected}) =>

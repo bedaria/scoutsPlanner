@@ -1,62 +1,22 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
-import { createEventAndInvite, getUsers } from '../helpers'
-import { SelectMultiple }  from './SelectMultiple'
+import { createEventAndInvite } from '../helpers'
+import SelectMultiple  from './SelectMultiple'
 
 export default class NewEvent extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      myName: localStorage.getItem('username'),
       name: '',
       message: '',
       startTime: '',
       endTime: '',
       startDate: '',
       endDate: '',
-      sendTo: [],
       redirect: false,
-      redirectTo: '',
-      valid: true,
       sameDayEvent: false,
       errorMessage: '',
-      users: [],
-      selectedUsers: [],
-      selected: 'All'
-    }
-  }
-
-  componentWillMount = () => {
-    getUsers(this.updateUsers)
-  }
-
-  updateUsers = (data) => {
-    if(data.error)
-      this.setState({errorMessage: data.error})
-    else {
-      const users = data.users.filter(user => user.name !== this.state.myName)
-      this.setState({users})
-    }
-
-  }
-
-  deleteFromSelected = (event) => {
-    event.preventDefault()
-    var selectedUsers = this.state.selectedUsers.slice()
-    const idx = selectedUsers.indexOf(event.target.id)
-    selectedUsers = selectedUsers.slice(0,idx).concat(selectedUsers.slice(idx+1))
-    this.setState({selectedUsers})
-  }
-
-  addToSelected = (event) => {
-    const selectedUsers = this.state.selectedUsers.slice()
-    const found = selectedUsers.reduce((found, user) => (
-      found || user === event.target.value
-    ), false)
-
-    if(!found){
-      selectedUsers.push(event.target.value)
-      this.setState({selectedUsers})
+      selectedUsers: []
     }
   }
 
@@ -67,6 +27,7 @@ export default class NewEvent extends Component {
       return <div> All good. </div>
   }
 
+  //check this, still redirects even if no one was invited
   whenDone = (message) => {
     if(message === "success")
       this.setState({redirect: true})
@@ -104,25 +65,8 @@ export default class NewEvent extends Component {
     this.setState({sameDayEvent: !this.state.sameDayEvent, endDate: endDate})
   }
 
-  getToday = () => {
-    const today = new Date()
-    return this.getYYYYMMDD(today)
-  }
-
-  getTomorrow = () => {
-    const today = new Date()
-    const tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
-    return this.getYYYYMMDD(tomorrow)
-  }
-
-  getYYYYMMDD = (date) => {
-    const yyyy = date.getFullYear().toString()
-    const month = (date.getMonth() + 1)
-    const mm = month > 9 ? month.toString() : '0' + month.toString()
-    const day = date.getDate()
-    const dd = day > 9 ? day.toString() : '0' + day.toString()
-
-    return yyyy + "-" + mm + "-" + dd
+  getSelectedUsers = (selectedUsers) =>  {
+    this.setState({selectedUsers})
   }
 
   render() {
@@ -136,19 +80,15 @@ export default class NewEvent extends Component {
           <div> Sending to: All </div>
             <form onSubmit={this.handleSubmit} id="eventInfo">
               <input type="text" id="name" placeholder="Event Name: " value={this.state.name} onChange={this.handleChange} required />
-              <SelectMultiple selectedUsers={this.state.selectedUsers}
-                              users={this.state.users}
-                              addToSelected={this.addToSelected}
-                              selected={this.state.selected}
-                              deleteFromSelected={this.deleteFromSelected} />
+              <SelectMultiple getSelectedUsers={this.getSelectedUsers}/>
               <textarea id="message" placeholder="Add message (optional): " value={this.state.message} onChange={this.handleChange} form="eventInfo" />
               <label>
                 Start date:
-                <input type="date" id="startDate" min={this.getToday()} value={this.state.startDate} onChange={this.handleChange} required />
+                <input type="date" id="startDate" min={getToday()} value={this.state.startDate} onChange={this.handleChange} required />
               </label>
               <label>
                 End date:
-                <input type="date" id="endDate" min={this.getTomorrow()} value={this.state.endDate} onChange={this.handleChange} disabled={this.state.sameDayEvent} required />
+                <input type="date" id="endDate" min={getTomorrow()} value={this.state.endDate} onChange={this.handleChange} disabled={this.state.sameDayEvent} required />
               </label>
               <label>
                 <input type="radio" id="sameDay" value="sameDayEvent" checked={this.state.sameDayEvent} onChange={this.toggleRadioButton}/>
@@ -168,4 +108,25 @@ export default class NewEvent extends Component {
       )
     }
   }
+}
+
+const getToday = () => {
+  const today = new Date()
+  return getYYYYMMDD(today)
+}
+
+const getTomorrow = () => {
+  const today = new Date()
+  const tomorrow = new Date(today.getTime() + (24 * 60 * 60 * 1000));
+  return getYYYYMMDD(tomorrow)
+}
+
+const getYYYYMMDD = (date) => {
+  const yyyy = date.getFullYear().toString()
+  const month = (date.getMonth() + 1)
+  const mm = month > 9 ? month.toString() : '0' + month.toString()
+  const day = date.getDate()
+  const dd = day > 9 ? day.toString() : '0' + day.toString()
+
+  return yyyy + "-" + mm + "-" + dd
 }
