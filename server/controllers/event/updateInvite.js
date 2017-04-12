@@ -5,27 +5,17 @@ const models = require('../../models/index.js')
 //req.body should have at elast one:
 //                       {isAttending: <valueIn ['Yes', 'Maybe', 'No']>,
 //                        startTime: <string>,
-//                        endTime: <string>,
-//                        seen: boolean }
+//                        endTime: <string>}
 //res will have: {message: "Update successful", volunteerInfo: <models.EventVolunteer>}
 const updateInvite = function(req, res) {
   if(!req.user)
-    Promise.reject("User need to be logged in.")
+    Promise.reject("User needs to be logged in.")
 
-  if(!req.body.isAttending && !req.body.startTime && !req.body.endTime && !req.body.seen)
-    res.json({"error": "Req body must have isAttending, startTime, endTime or seen."}).status(200).end()
+  if(!req.body.isAttending && !req.body.startTime && !req.body.endTime)
+    res.json({"error": "Req body must have isAttending, startTime and endTime"}).status(200).end()
 
-  if(req.body.isAttending && (['Yes', 'Maybe', 'No'].indexOf(req.body.isAttending) === -1))
-    res.json({"error": "isAttending must be in ['Yes', 'Maybe', 'No']."}).status(200).end()
-
-  if((req.body.startTime && !req.body.endTime) || (req.body.endTime && !req.body.startTime))
-    res.json({"error": "Please provide both a startTime and an endTime for volunteer attendance."}).status(200).end()
-
-  if(req.body.startTime && req.body.endTime && (typeof req.body.startTime !== 'string' || typeof req.body.endTime !== 'string'))
-    res.json({"error": "Volunteer startTime and endTime must be of type string."}).status(200).end()
-
-  if(req.body.seen && typeof req.body.seen !== 'boolean')
-    res.json({"error": "seen must be a boolean."}).status(200).end()
+  if(req.body.isAttending === "Yes" && !req.body.startTime && !req.body.endTime)
+    res.json({"error": "Please provide both a startTime and an endTime for volunteer who is attending."}).status(200).end()
 
   if(!Number.isInteger(Number(req.params.event)))
     res.json({"error": "Invalid eventId parameter"}).status(200).end()
@@ -40,17 +30,13 @@ const updateInvite = function(req, res) {
       }]
     })
     .then(user => {
-      if(!user)
-        return Promise.reject("User not found.")
-
       const eventInfo = user.dataValues.Events[0]
       const eventVolunteer = eventInfo.dataValues.EventVolunteer
 
       return eventVolunteer.update(req.body)
     })
     .then(update => {
-      res.json({message: "Update successful.", volunteerInfo: update.dataValues})
-        .status(200).end()
+      res.json({volunteerInfo: update.dataValues}).status(200).end()
     })
     .catch(err => {
       console.log(__filename, " ERROR: ", err)

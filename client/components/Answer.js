@@ -24,13 +24,15 @@ export default class Answer extends Component {
     event.preventDefault()
     const startTime = this.state.attending === "Yes" || this.state.entireEvent ? this.state.startTime : null
     const endTime = this.state.attending === "Yes" || this.state.entireEvent ? this.state.endTime : null
+
     const attendanceInfo = {
       isAttending: this.state.attending,
       startTime,
       endTime
     }
 
-    updateInvite(attendanceInfo, this.props.eventId, this.props.updateAttendance, this.props.closeAnswer)
+    updateInvite(attendanceInfo, this.props.eventId,
+        this.props.updateAttendance, this.props.closeAnswer)
   }
 
   render() {
@@ -55,7 +57,7 @@ export default class Answer extends Component {
               </label>
             </div>
             <label>
-              <input type="radio" id="entireEvent" value="entireEvent" checked={this.state.entireEvent} onChange={this.toggleRadioButton}/>
+              <input type="radio" id="entireEvent" value="entireEvent" checked={this.state.entireEvent} disabled={this.state.attending !== "Yes"} onChange={this.toggleRadioButton}/>
                Entire Event
             </label>
             <label>

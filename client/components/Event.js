@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import AnswerWindow from './AnswerWindow'
 
-export const Event = ({openId, volunteerInfo, eventInfo, updateAttendance}) => {
+export const Event = ({openId, isAttending, eventInfo, updateAttendance, volunteeringFrom, volunteeringTill}) => {
 
   if(openId == eventInfo.id)
     return (
@@ -12,9 +12,9 @@ export const Event = ({openId, volunteerInfo, eventInfo, updateAttendance}) => {
         <AnswerWindow eventId={eventInfo.id}
                       startTime={eventInfo.startTime}
                       endTime={eventInfo.endTime}
-                      isAttending={volunteerInfo.isAttending}
-                      volunteeringFrom={volunteerInfo.volunteeringFrom}
-                      volunteeringTill={volunteerInfo.volunteeringTill}
+                      isAttending={isAttending}
+                      volunteeringFrom={volunteeringFrom}
+                      volunteeringTill={volunteeringTill}
                       updateAttendance={updateAttendance}/>
       </div>
     )

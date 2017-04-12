@@ -6,12 +6,18 @@ export default class EventButton extends Component {
     super(props)
     this.state = {
       buttonInfo: '',
-      isAttending: this.props.volunteerInfo.isAttending
+      isAttending: this.props.volunteerInfo.isAttending,
+      volunteeringFrom: this.props.volunteerInfo.volunteeringFrom,
+      volunteeringTill: this.props.volunteerInfo.volunteeringTill
     }
   }
 
   updateAttendance = (buttonInfo) => {
-    this.setState({isAttending: buttonInfo.isAttending})
+    this.setState({
+      isAttending: buttonInfo.isAttending,
+      volunteeringFrom: buttonInfo.volunteeringFrom,
+      volunteeringTill: buttonInfo.volunteeringTill
+    })
   }
 
   render() {
@@ -22,10 +28,12 @@ export default class EventButton extends Component {
 
     return (
       <div className="container">
-        <button onClick={this.props.openEventInfo} id={eventInfo.id}>{this.state.isAttending ? answered: notAnswered } </button>
+        <button onClick={this.props.openEventInfo} id={eventInfo.id}>{this.state.isAttending ? answered : notAnswered} </button>
         <Event openId={this.props.openEventId}
-               volunteerInfo={volunteerInfo}
                eventInfo={eventInfo}
+               isAttending={this.state.isAttending}
+               volunteeringFrom={this.state.volunteeringFrom}
+               volunteeringTill={this.state.volunteeringTill}
                updateAttendance={this.updateAttendance}/>
       </div>
     )

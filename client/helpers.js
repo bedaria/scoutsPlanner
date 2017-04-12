@@ -5,16 +5,7 @@ export const getUsers = (callback) => {
 
   axios.get('/users/admin/')
     .then(users => {
-      if(!Array.isArray(users.data.users) || users.data.users.length < 1) {
-        callback({hasError: true})
-        return Promise.reject(new Error("Returned users were wrong in getUsers"))
-      }
-      else if(typeof users.data.users[0].name !== 'string' || typeof users.data.users[0].id !== 'number') {
-        callback({hasError: true})
-        return Promise.reject(new Error("Returned users should be of form: {name, id}"))
-      }
-      else
-        callback({users: users.data.users})
+       callback({users: users.data.users})
     })
     .catch(error => {
       console.log("Error in getUsers: ", error)
@@ -38,14 +29,11 @@ export const createEventAndInvite = (state, callback) => {
       return axios.post(path, {invited: state.selectedUsers})
   })
   .then(({data}) => {
-    if(!data.sentTo.length || data.sentTo.length !== state.selectedUsers.length)
-      console.log("data.sentTo came back empty or a different length in createAndInvite")
-
-      callback({message: "Successfully invited people!"})
+      callback({message: "Everyone succesfully invited!"})
   })
   .catch(error => {
     console.log("Error in createEventAndInvite: ", error)
-    callback({errorMessage: "Oops, something went wrong..hold on."})
+    callback({errorMessage: "Oops, something went wrong...hold on."})
   })
 }
 
@@ -60,29 +48,26 @@ export const getUserEvents = (updateEvents) => {
         gotEvents: true})
     })
     .catch(error => {
-      updateEvents({error: "Error retrieving events."})
+      updateEvents({error: "Error retrieving events, please reload."})
     })
 }
 
 
 export const updateInvite = (infoToUpdate, eventId, updateAttendance, closeAnswer) => {
- const username = localStorage.username
+  const username = localStorage.username
   axios.post('/users/' + username + '/events/' + eventId, infoToUpdate)
-    .then(updated => {
-      const volunteerInfo = updated.data.volunteerInfo
-      console.log("infoToUpdate: ", infoToUpdate)
-      if(!infoToUpdate.seen){
-        closeAnswer()
-        updateAttendance({
-          isAttending: volunteerInfo.isAttending,
-          volunteerFrom: volunteerInfo.startTime,
-          volunteerTill: volunteerInfo.endTime
-        })
-      }
+    .then(({data}) => {
+      const volunteerInfo = data.volunteerInfo
+
+      closeAnswer()
+      updateAttendance({
+        isAttending: volunteerInfo.isAttending,
+        volunteeringFrom: volunteerInfo.startTime,
+        volunteeringTill: volunteerInfo.endTime })
     })
     .catch(error => {
-      console.log("error: ", error)
-      // updateAttendance({error: "Couldn't update event: " + eventId})
+      console.log("Error: ", error)
+      updateAttendance({error: "OOps...."})
     })
   }
 

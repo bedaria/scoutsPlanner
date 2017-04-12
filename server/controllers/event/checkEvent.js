@@ -28,17 +28,13 @@ const checkEvent = function(req, res) {
       .then(event => {
         const isAdminOfEvent = event.dataValues.mainAdminId === req.user.id
 
-        if(isAdminOfEvent)
-          return event.getVolunteer()
-        else
-          return Promise.reject("Not an admin!")
+        return event.getVolunteer()
       })
       .then(volunteers => {
         volunteers = filterVolunteerInfo(volunteers)
         const attendance = getAttendanceInfo(volunteers)
         const timeBlocks = getTimeBlocks(volunteers)
 
-        console.log("sending back: ", volunteers, attendance, timeBlocks)
         res.json({volunteers, attendance, timeBlocks}).status(200).end()
       })
       .catch(err => {

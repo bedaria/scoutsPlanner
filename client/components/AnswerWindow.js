@@ -9,13 +9,14 @@ export default class AnswerWindow extends Component {
     }
   }
 
-  openAnswer = () => {
+  openOrCloseAnswer = () => {
     this.setState({isOpen: !this.state.isOpen})
   }
 
   render() {
     const attendingTime = this.props.volunteeringFrom + "-" + this.props.volunteeringTill
-    const attendingInfo = "You are a " + this.props.isAttending + ": " + attendingTime
+    const message = (this.props.isAttending === "Yes" ? ": "+ attendingTime : '')
+    const attendingInfo = "You are a " + this.props.isAttending + message
     const notAnswered = "Please Answer"
 
     if(this.state.isOpen)
@@ -25,8 +26,8 @@ export default class AnswerWindow extends Component {
               startTime={this.props.startTime}
               endTime={this.props.endTime}
               updateAttendance={this.props.updateAttendance}
-              closeAnswer={this.openAnswer}/>
+              closeAnswer={this.openOrCloseAnswer}/>
     else
-      return <button onClick={this.openAnswer}> {this.props.isAttending ? attendingInfo: notAnswered} </button>
+      return <button onClick={this.openOrCloseAnswer}> {this.props.isAttending ? attendingInfo: notAnswered} </button>
   }
 }

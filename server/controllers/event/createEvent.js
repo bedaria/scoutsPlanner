@@ -1,7 +1,6 @@
 'use strict'
 
 const models = require('../../models/index.js')
-
 //Create an event. Creating an event automatically makes the user and admin.
 //req.body should have:
 //       {name: <string>,
@@ -15,16 +14,8 @@ const createEvent = function(req, res){
   if(!req.user)
     Promise.reject("User needs to be logged in!")
 
-  var areCorrectTypes = ['name', 'startTime', 'endTime', 'startDate', 'endDate'].reduce((isCorrectType, attribute) => {
-      return isCorrectType && (typeof attribute === 'string')
-    }, true)
-
   if(!req.body.name || !req.body.startTime || !req.body.endTime || !req.body.startDate)
     res.json({"error": "Must have name, startTime, endTime, startDate, endDate and/or message."}).status(200).end()
-  else if(typeof req.body.message !== 'string')
-    res.json({"error": "Attribute message must be of type string."}).status(200).end()
-  else if(!areCorrectTypes)
-    res.json({"error": "Name, startTime, endTime, startDate and endDate must all be strings."}).status(200).end()
   else {
     const createEvent = models.Event.create(req.body)
     const findUser = models.User.findOne({where: {name: req.user.name}})
@@ -36,7 +27,7 @@ const createEvent = function(req, res){
 
         if(user === null)
           return Promise.reject("No user found")
-          
+
         return event.setMainAdmin(user)
       })
       .then(event =>

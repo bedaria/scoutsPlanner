@@ -55,7 +55,7 @@ export default class SelectMultiple extends Component {
 
   render() {
     if(this.state.hasError)
-      return <div> Hold on, still getting users....</div>
+      return <div>Please reload!!!</div>
 
     if(this.state.users.length)
       return (

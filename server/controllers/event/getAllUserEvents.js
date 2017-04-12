@@ -6,7 +6,7 @@ const models = require('../../models/index.js')
 //res will have:
 //    {
 //    userEvents: <array <{
-//                   eventInfo: {name, id, startDate, endDate, message, startTime, endTime},
+//                   eventInfo: {name, id, startDate, endDate, message, startTime, endTime, mainAdminId},
 //                   volunteerInfo: {isAttending, volunteeringTill, volunteeringFrom} }>>
 //    adminEvents: <array <{id, name, isAdmin}>>
 //   }
@@ -15,12 +15,16 @@ const getAllUserEvents = function(req, res) {
     Promise.reject("User must be signed in.")
 
   var getAdminEvents = models.Event.findAll({
-    where: { mainAdminId: req.user.id }
+    where: { mainAdminId: req.user.id },
+    attributes: ['id', 'name']
   })
 
   var getUserEvents = models.User.findOne({
       where: {name: req.user.name},
-      include: [{ model: models.Event }]
+      include: [{
+        model: models.Event,
+        attributes:  ['name', 'id', 'startDate', 'endDate', 'message', 'startTime', 'endTime', 'mainAdminId']
+       }]
   })
 
   Promise.all([getAdminEvents, getUserEvents])
@@ -30,24 +34,11 @@ const getAllUserEvents = function(req, res) {
       var events = []
       var adEvents = []
 
-      if(userEvents === null)
-       return Promise.reject(`No user: ${req.user.id} found`)
-
       if(userEvents.dataValues.Events) {
         events = userEvents.dataValues.Events.map(event => {
 
-           const info = event.dataValues
+           const eventInfo = event.dataValues
            const volunteer = event.dataValues.EventVolunteer
-
-           const eventInfo = {
-             name: info.name,
-             id: info.id,
-             startDate: info.startDate,
-             endDate: info.endDate,
-             message: info.message,
-             startTime: info.startTime,
-             endTime: info.endTime,
-           }
 
            const volunteerInfo =  {
              volunteeringFrom: volunteer.startTime,
