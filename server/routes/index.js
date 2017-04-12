@@ -11,11 +11,15 @@ module.exports = {
 }
 
 //Admin routes
-// POST /users/admin/:user/events        | controllers.event.createEvent
-// POST /users/admin/:user/events/:event | controllers.event.sendInvite
-// GET  /users/admin                     | controllers.user.getAllUsers
-// GET /users/admin/:user/events/event   | controllers.event.checkEvent
+// POST /users/admin/:user/events                     | controllers.event.createEvent
+// POST /users/admin/:user/events/:event              | controllers.event.sendInvite
+// GET  /users/admin                                  | controllers.user.getAllUsers
+// GET  /users/admin/:user/events/:event              | controllers.event.checkEvent
+// POST /users/admin/:user/events/:event/tasks/:task  | controllers.task.updateTask
+// POST /users/admin/:user/events/:event/tasks        | controllers.task.createTask
 
 //Standard routes
-// GET  /users/:user/events               | controllers.event.getAllUserEvents
+// GET  /users/:user/events                | controllers.event.getAllUserEvents
 // POST /users/:user/events/:event         | controllers.event.updateInvite
+// POST /users/:user/events/:event/tasks   | controllers.event.volunteerForTask
+// GET  /users/:user/events/:event/tasks   | controllers.event.getEventTasks
