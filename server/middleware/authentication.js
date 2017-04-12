@@ -1,7 +1,11 @@
 const users = {
-  'Frankie': 1,
-  'Copper': 2,
-  'Aidan': 3
+  'Frankie': 3,
+  'Copper': 1,
+  'Aidan': 2,
+  'Natalia': 4,
+  'Alex': 5,
+  'Gene': 6,
+  'Flanagan': 7
 }
 
 const isAuthenticated =  function (req, res, next) {

@@ -2,7 +2,7 @@
 
 const Sequelize = require('sequelize')
 const db_uri = require('../config/config.js').db_uri
-const sequelize = new Sequelize(db_uri)
+const sequelize = new Sequelize(db_uri, {logging: false})
 const fs = require('fs')
 const path = require('path')
 var db = {}

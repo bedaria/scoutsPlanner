@@ -70,7 +70,7 @@ export const updateInvite = (infoToUpdate, eventId, updateAttendance, closeAnswe
   axios.post('/users/' + username + '/events/' + eventId, infoToUpdate)
     .then(updated => {
       const volunteerInfo = updated.data.volunteerInfo
-
+      console.log("infoToUpdate: ", infoToUpdate)
       if(!infoToUpdate.seen){
         closeAnswer()
         updateAttendance({
@@ -79,10 +79,10 @@ export const updateInvite = (infoToUpdate, eventId, updateAttendance, closeAnswe
           volunteerTill: volunteerInfo.endTime
         })
       }
-
     })
     .catch(error => {
-      updateAttendance({error: "Couldn't update event: " + eventId})
+      console.log("error: ", error)
+      // updateAttendance({error: "Couldn't update event: " + eventId})
     })
   }
 
