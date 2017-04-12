@@ -30,6 +30,7 @@ export default class Tasks extends Component {
   render() {
     return (
       <div>
+        <label>What do you need volunteers for? </label>
         <input type="text" placeholder="Task name: " value={this.state.task} onChange={this.handleChange}/>
         <button onClick={this.addTask} > Add task </button>
         <TaskList tasks={this.props.tasks} removeTask={this.removeTask}/>
