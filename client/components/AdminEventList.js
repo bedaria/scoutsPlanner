@@ -23,7 +23,7 @@ export default class AdminEventList extends Component {
           <div className="container">
             {
               this.props.events.map(event =>
-              (<button onClick={this.getEventInfo} id={event.id}> {event.name} </button>))
+              (<button onClick={this.getEventInfo} id={event.id}> {event.name} (You are an admin)</button>))
             }
           </div>
         )

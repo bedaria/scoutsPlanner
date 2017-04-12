@@ -9,7 +9,7 @@ export default class AdminEvent extends Component {
     super(props)
     this.state = {
       attendance: {},
-      timeBlocks: {},
+      timeBlocks: [],
       volunteers: {},
       gotInfo: false
     }

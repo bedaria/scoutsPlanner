@@ -1,9 +1,13 @@
 import React from 'react'
 
-export const Volunteers = (props) => {
+export const Volunteers = ({volunteers}) => {
   return (
     <div>
-      <button>Volunteers</button>
+      {
+        volunteers.map(volunteer => (
+          <div> {volunteer.name} </div>
+        ))
+      }
     </div>
   )
 }

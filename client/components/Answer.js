@@ -22,10 +22,12 @@ export default class Answer extends Component {
 
   submitAnswer = (event) => {
     event.preventDefault()
+    const startTime = this.state.attending === "Yes" || this.state.entireEvent ? this.state.startTime : null
+    const endTime = this.state.attending === "Yes" || this.state.entireEvent ? this.state.endTime : null
     const attendanceInfo = {
       isAttending: this.state.attending,
-      startTime: this.state.startTime,
-      endTime: this.state.endTime
+      startTime,
+      endTime
     }
 
     updateInvite(attendanceInfo, this.props.eventId, this.props.updateAttendance, this.props.closeAnswer)
@@ -58,11 +60,13 @@ export default class Answer extends Component {
             </label>
             <label>
               Start time:
-              <input type="time" id="startTime" value={this.state.startTime} onChange={this.handleOptionChange} disabled={this.state.entireEvent} required />
+              <input type="time" id="startTime" value={this.state.startTime} min={this.props.startTime}
+                      max={this.props.endTime} onChange={this.handleOptionChange} disabled={this.state.entireEvent || this.state.attending !== "Yes"} required />
             </label>
             <label>
               End time:
-              <input type="time" id="endTime" value={this.state.endTime} onChange={this.handleOptionChange} disabled={this.state.entireEvent} required />
+              <input type="time" id="endTime" value={this.state.endTime} min={this.state.startTime}
+                     max={this.props.endTime} onChange={this.handleOptionChange} disabled={this.state.entireEvent || this.state.attending !== "Yes"} required />
             </label>
             <input type="submit" />
           </form>
