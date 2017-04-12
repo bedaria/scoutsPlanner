@@ -34,6 +34,9 @@ const createEvent = function(req, res){
         const event = results[0]
         const user = results[1]
 
+        if(user === null)
+          return Promise.reject("No user found")
+          
         return event.setMainAdmin(user)
       })
       .then(event =>

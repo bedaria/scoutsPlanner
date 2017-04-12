@@ -10,7 +10,7 @@ const models = require('../../models/index.js')
 //res will have: {message: "Update successful", volunteerInfo: <models.EventVolunteer>}
 const updateInvite = function(req, res) {
   if(!req.user)
-    Promise.reject("User not found.")
+    Promise.reject("User need to be logged in.")
 
   if(!req.body.isAttending && !req.body.startTime && !req.body.endTime && !req.body.seen)
     res.json({"error": "Req body must have isAttending, startTime, endTime or seen."}).status(200).end()
@@ -41,7 +41,7 @@ const updateInvite = function(req, res) {
     })
     .then(user => {
       if(!user)
-        Promise.reject("User not found.")
+        return Promise.reject("User not found.")
 
       const eventInfo = user.dataValues.Events[0]
       const eventVolunteer = eventInfo.dataValues.EventVolunteer

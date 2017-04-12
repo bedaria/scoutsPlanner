@@ -4,15 +4,19 @@ const models = require('../../models/index.js')
 
 //Gets info on event for an admin
 //resp.body will have:
-//    <array<{volunteers: {name: <string>,
+//    <array<{volunteers: <array>{name: <string>,
 //                         id: <string>,
 //                         isAttending: <string>
 //                         startTime: <string>,
 //                         endTime: <string>},
 //            attendance: {no: {names:<array>, count: <number>},
-//                        yes: {names:<array>, count: <number>},
+//                        attending: {names:<array>, count: <number>},
 //                        maybe: {names:<array>, count: <number>},
 //                        noAnswer: {names:<array>, count: <number>}}}>>
+//            timeBlocks: <array> of
+//                         {startTime <string>,
+//                          endTime<string>,
+//                          volunteerCount<string>}
 const checkEvent = function(req, res) {
   if(!req.user)
     Promise.reject("User must be logged in.")
@@ -34,6 +38,7 @@ const checkEvent = function(req, res) {
         const attendance = getAttendanceInfo(volunteers)
         const timeBlocks = getTimeBlocks(volunteers)
 
+        console.log("sending back: ", volunteers, attendance, timeBlocks)
         res.json({volunteers, attendance, timeBlocks}).status(200).end()
       })
       .catch(err => {

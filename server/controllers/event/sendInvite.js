@@ -8,7 +8,7 @@ const models = require('../../models/index.js')
 //res will have: {sentTo: <array<UserIds>>}
 const sendInvite = function(req, res) {
   if(!req.user)
-    Promise.reject("User not found.")
+    Promise.reject(`User should be logged in.`)
   if(!Array.isArray(req.body.invited) || typeof req.body.invited[0] !== 'number')
     res.json({"error": "Attribute invited must be an array of integers."}).status(200).end()
   else if(!Number.isInteger(Number(req.params.event)))
@@ -24,6 +24,9 @@ const sendInvite = function(req, res) {
       .then(results => {
         const users = results[0]
         const event = results[1]
+
+        if(!users.length)
+          return Promise.reject(`No users found`)
 
         return event.addVolunteer(users)
       })
