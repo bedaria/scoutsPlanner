@@ -1,8 +1,9 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { getUserEvents } from '../helpers'
-import { EventList } from './EventList'
+import EventList from './EventList'
 import AdminEventList from './AdminEventList'
+import { TopBar } from './TopBar'
 
 export default class Profile extends Component {
   constructor(props) {
@@ -39,10 +40,6 @@ export default class Profile extends Component {
       })
   }
 
-  showEvents = () => {
-
-  }
-
   handleClick = (event) => {
     event.preventDefault()
     switch(event.target.id){
@@ -59,23 +56,22 @@ export default class Profile extends Component {
      return <Redirect push to={this.state.redirectTo}/>
 
     return (
-              <div>
-              {this.showErrorMessage()}
-                  <div> {localStorage.getItem('username')}s profile </div>
-                  <div className="container">
-                    <button id="createEvents" type="button" onClick={this.handleClick}>Create Event</button>
-                  </div>
-                  <hr/>
-                  <div> My events: </div>
-                  {
-                    this.state.gotEvents?
-                      (<div>
-                          <AdminEventList events={this.state.adminEvents} />
-                          <EventList events={this.state.userEvents} />
-                        </div>) :
-                       (<div> Retrieving events... </div>)
-                  }
-              </div>
+            <div>
+            {this.showErrorMessage()}
+                <TopBar />
+                <div className="container">
+                  <button id="createEvents" type="button" onClick={this.handleClick}>Create Event</button>
+                </div>
+                <hr/>
+                {
+                  this.state.gotEvents?
+                    (<div>
+                        <AdminEventList events={this.state.adminEvents} />
+                        <EventList events={this.state.userEvents} />
+                      </div>) :
+                     (<div> Retrieving events... </div>)
+                }
+            </div>
       )
     }
 }
