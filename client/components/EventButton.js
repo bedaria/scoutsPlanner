@@ -21,7 +21,7 @@ export default class EventButton extends Component {
     const answered = eventInfo.name + " (" + this.state.isAttending + ")"
 
     return (
-      <div>
+      <div className="container">
         <button onClick={this.props.openEventInfo} id={eventInfo.id}>{this.state.isAttending ? answered: notAnswered } </button>
         <Event openId={this.props.openEventId}
                volunteerInfo={volunteerInfo}

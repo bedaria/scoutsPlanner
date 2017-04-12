@@ -10,7 +10,7 @@ export default class EventList extends Component {
   }
 
   openEventInfo = (event) => {
-    const openEventId = !this.state.openEventId ? event.target.id : ''
+    const openEventId = this.state.openEventId == event.target.id ? '': event.target.id
     this.setState({openEventId })
   }
 
