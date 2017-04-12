@@ -19,7 +19,6 @@ export default class NewEvent extends Component {
       sameDayEvent: false,
       errorMessage: '',
       selectedUsers: [],
-      successMessage: '',
       today: (new Date()).toISOString().slice(0,10),
       tomorrow: (new Date(new Date().getTime() + (24 * 60 * 60 * 1000))).toISOString().slice(0,10)
     }

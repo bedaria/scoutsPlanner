@@ -15,7 +15,7 @@ export default class Tasks extends Component {
   addTask = (event) => {
     event.preventDefault()
     var tasks = this.props.tasks
-    tasks.push(this.state.task)
+    tasks.push({name: this.state.task})
     this.setState({task: ''})
     this.props.getTasks(tasks)
   }
@@ -43,11 +43,11 @@ export default class Tasks extends Component {
 const TaskList = ({tasks, removeTask}) => (
   <div>
     {
-      tasks.map((task,idx) => (<Task id={idx} task={task} removeTask={removeTask} />))
+      tasks.map((task,idx) => (<Task name={task.name} id={idx} removeTask={removeTask} />))
     }
   </div>
 )
 
-const Task = ({id, task, removeTask}) => (
-  <button id={id} onClick={removeTask}> {task} </button>
+const Task = ({id, name, removeTask}) => (
+  <button id={id} onClick={removeTask}> {name} </button>
 )

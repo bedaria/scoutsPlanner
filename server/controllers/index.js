@@ -5,8 +5,10 @@ const path = require('path')
 
 const event = require('./event/index.js')
 const user = require('./user/index.js')
+const task = require('./task/index.js')
 
 module.exports = {
-  event: event,
-  user: user
+  event,
+  user,
+  task
 }

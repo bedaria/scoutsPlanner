@@ -25,16 +25,19 @@ export const createEventAndInvite = (state, callback) => {
     message: state.message
   })
   .then(({data}) => {
-      const path = '/users/admin/' + username + '/events/' + data.eventId
-      return axios.post(path, {invited: state.selectedUsers})
+    const tasksPath = '/users/admin/' + username + '/events/' + data.eventId + '/tasks'
+    const invitePath = '/users/admin/' + username + '/events/' + data.eventId
+    return Promise.all([axios.post(tasksPath, {tasks: state.tasks}),
+                        axios.post(invitePath, {invited: state.selectedUsers})])
   })
-  .then(({data}) => {
-      callback({message: "Everyone succesfully invited!"})
+  .then((results) => {
+      const [tasks, invites] = results
+      if(tasks.data.success && invites.data.success)
+        callback({message: "Everyone succesfully invited!"})
+      else
+        callback({errorMessage: "Error occurred, try again."})
   })
-  .catch(error => {
-    console.log("Error in createEventAndInvite: ", error)
-    callback({errorMessage: "Oops, something went wrong...hold on."})
-  })
+  .catch(error => console.log("error: ", error))
 }
 
 export const getUserEvents = (updateEvents) => {
