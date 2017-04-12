@@ -2,12 +2,14 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { createEventAndInvite } from '../helpers'
 import SelectMultiple  from './SelectMultiple'
+import Tasks from './Tasks'
 
 export default class NewEvent extends Component {
   constructor(props) {
     super(props)
     this.state = {
       name: '',
+      tasks: [],
       message: '',
       startTime: '',
       endTime: '',
@@ -55,6 +57,10 @@ export default class NewEvent extends Component {
     this.setState({selectedUsers})
   }
 
+  getTasks = (tasks) => {
+    this.setState({tasks: tasks})
+  }
+
   render() {
     if(this.state.redirect)
      return <Redirect push to='/profile'/>
@@ -66,6 +72,7 @@ export default class NewEvent extends Component {
             <form onSubmit={this.handleSubmit} id="eventInfo">
               <input type="text" id="name" placeholder="Event Name: " value={this.state.name} onChange={this.handleChange} required />
               <SelectMultiple getSelectedUsers={this.getSelectedUsers}/>
+              <Tasks tasks={this.state.tasks} getTasks={this.getTasks}/>
               <textarea id="message" placeholder="Add message (optional): " value={this.state.message} onChange={this.handleChange} form="eventInfo" />
               <label>
                 Start date:
