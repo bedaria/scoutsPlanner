@@ -55,23 +55,64 @@ export const getUserEvents = (updateEvents) => {
     })
 }
 
+export const getEventTasks = (eventId, getTasks) => {
+  axios.get('/events/' + eventId + '/tasks')
+    .then(({data}) => {
+      getTasks(data.tasks)
+    })
+    .catch(error => {
+      console.log("error: ", error)
+      getTasks([], {error: "couldn't get tasks..."})
+    })
+}
 
 export const updateInvite = (infoToUpdate, eventId, updateAttendance, closeAnswer) => {
   const username = localStorage.username
-  axios.post('/users/' + username + '/events/' + eventId, infoToUpdate)
-    .then(({data}) => {
-      const volunteerInfo = data.volunteerInfo
+  const requests = []
 
-      closeAnswer()
-      updateAttendance({
-        isAttending: volunteerInfo.isAttending,
-        volunteeringFrom: volunteerInfo.startTime,
-        volunteeringTill: volunteerInfo.endTime })
-    })
-    .catch(error => {
-      console.log("Error: ", error)
-      updateAttendance({error: "OOps...."})
-    })
+  if(infoToUpdate.taskId) {
+    Promise.all([axios.post('/users/' + username + '/tasks/', {taskId: infoToUpdate.taskId}),
+      axios.post('/users/' + username + '/events/' + eventId, infoToUpdate)
+    ])
+      .then(results => {
+         const [taskUpdate, inviteUpdate] = results
+         console.log("taskUpdate: ", taskUpdate)
+         console.log("inviteUpdate: ", inviteUpdate)
+         if(taskUpdate.data.success && inviteUpdate.data.success) {
+           closeAnswer()
+           updateAttendance({
+             isAttending: infoToUpdate.isAttending,
+             volunteeringFrom: infoToUpdate.startTime,
+             volunteeringTill: infoToUpdate.endTime,
+             volunteeringFor: infoToUpdate.taskId})
+         }
+         else
+           closeAnswer("Try again please")
+      })
+      .catch(error => {
+        console.log("updateInvite Error: ", error)
+        closeAnswer("Try again please")
+      })
+  }
+  else
+    axios.post('/users/' + username + '/events/' + eventId, infoToUpdate)
+      .then(inviteUpdate => {
+
+        if(inviteUpdate.data.success) {
+          closeAnswer()
+          updateAttendance({
+            isAttending: infoToUpdate.isAttending,
+            volunteeringFrom: infoToUpdate.startTime,
+            volunteeringTill: infoToUpdate.endTime,
+            volunteeringFor: infoToUpdate.taskId})
+        }
+        else
+          closeAnswer("Try again please")
+     })
+     .catch(error => {
+       console.log("updateInvite Error: ", error)
+       closeAnswer("Try again please")
+     })
   }
 
   export const getAdminEvent = (eventId, callback) => {

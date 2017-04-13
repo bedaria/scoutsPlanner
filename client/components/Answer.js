@@ -8,7 +8,8 @@ export default class Answer extends Component {
       attending: "Yes",
       startTime: this.props.startTime,
       endTime: this.props.endTime,
-      entireEvent: true
+      entireEvent: true,
+      taskId: ''
     }
   }
 
@@ -20,6 +21,10 @@ export default class Answer extends Component {
     this.setState({entireEvent: !this.state.entireEvent})
   }
 
+  changeVolunteerTask = (event) => {
+    this.setState({taskId: event.target.value})
+  }
+
   submitAnswer = (event) => {
     event.preventDefault()
     const startTime = this.state.attending === "Yes" || this.state.entireEvent ? this.state.startTime : null
@@ -27,8 +32,9 @@ export default class Answer extends Component {
 
     const attendanceInfo = {
       isAttending: this.state.attending,
+      taskId: this.state.taskId ? this.state.taskId : '',
       startTime,
-      endTime
+      endTime,
     }
 
     updateInvite(attendanceInfo, this.props.eventId,
@@ -40,7 +46,7 @@ export default class Answer extends Component {
         <div>
         <hr/>
         <button onClick={this.props.closeAnswer}>Close</button>
-          <form onSubmit={this.submitAnswer}>
+          <form id="answer" onSubmit={this.submitAnswer}>
             <div> Will you attend? </div>
             <div>
               <label>
@@ -56,6 +62,11 @@ export default class Answer extends Component {
                 No
               </label>
             </div>
+            {
+              this.props.tasks.length ? (<Select taskId={this.state.taskId}
+                        changeVolunteerTask={this.changeVolunteerTask}
+                        tasks={this.props.tasks} />) : (null)
+            }
             <label>
               <input type="radio" id="entireEvent" value="entireEvent" checked={this.state.entireEvent} disabled={this.state.attending !== "Yes"} onChange={this.toggleRadioButton}/>
                Entire Event
@@ -76,3 +87,13 @@ export default class Answer extends Component {
       )
   }
 }
+
+const Select = ({tasks, taskId, changeVolunteerTask}) => (
+  <label>
+    What can you help with?
+    <select value={taskId} onChange={changeVolunteerTask} form="answer">
+      <option> None </option>
+      {tasks.map(task => <option value={task.id}>{task.name}</option>)}
+    </select>
+  </label>
+)

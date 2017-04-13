@@ -16,7 +16,8 @@ export default class EventButton extends Component {
     this.setState({
       isAttending: buttonInfo.isAttending,
       volunteeringFrom: buttonInfo.volunteeringFrom,
-      volunteeringTill: buttonInfo.volunteeringTill
+      volunteeringTill: buttonInfo.volunteeringTill,
+      volunteeringFor: buttonInfo.volunteeringFor,
     })
   }
 

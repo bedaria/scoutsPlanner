@@ -21,5 +21,6 @@ module.exports = {
 //Standard routes
 // GET  /users/:user/events                | controllers.event.getAllUserEvents
 // POST /users/:user/events/:event         | controllers.event.updateInvite
-// POST /users/:user/events/:event/tasks   | controllers.event.volunteerForTask
-// GET  /users/:user/events/:event/tasks   | controllers.event.getEventTasks
+// POST /users/:user/tasks                 | controllers.task.volunteerForTask
+// GET  /users/:user/events/:event/tasks   | controllers.task.getTasksUserVolunteeredFor
+// GET /events/:event/tasks                | controllers.task.getEventTasks
