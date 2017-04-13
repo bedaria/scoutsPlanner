@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 export default class AdminEventList extends Component {
   constructor(props){
@@ -30,4 +31,13 @@ export default class AdminEventList extends Component {
       else
         return <div> You are not an admin of any event. </div>
     }
+}
+
+
+AdminEventList.propTypes = {
+  events: PropTypes.arrayOf(PropTypes.shape({
+      id: PropTypes.number,
+      name: PropTypes.string
+    })
+  ).isRequired
 }
