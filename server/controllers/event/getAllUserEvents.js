@@ -11,9 +11,6 @@ const models = require('../../models/index.js')
 //    adminEvents: <array <{id, name}>>
 //   }
 const getAllUserEvents = function(req, res) {
-  if(!req.user || !req.user.id || !req.user.name)
-    Promise.reject("User must be signed in.")
-
   var getAdminEvents = models.Event.findAll({
     where: { mainAdminId: req.user.id },
     attributes: ['id', 'name']
@@ -57,10 +54,6 @@ const getAllUserEvents = function(req, res) {
        adEvents = adminEvents.map(event => ({id: event.dataValues.id, name: event.dataValues.name}))
 
       res.json({adminEvents: adEvents,  userEvents: events}).status(200).end()
-    })
-    .catch(err => {
-      console.log(__filename, " ERROR: ", err)
-      res.status(500).end()
     })
 }
 

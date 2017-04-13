@@ -8,8 +8,6 @@ const models = require('../../models/index.js')
 //                        endTime: <string>}
 //res will have: {message: "Update successful", volunteerInfo: <models.EventVolunteer>}
 const updateInvite = function(req, res) {
-  if(!req.user)
-    Promise.reject("User needs to be logged in.")
 
   if(!req.body.isAttending && !req.body.startTime && !req.body.endTime)
     res.json({"error": "Req body must have isAttending, startTime and endTime"}).status(200).end()
@@ -34,10 +32,6 @@ const updateInvite = function(req, res) {
     })
     .then(update => {
       res.json({success: true}).status(200).end()
-    })
-    .catch(err => {
-      console.log(__filename, " ERROR: ", err)
-      res.status(500).end()
     })
   }
 }

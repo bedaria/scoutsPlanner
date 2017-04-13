@@ -17,10 +17,6 @@ const volunteerForTask = function(req, res) {
       return user.addTask(task)
     })
     .then(success => res.json({success: true}).status(200).end)
-    .catch(err => {
-      console.log(__filename, " ERROR: ", err)
-      res.status(500).end()
-    })
 }
 
 module.exports = volunteerForTask

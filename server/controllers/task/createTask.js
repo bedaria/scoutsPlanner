@@ -6,8 +6,6 @@ const models = require('../../models/index.js')
 //req should have: tasks: <array>{ name: <string>, description: <string>}
 //res will have: {success: <boolean>}
 const createTask = function(req, res) {
-  if(!req.user || !req.event.id)
-     Promise.reject(`User should be logged in or need an event id!`)
 
   if(!Array.isArray(req.body.tasks) || (req.body.tasks.length && !req.body.tasks[0].name))
     res.json({error: "tasks should be an array of {name, description}"}).status(200).end()
@@ -23,10 +21,6 @@ const createTask = function(req, res) {
       })
       .then(event => {
         res.json({success: true}).status(200).end()
-      })
-      .catch(error => {
-        console.log(__filename, " ERROR: ", error)
-        res.status(500).end()
       })
     }
 }

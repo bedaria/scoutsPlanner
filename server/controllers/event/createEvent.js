@@ -11,8 +11,6 @@ const models = require('../../models/index.js')
 //        message: <string> (optional)}
 //res will have: { eventId: <integer> }
 const createEvent = function(req, res){
-  if(!req.user)
-    Promise.reject("User needs to be logged in!")
 
   if(!req.body.name || !req.body.startTime || !req.body.endTime || !req.body.startDate)
     res.json({"error": "Must have name, startTime, endTime, startDate, endDate and/or message."}).status(200).end()
@@ -25,18 +23,11 @@ const createEvent = function(req, res){
         const event = results[0]
         const user = results[1]
 
-        if(user === null)
-          return Promise.reject("No user found")
-
         return event.setMainAdmin(user)
       })
       .then(event =>
         res.json({eventId: event.dataValues.id}).status(200).end()
       )
-      .catch(err => {
-        console.log(__filename, " ERROR: ", err)
-        res.status(500).end()
-      })
   }
 }
 

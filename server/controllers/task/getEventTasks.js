@@ -13,10 +13,6 @@ const getEventTasks = function(req, res) {
 
       res.json({tasks: tasks}).status(200).end()
     })
-    .catch(err => {
-      console.log(__filename, " ERROR: ", err)
-      res.status(500).end()
-    })
 }
 
 module.exports = getEventTasks

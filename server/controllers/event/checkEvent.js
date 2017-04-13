@@ -18,30 +18,20 @@ const models = require('../../models/index.js')
 //                          endTime<string>,
 //                          volunteerCount<string>}
 const checkEvent = function(req, res) {
-  if(!req.user)
-    Promise.reject("User must be logged in.")
 
-  if(!Number.isInteger(Number(req.params.event)))
-    res.json({"error": "Invalid eventId parameter."}).status(200).end()
-  else {
-    models.Event.findOne({where: {id: req.params.event}})
-      .then(event => {
-        const isAdminOfEvent = event.dataValues.mainAdminId === req.user.id
+  models.Event.findOne({where: {id: req.params.event}})
+    .then(event => {
+      const isAdminOfEvent = event.dataValues.mainAdminId === req.user.id
 
-        return event.getVolunteer()
-      })
-      .then(volunteers => {
-        volunteers = filterVolunteerInfo(volunteers)
-        const attendance = getAttendanceInfo(volunteers)
-        const timeBlocks = getTimeBlocks(volunteers)
+      return event.getVolunteer()
+    })
+    .then(volunteers => {
+      volunteers = filterVolunteerInfo(volunteers)
+      const attendance = getAttendanceInfo(volunteers)
+      const timeBlocks = getTimeBlocks(volunteers)
 
-        res.json({volunteers, attendance, timeBlocks}).status(200).end()
-      })
-      .catch(err => {
-        console.log(__filename, ": ERROR: ", err)
-        res.status(500).end()
-      })
-  }
+      res.json({volunteers, attendance, timeBlocks}).status(200).end()
+    })
 }
 
 //INPUT: volunteers: <array<models.User>>
