@@ -19,7 +19,7 @@ export default class Profile extends Component {
   }
 
   componentWillMount = () => {
-    getUserEvents(this.updateEvents)
+    getUserEvents(this.getEvents)
   }
 
   showErrorMessage = () => {
@@ -29,7 +29,7 @@ export default class Profile extends Component {
       return <div></div>
   }
 
-  updateEvents = (data) => {
+  getEvents = (data) => {
     if(data.error)
       this.setState({errorMessage: 'Error retrieving events.'})
     else

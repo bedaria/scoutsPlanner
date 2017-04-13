@@ -8,7 +8,7 @@ const models = require('../../models/index.js')
 //    userEvents: <array <{
 //                   eventInfo: {name, id, startDate, endDate, message, startTime, endTime, mainAdminId},
 //                   volunteerInfo: {isAttending, volunteeringTill, volunteeringFrom} }>>
-//    adminEvents: <array <{id, name, isAdmin}>>
+//    adminEvents: <array <{id, name}>>
 //   }
 const getAllUserEvents = function(req, res) {
   if(!req.user || !req.user.id || !req.user.name)

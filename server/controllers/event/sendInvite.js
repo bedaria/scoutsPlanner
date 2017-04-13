@@ -44,7 +44,7 @@ const sendInvite = function(req, res) {
         if(sentTo.length !== invitedUsers.length)
           return Promise.reject(`Not everyone got the invites, expected: ${invitedUsers}, got: ${sentTo}`)
         else
-          res.json({sentTo}).status(200).end()
+          res.json({"success": true}).status(200).end()
       })
       .catch(err => {
         console.log(__filename, " ERROR: ", err)

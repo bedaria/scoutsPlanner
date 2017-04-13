@@ -14,6 +14,7 @@ export default class Tasks extends Component {
 
   addTask = (event) => {
     event.preventDefault()
+
     var tasks = this.props.tasks
     tasks.push({name: this.state.task})
     this.setState({task: ''})
@@ -21,8 +22,9 @@ export default class Tasks extends Component {
   }
 
   removeTask = (event) => {
-    var tasks = this.props.tasks
     const idx = event.target.id
+    var tasks = this.props.tasks
+
     tasks = tasks.slice(0, idx).concat(tasks.slice(idx + 1))
     this.props.getTasks(tasks)
   }

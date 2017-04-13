@@ -35,6 +35,5 @@ export default class AdminEvent extends Component {
      )
     else
       return (<div> spinner. spinning. </div>)
-
   }
 }

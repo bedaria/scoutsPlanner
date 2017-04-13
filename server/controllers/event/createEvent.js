@@ -40,4 +40,4 @@ const createEvent = function(req, res){
   }
 }
 
-module.exports= createEvent
+module.exports = createEvent

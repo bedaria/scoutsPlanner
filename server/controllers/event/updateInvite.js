@@ -16,9 +16,6 @@ const updateInvite = function(req, res) {
 
   if(req.body.isAttending === "Yes" && !req.body.startTime && !req.body.endTime)
     res.json({"error": "Please provide both a startTime and an endTime for volunteer who is attending."}).status(200).end()
-
-  if(!Number.isInteger(Number(req.params.event)))
-    res.json({"error": "Invalid eventId parameter"}).status(200).end()
   else {
     models.User.findOne({
       where: {name: req.user.name},
@@ -36,7 +33,7 @@ const updateInvite = function(req, res) {
       return eventVolunteer.update(req.body)
     })
     .then(update => {
-      res.json({volunteerInfo: update.dataValues}).status(200).end()
+      res.json({success: true}).status(200).end()
     })
     .catch(err => {
       console.log(__filename, " ERROR: ", err)
