@@ -22,9 +22,6 @@ const sendInvite = function(req, res) {
         const users = results[0]
         const event = results[1]
 
-        if(!users.length)
-          return Promise.reject(`No users found`)
-
         return event.addVolunteer(users)
       })
       .then(success => {

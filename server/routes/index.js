@@ -23,4 +23,4 @@ module.exports = {
 // POST /users/:user/events/:event         | controllers.event.updateInvite
 // POST /users/:user/tasks                 | controllers.task.volunteerForTask
 // GET  /users/:user/events/:event/tasks   | controllers.task.getTasksUserVolunteeredFor
-// GET /events/:event/tasks                | controllers.task.getEventTasks
+// GET  /events/:event/tasks                | controllers.task.getEventTasks
