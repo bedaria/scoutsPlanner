@@ -3,7 +3,6 @@ import { Redirect } from 'react-router-dom'
 import { getUserEvents } from '../helpers'
 import EventList from './EventList'
 import AdminEventList from './AdminEventList'
-import { TopBar } from './TopBar'
 
 export default class Profile extends Component {
   constructor(props) {
@@ -58,7 +57,6 @@ export default class Profile extends Component {
     return (
             <div>
             {this.showErrorMessage()}
-                <TopBar />
                 <div className="container">
                   <button id="createEvents" type="button" onClick={this.handleClick}>Create Event</button>
                 </div>
