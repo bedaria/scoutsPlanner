@@ -1,7 +1,8 @@
 import axios from 'axios'
 
+const username = 'Frankie'
+
 export const getUsers = (callback) => {
-  const username = localStorage.username
 
   axios.get('/users/admin/')
     .then(({data}) => {
@@ -14,7 +15,6 @@ export const getUsers = (callback) => {
 }
 
 export const createEventAndInvite = (state, callback) => {
-  const username = localStorage.username
 
   axios.post('/users/admin/'+ username + '/events', {
     name: state.name,
@@ -41,7 +41,6 @@ export const createEventAndInvite = (state, callback) => {
 }
 
 export const getUserEvents = (updateEvents) => {
-  const username = localStorage.username
 
   axios.get('/users/' + username + '/events')
     .then(events => {
@@ -67,7 +66,6 @@ export const getEventTasks = (eventId, getTasks) => {
 }
 
 export const updateInvite = (infoToUpdate, eventId, updateAttendance, closeAnswer) => {
-  const username = localStorage.username
   const requests = []
 
   if(infoToUpdate.taskId) {
@@ -116,7 +114,6 @@ export const updateInvite = (infoToUpdate, eventId, updateAttendance, closeAnswe
   }
 
   export const getAdminEvent = (eventId, callback) => {
-    const username = localStorage.username
     axios.get('/users/admin/' + username + '/events/' + eventId)
       .then(eventInfo => {
         callback(eventInfo.data, eventId)

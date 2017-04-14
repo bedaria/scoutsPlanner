@@ -94,7 +94,7 @@ export default class NewEvent extends Component {
                 <DatePicker selected={this.state.endDate} selectsEnd
                             startDate={this.state.startDate} endDate={this.state.endDate}
                             onChange={this.handleEndChange} placeholderText="Click to pick date"
-                            disabled={true} todayButton={"Vandaag"}
+                            disabled={this.state.sameDayEvent} todayButton={"Vandaag"}
                             minDate={moment().add(1,"days")} required={!this.state.sameDayEvent}/>
               </label>
               <label>
@@ -107,7 +107,7 @@ export default class NewEvent extends Component {
               </label>
               <label>
                 End time:
-                <input type="time" id="endTime" min={this.state.sameDayEvent? this.state.startTime:''} value={this.state.endTime} onChange={this.handleChange} required />
+                <input type="time" placeholder="00:00 PM" id="endTime" min={this.state.sameDayEvent? this.state.startTime:''} value={this.state.endTime} onChange={this.handleChange} required />
               </label>
               <input className="button" type="submit" value="Send Event"/>
             </form>
