@@ -3,6 +3,9 @@ import { Redirect } from 'react-router-dom'
 import { createEventAndInvite } from '../helpers'
 import SelectMultipleContainer  from '../containers/SelectMultipleContainer'
 import Tasks from './Tasks'
+import DatePicker from 'react-datepicker'
+import moment from 'moment'
+require('react-datepicker/dist/react-datepicker.css')
 
 export default class NewEvent extends Component {
   constructor(props) {
@@ -18,9 +21,7 @@ export default class NewEvent extends Component {
       redirect: false,
       sameDayEvent: false,
       errorMessage: '',
-      selectedUsers: [],
-      today: (new Date()).toISOString().slice(0,10),
-      tomorrow: (new Date(new Date().getTime() + (24 * 60 * 60 * 1000))).toISOString().slice(0,10)
+      selectedUsers: []
     }
   }
 
@@ -60,6 +61,14 @@ export default class NewEvent extends Component {
     this.setState({tasks: tasks})
   }
 
+  handleStartChange = (startDate) => {
+    this.setState({startDate})
+  }
+
+  handleEndChange = (endDate) => {
+    this.setState({endDate})
+  }
+
   render() {
     if(this.state.redirect)
      return <Redirect push to='/profile'/>
@@ -75,11 +84,18 @@ export default class NewEvent extends Component {
               <textarea id="message" placeholder="Add message (optional): " value={this.state.message} onChange={this.handleChange} form="eventInfo" />
               <label>
                 Start date:
-                <input type="date" id="startDate" min={this.state.today} value={this.state.startDate} onChange={this.handleChange} required />
+                <DatePicker selected={this.state.startDate} selectsStart
+                            startDate={this.state.startDate} endDate={this.state.endDate}
+                            onChange={this.handleStartChange} placeholderText="Click to pick date"
+                            todayButton={"Vandaag"} minDate={moment()} required/>
               </label>
               <label>
                 End date:
-                <input type="date" id="endDate" min={this.state.tomorrow} value={this.state.endDate} onChange={this.handleChange} disabled={this.state.sameDayEvent} required />
+                <DatePicker selected={this.state.endDate} selectsEnd
+                            startDate={this.state.startDate} endDate={this.state.endDate}
+                            onChange={this.handleEndChange} placeholderText="Click to pick date"
+                            disabled={this.state.sameDayEvent} todayButton={"Vandaag"}
+                            minDate={moment().add(1,"days")} required={!this.state.sameDayEvent}/>
               </label>
               <label>
                 <input type="radio" id="sameDay" value="sameDayEvent" checked={this.state.sameDayEvent} onChange={this.toggleRadioButton}/>
@@ -87,11 +103,11 @@ export default class NewEvent extends Component {
               </label>
               <label>
                 Start time:
-                <input type="time" id="startTime" value={this.state.startTime} onChange={this.handleChange} required />
+                <input type="time" placeholder="00:00 PM" id="startTime" value={this.state.startTime} onChange={this.handleChange} required />
               </label>
               <label>
                 End time:
-                <input type="time" id="endTime" min={this.state.sameDayEvent? this.state.startTime:''} value={this.state.endTime} onChange={this.handleChange} required />
+                <input type="time" placeholder="00:00 PM" id="endTime" min={this.state.sameDayEvent? this.state.startTime:''} value={this.state.endTime} onChange={this.handleChange} required />
               </label>
               <input className="button" type="submit" value="Send Event"/>
             </form>
