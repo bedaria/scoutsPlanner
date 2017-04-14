@@ -5,24 +5,9 @@ export default class SelectMultiple extends Component {
   constructor(props){
     super(props)
     this.state = {
-      users: [],
       selectedUsers: [],
       selected: 'All',
       hasError: false
-    }
-  }
-
-  componentWillMount = () => {
-    getUsers(this.addUsersToState)
-  }
-
-  addUsersToState = (data) => {
-    if(data.hasError)
-      this.setState({hasError: true})
-    else {
-      const users = data.users.filter(user => user.name !== localStorage.getItem('username'))
-      this.props.getSelectedUsers(users.map(user => user.id))
-      this.setState({users})
     }
   }
 
@@ -33,7 +18,7 @@ export default class SelectMultiple extends Component {
     selectedUsers = selectedUsers.slice(0,idx).concat(selectedUsers.slice(idx+1))
 
     if(!selectedUsers.length)
-      this.props.getSelectedUsers(this.state.users.map(user => user.id))
+      this.props.getSelectedUsers(this.props.friends.map(user => user.id))
     else
       this.props.getSelectedUsers(selectedUsers.map(user => Number(user)))
 
@@ -53,11 +38,11 @@ export default class SelectMultiple extends Component {
     }
   }
 
-  render() {
+  render = () => {
     if(this.state.hasError)
       return <div>Please reload!!!</div>
 
-    if(this.state.users.length)
+    if(this.props.friends.length)
       return (
         <div>
           <div>
@@ -69,7 +54,7 @@ export default class SelectMultiple extends Component {
           </div>
           <select value={this.state.selected} onChange={this.addToSelected} form="eventInfo">
             <option value='All'>All</option>
-            {this.state.users.map(user => (<option value={user.id}>{user.id}</option>))}
+            {this.props.friends.map(user => (<option value={user.id}>{user.id}</option>))}
           </select>
         </div>
       )

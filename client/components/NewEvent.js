@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { createEventAndInvite } from '../helpers'
-import SelectMultiple  from './SelectMultiple'
+import SelectMultipleContainer  from '../containers/SelectMultipleContainer'
 import Tasks from './Tasks'
 
 export default class NewEvent extends Component {
@@ -70,7 +70,7 @@ export default class NewEvent extends Component {
           <div> Create Event </div>
             <form onSubmit={this.handleSubmit} id="eventInfo">
               <input type="text" id="name" placeholder="Event Name: " value={this.state.name} onChange={this.handleChange} required />
-              <SelectMultiple getSelectedUsers={this.getSelectedUsers}/>
+              <SelectMultipleContainer getSelectedUsers={this.getSelectedUsers}/>
               <Tasks tasks={this.state.tasks} getTasks={this.getTasks}/>
               <textarea id="message" placeholder="Add message (optional): " value={this.state.message} onChange={this.handleChange} form="eventInfo" />
               <label>

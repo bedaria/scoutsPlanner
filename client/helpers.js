@@ -4,7 +4,7 @@ export const getUsers = (callback) => {
   const username = localStorage.username
 
   axios.get('/users/admin/')
-    .then({data} => {
+    .then(({data}) => {
        callback({users: data.users})
     })
     .catch(error => {
