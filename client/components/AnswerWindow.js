@@ -24,10 +24,7 @@ export default class AnswerWindow extends Component {
   }
 
   openOrCloseAnswer = (error) => {
-    if(error)
-      console.log("openORclose: ", error)
-    else
-      this.setState({isOpen: !this.state.isOpen})
+    this.setState({isOpen: !this.state.isOpen})
   }
 
   render() {
