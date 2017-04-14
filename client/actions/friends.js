@@ -1,7 +1,6 @@
 import axios from 'axios'
 
 const requestFriends = () => {
-  console.log("requesting friends")
   return {
     type: 'REQUEST_FRIENDS',
     isFetchingFriends: true
@@ -13,10 +12,10 @@ const receiveFriends = (status, friends) => {
       {isFetchingFriends: false, friends} :
       {isFetchingFriends: false, error: "Couldnt' fetch friends :("}
 
-    return {
-      type: 'RECEIVE_FRIENDS',
-      payload
-    }
+  return {
+    type: 'RECEIVE_FRIENDS',
+    payload
+  }
 }
 
 export const fetchFriends = () => {

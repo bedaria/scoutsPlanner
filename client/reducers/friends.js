@@ -13,3 +13,10 @@ export const friends = (state = initialState, action) => {
       return state
   }
 }
+
+
+// export const tasks = (state = {}, action) => {
+//   switch(action.type) {
+//     case 'CREATE_TASKS'
+//   }
+// }
