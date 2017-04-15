@@ -57,6 +57,7 @@ export default class Profile extends Component {
     return (
             <div>
             {this.showErrorMessage()}
+            <div> HEY {localStorage.getItem('username')}</div>
                 <div className="container">
                   <button id="createEvents" type="button" onClick={this.handleClick}>Create Event</button>
                 </div>

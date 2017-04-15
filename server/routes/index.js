@@ -24,3 +24,6 @@ module.exports = {
 // POST /users/:user/tasks                 | controllers.task.volunteerForTask
 // GET  /users/:user/events/:event/tasks   | controllers.task.getTasksUserVolunteeredFor
 // GET  /events/:event/tasks                | controllers.task.getEventTasks
+
+//Testing routes
+// POST /test/events/:event                 |controllers.test.fakeInviteAnswers

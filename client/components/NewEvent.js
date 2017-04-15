@@ -71,7 +71,7 @@ export default class NewEvent extends Component {
 
   render() {
     if(this.state.redirect)
-     return <Redirect push to='/profile'/>
+     return <Redirect push to='/'/>
     else {
       return (
           <div>

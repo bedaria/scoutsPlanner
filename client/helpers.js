@@ -1,21 +1,20 @@
 import axios from 'axios'
 
-const username = 'Frankie'
+var username = ''
 
 export const getUsers = (callback) => {
-
-  axios.get('/users/admin/')
+  axios.get('/users/admin')
     .then(({data}) => {
-       callback({users: data.users})
+      callback({users: data.users})
     })
     .catch(error => {
       console.log("Error in getUsers: ", error)
-      callBack({hasError: true})
+      callback({hasError: true})
     })
 }
 
 export const createEventAndInvite = (state, callback) => {
-
+  var eventId = null
   axios.post('/users/admin/'+ username + '/events', {
     name: state.name,
     startTime: state.startTime,
@@ -25,6 +24,7 @@ export const createEventAndInvite = (state, callback) => {
     message: state.message
   })
   .then(({data}) => {
+    eventId = data.eventId
     const tasksPath = '/users/admin/' + username + '/events/' + data.eventId + '/tasks'
     const invitePath = '/users/admin/' + username + '/events/' + data.eventId
     return Promise.all([axios.post(tasksPath, {tasks: state.tasks}),
@@ -32,8 +32,10 @@ export const createEventAndInvite = (state, callback) => {
   })
   .then((results) => {
       const [tasks, invites] = results
-      if(tasks.data.success && invites.data.success)
+      if(tasks.data.success && invites.data.success) {
         callback({message: "Everyone succesfully invited!"})
+        axios.post('/tests/events/' + eventId)
+      }
       else
         callback({errorMessage: "Error occurred, try again."})
   })
@@ -41,16 +43,24 @@ export const createEventAndInvite = (state, callback) => {
 }
 
 export const getUserEvents = (updateEvents) => {
-
-  axios.get('/users/' + username + '/events')
-    .then(events => {
-      updateEvents({
-        userEvents: events.data.userEvents,
-        adminEvents: events.data.adminEvents,
-        gotEvents: true})
+  axios.get('/tests/users')
+    .then(({data}) => {
+      console.log("data: ", data)
+      username = data.username
+      localStorage.setItem('username', username)
+      axios.get('/users/' + username + '/events')
+        .then(events => {
+          updateEvents({
+            userEvents: events.data.userEvents,
+            adminEvents: events.data.adminEvents,
+            gotEvents: true})
+        })
+        .catch(error => {
+          updateEvents({error: "Error retrieving events, please reload."})
+        })
     })
     .catch(error => {
-      updateEvents({error: "Error retrieving events, please reload."})
+      console.log("ERROR getting username:( ")
     })
 }
 

@@ -10,7 +10,7 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function(models) {
-        Task.belongsToMany(models.User, {through: models.VolunteerTask})
+        Task.belongsToMany(models.User, {through: 'VolunteerTasks'})
       }
     }
   })
