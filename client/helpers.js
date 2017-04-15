@@ -1,6 +1,7 @@
 import axios from 'axios'
 
 var username = ''
+var config = {}
 
 export const getUsers = (callback) => {
   axios.get('/users/admin')
@@ -43,12 +44,13 @@ export const createEventAndInvite = (state, callback) => {
 }
 
 export const getUserEvents = (updateEvents) => {
-  axios.get('/tests/users')
+  axios.get('/tests/fakeLogin')
     .then(({data}) => {
-      console.log("data: ", data)
-      username = data.username
+      const username = data.username
+      const token = data.token
       localStorage.setItem('username', username)
-      axios.get('/users/' + username + '/events')
+      config = { headers : {'x-access-token': token }}
+      axios.get('/users/' + username + '/events', config)
         .then(events => {
           updateEvents({
             userEvents: events.data.userEvents,
@@ -84,8 +86,7 @@ export const updateInvite = (infoToUpdate, eventId, updateAttendance, closeAnswe
     ])
       .then(results => {
          const [taskUpdate, inviteUpdate] = results
-         console.log("taskUpdate: ", taskUpdate)
-         console.log("inviteUpdate: ", inviteUpdate)
+
          if(taskUpdate.data.success && inviteUpdate.data.success) {
            closeAnswer()
            updateAttendance({
