@@ -20,7 +20,7 @@ app.use(cors())
 
 app.use('/admin', authenticate, adminRoutes)
 app.use('/', authenticate, standardRoutes)
-app.use('/temp', tempRoutes)
+app.use('/fakeAnswers', tempRoutes)
 
 app.use((err, req, res, next) => {
   console.error(err.stack)

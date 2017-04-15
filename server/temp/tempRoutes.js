@@ -8,6 +8,6 @@ router.param('event_id', (req, res, next, id) => {
   next()
 })
 
-router.post('/events/:event_id', fakeInviteAnswers)
+router.post('/:event_id', fakeInviteAnswers)
 
 module.exports = router
