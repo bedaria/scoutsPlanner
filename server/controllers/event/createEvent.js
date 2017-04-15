@@ -16,7 +16,11 @@ const createEvent = function(req, res){
     res.json({"error": "Must have name, startTime, endTime, startDate, endDate and/or message."}).status(200).end()
   else {
     const createEvent = () => (models.Event.create(req.body))
-    const findUser = () => (models.User.findOne({where: {name: req.user.name}}))
+    const findUser = () => (
+      models.User.findOne({
+        where: {name: req.user.name}
+      })
+    )
 
     Promise.all([createEvent(), findUser()])
       .then(results => {

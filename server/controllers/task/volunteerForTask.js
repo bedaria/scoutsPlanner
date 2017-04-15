@@ -6,10 +6,22 @@ const models = require('../../models/index.js')
 //res will have: {success: <boolean>}
 const volunteerForTask = function(req, res) {
 
-  const findUser = models.User.findOne({ where: { id: req.user.id }})
-  const findTask = models.Task.findOne({ where: { id: req.body.taskId }})
+  const findUser = () => (
+    models.User.findOne({
+      where: {
+        id: req.user.id
+      }
+    })
+  )
+  const findTask = () => (
+    models.Task.findOne({
+      where: {
+        id: req.body.taskId
+      }
+    })
+  )
 
-  Promise.all([findUser, findTask])
+  Promise.all([findUser(), findTask()])
     .then(results => {
       const user = results[0]
       const task = results[1]

@@ -10,10 +10,20 @@ const createTask = function(req, res) {
   if(!Array.isArray(req.body.tasks) || (req.body.tasks.length && !req.body.tasks[0].name))
     res.json({error: "tasks should be an array of {name, description}"}).status(200).end()
   else {
-    const createTasks = req.body.tasks.map(task => (models.Task.create(task)))
-    const getEvent = models.Event.findOne({ where: { id: req.event.id }})
-
-    Promise.all([getEvent].concat(createTasks))
+    const createTasks = req.body.tasks.map(task => (
+        () => (models.Task.create(task))
+      )
+    )
+    const getEvent = () => (
+      models.Event.findOne({
+        where: {
+          id: req.event.id
+        }
+      })
+    )
+    const promiseArray = [getEvent].concat(createTasks)
+    
+    Promise.all(promiseArray.map(promise => promise()))
       .then(results => {
         const event = results[0]
         const tasks = results.slice(1)

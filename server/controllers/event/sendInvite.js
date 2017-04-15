@@ -14,10 +14,24 @@ const sendInvite = function(req, res) {
     const invitedUsers = req.body.invited
     const event = req.params.event
 
-    const getUsers = models.User.findAll({where: {id: {$in: invitedUsers}}})
-    const getEvent = models.Event.findOne({where: {id: event}})
+    const getUsers = () => (
+      models.User.findAll({
+        where: {
+          id: {
+            $in: invitedUsers
+          }
+        }
+      })
+    )
+    const getEvent = () => (
+      models.Event.findOne({
+        where: {
+          id: event
+        }
+      })
+    )
 
-    Promise.all([getUsers, getEvent])
+    Promise.all([getUsers(), getEvent()])
       .then(results => {
         const users = results[0]
         const event = results[1]
