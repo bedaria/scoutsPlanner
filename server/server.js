@@ -34,8 +34,11 @@ app.get('/', (req, res) => {
 
 app.set('port', port)
 
+// db.sequelize.sync({force: true})
+//   .then(success => {
+//    require('./testDatabase.js')
+// })
 db.sequelize.sync()
-// require('./testDatabase.js')
 app.listen(app.get('port'), () =>
   console.log('Express server listening on port: ', app.get('port'))
 )
