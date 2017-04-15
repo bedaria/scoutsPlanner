@@ -3,16 +3,20 @@
 const fs = require('fs')
 const path = require('path')
 
-const event = require('./event/index.js')
-const user = require('./user/index.js')
-const task = require('./task/index.js')
-
-
-fs
-  .readdirSync(__dirname).forEach(dirname => {console.log('dirname: ', dirname)})
-  
-module.exports = {
-  event,
-  user,
-  task
+const getFileNames = (dirname, folder) => {
+  fs
+    .readdirSync(dirname)
+    .forEach(name => {
+      if(name.indexOf('.') === -1) {
+        module.exports[name] = {}
+        getFileNames(dirname + '/' + name, name)
+      }
+      else if(name !== 'index.js'){
+        const fnName = name.slice(0, name.length-3)
+        const toRequire = dirname + '/' + name
+        module.exports[folder][fnName] = require(toRequire)
+      }
+    })
 }
+
+getFileNames(__dirname)
