@@ -1,12 +1,15 @@
 const models = require('../models/index.js')
+const jwt = require('jsonwebtoken')
 
 const fakeLogin = (req, res) => {
-  models.User.findAll({attributes: ['name']})
+  models.User.findAll({attributes: ['name', 'id']})
   .then(users => {
-     const userIdx = getRandomNumberBetween(0, users.length)
-     console.log("got userIdx: ", userIdx)
-     console.log("You are logged in as: ", users[userIdx].dataValues.name)
-     res.json({'username': users[userIdx].dataValues.name}).status(200).end()
+     const idx = getRandomNumberBetween(0, users.length)
+     const username = users[idx].dataValues.name
+     const id = users[idx].dataValues.id
+     const token = jwt.sign({username, id, expiresInMinutes: 1440}, 'copperAndFrankie')
+
+     res.json({username, token}).status(200).end()
   })
   .catch(error => {
     console.log("ERROR: ", error)

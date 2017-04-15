@@ -5,6 +5,6 @@ const fakeInviteAnswers = require('./fakeInviteAnswers')
 const fakeLogin = require('./fakeLogin.js')
 
 router.post('/events/:event', fakeInviteAnswers)
-router.get('/users', fakeLogin)
+router.get('/fakeLogin', fakeLogin)
 
 module.exports = router
