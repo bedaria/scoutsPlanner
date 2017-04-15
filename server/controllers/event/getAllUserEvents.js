@@ -11,20 +11,24 @@ const models = require('../../models/index.js')
 //    adminEvents: <array <{id, name}>>
 //   }
 const getAllUserEvents = function(req, res) {
-  var getAdminEvents = models.Event.findAll({
-    where: { mainAdminId: req.user.id },
-    attributes: ['id', 'name']
-  })
+  var getAdminEvents = () => (
+      models.Event.findAll({
+      where: { mainAdminId: req.user.id },
+      attributes: ['id', 'name']
+    })
+  )
 
-  var getUserEvents = models.User.findOne({
+  var getUserEvents = () => (
+    models.User.findOne({
       where: {name: req.user.name},
       include: [{
         model: models.Event,
         attributes:  ['name', 'id', 'startDate', 'endDate', 'message', 'startTime', 'endTime', 'mainAdminId']
        }]
-  })
+     })
+   )
 
-  Promise.all([getAdminEvents, getUserEvents])
+  Promise.all([getAdminEvents(), getUserEvents()])
     .then(results => {
       var adminEvents = results[0]
       var userEvents = results[1]
@@ -53,7 +57,7 @@ const getAllUserEvents = function(req, res) {
      if(adminEvents.length > 0)
        adEvents = adminEvents.map(event => ({id: event.dataValues.id, name: event.dataValues.name}))
 
-      res.json({adminEvents: adEvents,  userEvents: events}).status(200).end()
+      res.json({success: true, adminEvents: adEvents,  userEvents: events}).status(200).end()
     })
 }
 

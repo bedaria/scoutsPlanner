@@ -9,9 +9,10 @@ const authenticate =  function (req, res, next) {
       if(err)
         return res.json({success: false, message: 'Failed to authenticate token.'})
       else {
-        req.user = {}
-        req.user.name = decoded.username
-        req.user.id = decoded.id
+        req.user = {
+          name: decoded.username,
+          id: decoded.id
+        }
         next()
       }
     })

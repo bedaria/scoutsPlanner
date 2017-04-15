@@ -15,10 +15,10 @@ const createEvent = function(req, res){
   if(!req.body.name || !req.body.startTime || !req.body.endTime || !req.body.startDate)
     res.json({"error": "Must have name, startTime, endTime, startDate, endDate and/or message."}).status(200).end()
   else {
-    const createEvent = models.Event.create(req.body)
-    const findUser = models.User.findOne({where: {name: req.user.name}})
+    const createEvent = () => (models.Event.create(req.body))
+    const findUser = () => (models.User.findOne({where: {name: req.user.name}}))
 
-    Promise.all([createEvent, findUser])
+    Promise.all([createEvent(), findUser()])
       .then(results => {
         const event = results[0]
         const user = results[1]
@@ -26,7 +26,7 @@ const createEvent = function(req, res){
         return event.setMainAdmin(user)
       })
       .then(event =>
-        res.json({eventId: event.dataValues.id}).status(200).end()
+        res.json({success: true, eventId: event.dataValues.id}).status(200).end()
       )
   }
 }

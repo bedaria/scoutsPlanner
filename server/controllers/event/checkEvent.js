@@ -20,11 +20,7 @@ const models = require('../../models/index.js')
 const checkEvent = function(req, res) {
 
   models.Event.findOne({where: {id: req.params.event}})
-    .then(event => {
-      const isAdminOfEvent = event.dataValues.mainAdminId === req.user.id
-
-      return event.getVolunteer()
-    })
+    .then(event => event.getVolunteer())
     .then(volunteers => {
       volunteers = filterVolunteerInfo(volunteers)
       const attendance = getAttendanceInfo(volunteers)

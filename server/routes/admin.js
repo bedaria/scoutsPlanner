@@ -3,19 +3,17 @@
 const admin = require('express').Router()
 const controllers = require('../controllers/index.js')
 
-admin.post('/events', controllers.event.createEvent)
-admin.post('/events/:event', controllers.event.sendInvite)
-admin.get('/events/:event', controllers.event.checkEvent)
+admin.param('event_id', (req, res, next, id) => {
+  req.event = {id}
+  next()
+})
 
-admin.post('/events/:event/tasks', controllers.task.createTask)
-// admin.post('/events/:event/tasks/:task', controllers.task.updateTask)
+admin.post('/events', controllers.event.createEvent)
+admin.route('/events/:event_id')
+  .post(controllers.event.sendInvite)
+  .get(controllers.event.checkEvent)
+
+admin.post('/events/:event_id/tasks', controllers.task.createTask)
+// admin.post('/events/:event/tasks/:task_id', controllers.task.updateTask)
 
 module.exports = admin
-
-
-// app.use('/users/:name', authentication.isAuthenticated, routes.standard.event)
-// app.use('/users/:name', authentication.isAuthenticated, routes.standard.task)
-// app.use('/events/:event', saveEventId, routes.standard.task)
-// app.use('/users/admin/:name', authentication.isAdmin, routes.admin.event)
-// app.use('/users/admin/:name/events/:event', saveEventId, routes.admin.task )
-// app.use('/users/:user/events/:event', saveEventId, routes.standard.task)

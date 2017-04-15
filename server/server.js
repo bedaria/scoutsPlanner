@@ -5,12 +5,11 @@ const bodyParser = require('body-parser')
 const cors = require('cors')
 const port = require('./config/config.js').port
 const db = require('./models/index.js')
-const authentication = require('./middleware/authentication.js')
-const saveEventId = require('./middleware/saveEventId.js')
 const adminRoutes = require('./routes/admin.js')
 const standardRoutes = require('./routes/standard.js')
 const fakeLogin = require('./fakeLogin.js')
 const tempRoutes = require('./temp/tempRoutes.js')
+const authenticate = require('./middleware/authentication.js')
 
 const app = express()
 
@@ -19,8 +18,8 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(cors())
 
-app.use('/admin', adminRoutes)
-app.use('/', standardRoutes)
+app.use('/admin', authenticate, adminRoutes)
+app.use('/', authenticate, standardRoutes)
 app.use('/temp', tempRoutes)
 
 app.use((err, req, res, next) => {

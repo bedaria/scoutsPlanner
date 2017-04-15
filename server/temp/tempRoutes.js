@@ -3,6 +3,11 @@
 const router = require('express').Router()
 const fakeInviteAnswers = require('./fakeInviteAnswers')
 
-router.post('/events/:event', fakeInviteAnswers)
+router.param('event_id', (req, res, next, id) => {
+  req.event = {id}
+  next()
+})
+
+router.post('/events/:event_id', fakeInviteAnswers)
 
 module.exports = router
