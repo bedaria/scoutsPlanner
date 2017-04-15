@@ -1,11 +1,9 @@
 const models = require('../models/index.js')
 const jwt = require('jsonwebtoken')
 
-const isAuthenticated =  function (req, res, next) {
-  const token = req.body.token || req.query.token || req.headers['x-access-token']
-  console.log("req: ", req.body)
-  console.log("req: ", req.query)
-  console.log("req: ", req.headers)
+const authenticate =  function (req, res, next) {
+  const token = req.headers['x-access-token']
+
   if(token) {
     jwt.verify(token, 'copperAndFrankie', function(err, decoded) {
       if(err)
@@ -22,21 +20,4 @@ const isAuthenticated =  function (req, res, next) {
     return res.status(403).send({success: false, message: 'No token provided.'})
 }
 
-const isAdmin = function(req, res, next) {
-  req.user = {}
-  req.user.name = req.params.name
-  models.User.findOne({where: {
-    name: req.params.name
-  },
-    attributes: ['id']
-  })
-  .then(user => {
-    req.user.id = user.dataValues.id
-    next()
-  })
-}
-
-module.exports = {
-  isAuthenticated,
-  isAdmin
-}
+module.exports = authenticate

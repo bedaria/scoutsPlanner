@@ -11,19 +11,21 @@ module.exports = {
 }
 
 //Admin routes
-// POST /users/admin/:user/events                     | controllers.event.createEvent
-// POST /users/admin/:user/events/:event              | controllers.event.sendInvite
-// GET  /users/admin                                  | controllers.user.getAllUsers
-// GET  /users/admin/:user/events/:event              | controllers.event.checkEvent
-// POST /users/admin/:user/events/:event/tasks/:task  | controllers.task.updateTask
-// POST /users/admin/:user/events/:event/tasks        | controllers.task.createTask
+// POST /admin/events                     | controllers.event.createEvent
+// POST /admin/events/:event              | controllers.event.sendInvite
+// GET  /admin/events/:event              | controllers.event.checkEvent
+// POST /admin/events/:event/tasks        | controllers.task.createTask
+// POST /admin/events/:event/tasks/:task  | controllers.task.updateTask
 
 //Standard routes
-// GET  /users/:user/events                | controllers.event.getAllUserEvents
-// POST /users/:user/events/:event         | controllers.event.updateInvite
-// POST /users/:user/tasks                 | controllers.task.volunteerForTask
-// GET  /users/:user/events/:event/tasks   | controllers.task.getTasksUserVolunteeredFor
-// GET  /events/:event/tasks                | controllers.task.getEventTasks
+// GET  /users                            | controllers.user.getAllUsers
+// GET  /users/:user                      | controllers.user.signin?
+
+// GET  /events                           | controllers.event.getAllUserEvents
+// POST /events/:event                    | controllers.event.updateInvite
+// POST /tasks                            | controllers.task.volunteerForTask
+// GET  /users/:user/events/:event/tasks  | controllers.task.getTasksUserVolunteeredFor
+// GET  /events/:event/tasks              | controllers.task.getEventTasks
 
 //Testing routes
 // POST /test/events/:event                 |controllers.test.fakeInviteAnswers

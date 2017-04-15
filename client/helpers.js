@@ -44,13 +44,14 @@ export const createEventAndInvite = (state, callback) => {
 }
 
 export const getUserEvents = (updateEvents) => {
-  axios.get('/tests/fakeLogin')
+
+  axios.post('/login')
     .then(({data}) => {
       const username = data.username
       const token = data.token
       localStorage.setItem('username', username)
       config = { headers : {'x-access-token': token }}
-      axios.get('/users/' + username + '/events', config)
+      axios.get('/events', config)
         .then(events => {
           updateEvents({
             userEvents: events.data.userEvents,
@@ -58,10 +59,12 @@ export const getUserEvents = (updateEvents) => {
             gotEvents: true})
         })
         .catch(error => {
+          console.log("error: ", error)
           updateEvents({error: "Error retrieving events, please reload."})
         })
     })
     .catch(error => {
+      console.log("error: ", error)
       console.log("ERROR getting username:( ")
     })
 }
