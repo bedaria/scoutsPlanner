@@ -9,7 +9,7 @@ const models = require('../../models/index.js')
 const sendInvite = function(req, res) {
 
   if(!Array.isArray(req.body.invited) || typeof req.body.invited[0] !== 'number')
-    res.json({"error": "Attribute invited must be an array of integers."}).status(200).end()
+    res.json({success: fail, error: "'invited' must be an array of integers."}).status(200).end()
   else {
     const invitedUsers = req.body.invited
     const event = req.params.event
@@ -39,18 +39,6 @@ const sendInvite = function(req, res) {
         return event.addVolunteer(users)
       })
       .then(success => {
-        var sentTo = []
-
-        if(Array.isArray(success[0])) //mulitple users invited
-          sentTo = success[0]
-        else if(Array.isArray(success)) //one user invited
-          sentTo = success
-
-        sentTo = sentTo.map(result => result.dataValues.UserId)
-
-        if(sentTo.length !== invitedUsers.length)
-          return Promise.reject(`Not everyone got the invites, expected: ${invitedUsers}, got: ${sentTo}`)
-        else
           res.json({"success": true}).status(200).end()
       })
     }

@@ -7,13 +7,13 @@ const models = require('../../models/index.js')
 //res will have: {success: <boolean>}
 const createTask = function(req, res) {
 
-  if(!Array.isArray(req.body.tasks) || (req.body.tasks.length && !req.body.tasks[0].name))
-    res.json({error: "tasks should be an array of {name, description}"}).status(200).end()
+  if(!Array.isArray(req.body.tasks && !req.body.tasks[0].name))
+    res.json({success: false, error: "Tasks should be an array of {name, description}"}).status(200).end()
   else {
-    const createTasks = req.body.tasks.map(task => (
-        () => (models.Task.create(task))
-      )
-    )
+    const createTasks = req.body.tasks.map(task => {
+         return () => (models.Task.create(task))
+      })
+
     const getEvent = () => (
       models.Event.findOne({
         where: {
@@ -22,11 +22,13 @@ const createTask = function(req, res) {
       })
     )
     const promiseArray = [getEvent].concat(createTasks)
-    
-    Promise.all(promiseArray.map(promise => promise()))
+
+    Promise.all(promiseArray.map(promise => { promise() }))
       .then(results => {
         const event = results[0]
         const tasks = results.slice(1)
+
+        // if(event.getTasks().length, concat new created tasks)
         return event.setTasks(tasks)
       })
       .then(event => {

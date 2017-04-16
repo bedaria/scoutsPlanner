@@ -10,7 +10,7 @@ admin.param('event_id', (req, res, next, id) => {
 
 admin.post('/events', controllers.event.createEvent)
 admin.route('/events/:event_id')
-  .post(controllers.event.sendInvite)
+  .post(controllers.event.sendInvites)
   .get(controllers.event.checkEvent)
 
 admin.post('/events/:event_id/tasks', controllers.task.createTask)

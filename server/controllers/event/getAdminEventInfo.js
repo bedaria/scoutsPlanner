@@ -17,7 +17,7 @@ const models = require('../../models/index.js')
 //                         {startTime <string>,
 //                          endTime<string>,
 //                          volunteerCount<string>}
-const checkEvent = function(req, res) {
+const getAdminEventInfo = (req, res) => {
 
   models.Event.findOne({where: {id: req.params.event}})
     .then(event => event.getVolunteer())
@@ -169,4 +169,4 @@ const getTimeBlocks = (volunteers) => {
 }
 
 
-module.exports = checkEvent
+module.exports = getAdminEventInfo

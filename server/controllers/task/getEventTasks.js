@@ -15,7 +15,7 @@ const getEventTasks = function(req, res) {
   .then(tasks => {
     tasks = tasks.map(task => task.dataValues)
 
-    res.json({tasks: tasks}).status(200).end()
+    res.json({succes: true, tasks: tasks}).status(200).end()
   })
 }
 
