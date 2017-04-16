@@ -2,9 +2,9 @@ var path = require('path')
 var webpack = require('webpack')
 
 module.exports = {
-  entry: './client/index.js',
+  entry: './client2/index.js',
   output: {
-    path: __dirname + '/client/dist',
+    path: __dirname + '/client2/dist',
     filename: "bundle.js"
   },
   module: {
@@ -17,9 +17,9 @@ module.exports = {
           presets: ["es2015", "react"],
           plugins: ["transform-class-properties"]
         }
-      }, {
-        test: /\.css$/, loader: "style-loader!css-loader"
-      }
+      },
+      { test: /\.css$/, loader: "style-loader!css-loader" },
+      { test: /\.less$/, loader: "style-loader!css-loader!less-loader" }
     ]
   }
 }

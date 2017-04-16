@@ -14,11 +14,13 @@ const authenticate = require('./middleware/authentication.js')
 
 const app = express()
 
-app.use(express.static(path.join('./client')))
+app.use(express.static(path.join('./client2')))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(cors())
 
+
+app.post('/login', fakeLogin)
 app.use('/', authenticate, routes)
 app.use('/fakeAnswers', tempRoutes)
 
@@ -27,7 +29,7 @@ app.use((err, req, res, next) => {
   res.status(500).end()
 })
 
-app.post('/login', fakeLogin)
+
 app.get('/', (req, res) => {
   res.sendFile('index.html')
 })
@@ -36,7 +38,7 @@ app.set('port', port)
 
 // db.sequelize.sync({force: true})
 //   .then(success => {
-//    require('./testDatabase.js')
+//    require('./fakeUsers.js')
 // })
 db.sequelize.sync()
 app.listen(app.get('port'), () =>

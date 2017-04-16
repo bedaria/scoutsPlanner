@@ -24,6 +24,10 @@
   align-items: flex-end;
 }
 
+.invites {
+  margin-left: 5px
+}
+
 .main {
   display: -webkit-flex;
   display: flex;
@@ -35,6 +39,7 @@
 
 .topbar {
   height: 50px;
+  align-items: flex-end;
 }
 
 .activity {
