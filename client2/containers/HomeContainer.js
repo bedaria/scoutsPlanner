@@ -16,10 +16,10 @@ class HomeContainer extends Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({fakeLogin}) => {
   return {
-    isLoggingIn: state.isLoggingIn,
-    loginError: state.loginError
+    isLoggingIn: fakeLogin.isLoggingIn,
+    loginError: fakeLogin.loginError
   }
 }
 

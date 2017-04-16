@@ -4,12 +4,14 @@ import { createStore, applyMiddleware } from 'redux'
 import { Provider } from 'react-redux'
 import { createLogger }  from 'redux-logger'
 import thunk from 'redux-thunk'
-import { fakeLogin } from '../reducers/fakeLogin'
+import reducer from '../reducers'
 import HomeContainer from '../containers/HomeContainer.js'
 
-const middleware = [ thunk, createLogger() ]
+// const middleware = [ thunk, createLogger() ]
+const middleware = [ thunk ]
+
 const store = createStore(
-  fakeLogin,
+  reducer,
   applyMiddleware(...middleware)
 )
 

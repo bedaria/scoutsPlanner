@@ -1,8 +1,6 @@
 .container {
   display: -webkit-flex;
   display: flex;
-  -webkit-flex-flow: row nowrap;
-  flex-flow: row nowrap;
   height: 800px;
 }
 
@@ -18,8 +16,6 @@
 .tabs {
   display: -webkit-flex;
   display: flex;
-  -webkit-flex-flow: row nowrap;
-  flex-flow: row nowrap;
   height: 50px;
   align-items: flex-end;
 }
@@ -38,6 +34,8 @@
 }
 
 .topbar {
+  display: -webkit-flex;
+  display: flex;
   height: 50px;
   align-items: flex-end;
 }

@@ -9,16 +9,8 @@ const loggingIn = () => {
 
 const loggedIn = (status, token) => {
   const payload = status === "success" ?
-    {
-      isLoggingIn: false,
-      axiosConfig: {
-        headers: { 'x-access-token': token}
-      }
-    } :
-    {
-      isLogginIn: false,
-      loginError: true
-    }
+    { isLoggingIn: false }:
+    { isLogginIn: false, loginError: true }
 
   return {
     type: 'LOGGED_IN',
@@ -33,7 +25,8 @@ export const fakeLogin = () => {
       .then(({data}) => {
         const { username, token } = data
         localStorage.setItem('username', username)
-        dispatch(loggedIn("success", token))
+        localStorage.setItem('token', token)
+        dispatch(loggedIn("success"))
       })
       .catch(error => dispatch(loggedIn("error", error)))
   }

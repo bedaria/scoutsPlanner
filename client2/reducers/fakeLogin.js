@@ -1,5 +1,4 @@
 const initialState = {
-  axiosConfig: {},
   isLoggingIn: false,
   loginError: false
 }

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Main } from '../components/Main'
+import MainContainer from '../containers/MainContainer'
 import { Tabs } from './Tabs'
 
 export const Home = ({isLoggingIn, loginError}) => {
@@ -17,8 +17,10 @@ export const Home = ({isLoggingIn, loginError}) => {
         <div className="eventButtons">item</div>
 
         </div><div className="main">
-          <div className="topbar"> {localStorage.getItem('username')} </div>
-          <Main />
+          <div className="topbar">
+            Hey, {localStorage.getItem('username')}
+          </div>
+          <MainContainer />
           </div>
         </div>
     )
