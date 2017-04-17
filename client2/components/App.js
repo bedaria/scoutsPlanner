@@ -5,10 +5,10 @@ import { Provider } from 'react-redux'
 import { createLogger }  from 'redux-logger'
 import thunk from 'redux-thunk'
 import reducer from '../reducers'
-import HomeContainer from '../containers/HomeContainer.js'
+import HomeContainer from '../containers/HomeContainer'
 
-// const middleware = [ thunk, createLogger() ]
-const middleware = [ thunk ]
+const middleware = [ thunk, createLogger() ]
+// const middleware = [ thunk ]
 
 const store = createStore(
   reducer,

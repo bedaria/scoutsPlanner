@@ -1,26 +1,27 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { fetchFriends } from '../actions/friends'
-import { Main } from '../components/Main'
+import NewEventContainer from './NewEventContainer'
+import ProfileContainer from './ProfileContainer'
 
 class MainContainer extends Component {
-  render = () => (
-    <Main fetchFriends={this.props.fetchFriends}
-          isFetchingFriends={this.props.isFetchingFriends}
-          errorFetchingFriends={this.props.errorFetchingFriends}
-          redirectToNewEvent={this.props.redirectToNewEvent}/>
-  )
+  render() {
+    if(this.props.redirectToNewEvent)
+      return <NewEventContainer />
+    else if(this.props.redirectToProfile)
+      return <ProfileContainer />
+    else
+      return <ProfileContainer />
+    }
 }
 
-const mapStateToProps = ({friends}) => {
+const mapStateToProps = ({newEvent, friends}) => {
   return {
-    isFetchingFriends: friends.isFetchingFriends,
-    errorFetchingFriends: friends.errorFetchingFriends,
-    redirectToNewEvent: friends.redirectToNewEvent
+    redirectToNewEvent: friends.redirectToNewEvent,
+    redirectToProfile: newEvent.redirectToProfile
   }
 }
 
 export default connect(
   mapStateToProps,
-  { fetchFriends }
+  null
 )(MainContainer)

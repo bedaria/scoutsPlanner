@@ -1,6 +1,6 @@
 import React from 'react'
 
-export const Main = ({fetchFriends, errorFetchingFriends, isFetchingFriends, redirectToNewEvent }) => {
+export const Profile = ({fetchFriends, errorFetchingFriends, isFetchingFriends }) => {
   if(isFetchingFriends)
     return (<div> Loading... </div>)
   else if(errorFetchingFriends)
@@ -10,8 +10,6 @@ export const Main = ({fetchFriends, errorFetchingFriends, isFetchingFriends, red
         <button onClick={fetchFriends}> Create New Event </button>
       </div>
     )
-  else if(redirectToNewEvent)
-   return (<div> Redirecting to new events..</div>)
   else
     return (
       <div className="activity">

@@ -3,13 +3,13 @@ const models = require('../models/index.js')
 const fakeInviteAnswers = (req, res) => {
   var startTime = ''
   var endTime = ''
-
+  console.log("Faking answers")
   models.Event.findOne({
-    where: {id: req.params.event}
+    where: {id: req.event.id}
   })
     .then(event => {
-      startTime = "09:00:00"
-      endTime = "12:15:00"
+      startTime = event.dataValues.startTime
+      endTime = event.dataValues.endTime
       return Promise.all([event.getTasks(), event.getVolunteer()])
     })
     .then(results => {
@@ -20,15 +20,24 @@ const fakeInviteAnswers = (req, res) => {
       for(var i = 0; i < volunteers.length; i++)
         answers[i] = fakeAnswers(tasks.length, startTime, endTime)
 
-      return Promise.all(volunteers.map((volunteer,idx) => {
-          volunteer.dataValues.EventVolunteer.update(answers[idx].updateInfo)
-        }).concat(
-          volunteers.filter((volunteer, idx) => answers[idx].taskIdx !== null)
-            .map((volunteer, idx) => volunteer.addTask(tasks[answers[idx].taskIdx]))
-          )
+      const filteredVolunteers = volunteers.filter((volunteer, idx) => answers[idx].taskIdx !== null)
+      const filteredAnswers = answers.filter(answer => answer.taskIdx !== null)
+      console.log("Adding ", volunteers.length + filteredAnswers.length)
+      return Promise.all(
+        volunteers.map((volunteer,idx) => {
+          const eventVolunteer = volunteer.dataValues.EventVolunteer
+          return eventVolunteer.update(answers[idx].updateInfo)
+        })
+        .concat(
+          filteredVolunteers.map((volunteer, idx) => {
+            const taskIdx = filteredAnswers[idx].taskIdx
+            return volunteer.addTask(tasks[taskIdx])
+          })
+        )
       )
     })
     .then(results => {
+      console.log("Added ", results.length)
       console.log("Done fake answering!")
       res.status(200).end()
     })

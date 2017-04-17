@@ -6,7 +6,7 @@ export const Home = ({isLoggingIn, loginError}) => {
   if(isLoggingIn)
     return (<div> Getting you a random account... </div>)
   else if(loginError) {
-    return (<div> Please reload page </div>)
+    return <div> Please reload page </div>
   }
   else
   {

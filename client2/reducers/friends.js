@@ -1,7 +1,7 @@
 const initialState = {
   friends: [],
-  isFetchingFriends: false,
-  errorFetchingFriends: false,
+  isFetching: false,
+  errorFetching: false,
   redirectToNewEvent: false
 }
 

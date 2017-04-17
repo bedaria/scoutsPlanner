@@ -35,7 +35,7 @@ router.route('/events/:event_id/tasks')
   // .post(controllers.task.modifyTask)
   // .get(controllers.task.getTask)
 
-router.route('/events/:event/invites')
+router.route('/events/:event_id/invites')
   .post(controllers.event.sendInvites)
   // .get(controllers.events.getInvitees)
 
