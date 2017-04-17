@@ -5,7 +5,10 @@ import { Provider } from 'react-redux'
 import { createLogger }  from 'redux-logger'
 import thunk from 'redux-thunk'
 import reducer from '../reducers'
-import HomeContainer from '../containers/HomeContainer'
+import ProfileContainer from '../containers/ProfileContainer'
+import NewEventContainer from '../containers/NewEventContainer'
+import { TopBar } from './TopBar'
+import { Tabs } from './Tabs'
 
 const middleware = [ thunk, createLogger() ]
 // const middleware = [ thunk ]
@@ -18,8 +21,16 @@ const store = createStore(
 const App = () => (
   <Provider store={store}>
     <Router>
-      <div>
-        <Route exact path="/" component={HomeContainer}/>
+      <div className="container">
+        <div className="sidebar">
+          <Tabs />
+          <div className="eventButtons">item</div>
+        </div>
+        <div className="main">
+          <TopBar />
+          <Route exact path="/" component={ProfileContainer}/>
+          <Route path="/newEvent" component={NewEventContainer}/>
+        </div>
       </div>
     </Router>
   </Provider>

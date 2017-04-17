@@ -45,8 +45,10 @@ export default class NewEvent extends Component {
   }
 
   render() {
-    if(this.props.redirectToProfile)
+    if(this.props.redirect) {
+      this.props.resetRedirect()
       return <Redirect push to='/'/>
+    }
     else if(this.props.errorCreating)
       return <div> Try again... </div>
     else

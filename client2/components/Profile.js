@@ -1,19 +1,13 @@
 import React from 'react'
+import { Redirect } from 'react-router-dom'
 
-export const Profile = ({fetchFriends, errorFetchingFriends, isFetchingFriends }) => {
-  if(isFetchingFriends)
-    return (<div> Loading... </div>)
-  else if(errorFetchingFriends)
-    return (
-      <div className="activity">
-        <div> Please try again:...</div>
-        <button onClick={fetchFriends}> Create New Event </button>
-      </div>
-    )
-  else
-    return (
-      <div className="activity">
-        <button onClick={fetchFriends}> Create New Event </button>
-      </div>
-    )
+export const Profile = ({isLoggingIn, loginError}) => {
+  if(isLoggingIn)
+    return (<div> Getting you a random account... </div>)
+  else if(loginError) {
+    return <div> Please reload page </div>
+  }
+  else {
+    return <div> Hey, {localStorage.getItem('username')} </div>
+  }
 }

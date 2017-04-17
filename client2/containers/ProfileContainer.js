@@ -1,25 +1,29 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { fetchFriends } from '../actions/friends'
+import { fakeLogin } from '../actions/fakeLogin'
 import { Profile } from '../components/Profile'
 
 class ProfileContainer extends Component {
-  render = () => (
-    <Profile fetchFriends={this.props.fetchFriends}
-          isFetchingFriends={this.props.isFetching}
-          errorFetchingFriends={this.props.errorFetching} />
-  )
+  componentWillMount = () => {
+    this.props.fakeLogin()
+  }
+
+  render = () => {
+    return (
+      <Profile isLoggingIn={this.props.isLoggingIn}
+          loginError={this.props.loginError}/>
+    )
+  }
 }
 
-const mapStateToProps = ({friends}) => {
+const mapStateToProps = ({fakeLogin, newEvent}) => {
   return {
-    isFetchingFriends: friends.isFetching,
-    errorFetchingFriends: friends.errorFetching,
-    redirectToNewEvent: friends.redirectToNewEvent
+    isLoggingIn: fakeLogin.isLoggingIn,
+    loginError: fakeLogin.loginError
   }
 }
 
 export default connect(
   mapStateToProps,
-  { fetchFriends }
+  { fakeLogin }
 )(ProfileContainer)

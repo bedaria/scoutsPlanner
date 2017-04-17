@@ -8,13 +8,20 @@ const submitNewEvent = () => {
 }
 
 const doneCreating = (status) => {
-  const payload = status === "success" ?
+  status === "success" ?
     {isSubmitting: false, redirect: true, updateAdminList: true} :
     {isSubmitting: false, errorCreating: true}
 
   return {
     type: 'NEW_EVENT_CREATED',
     payload
+  }
+}
+
+export const resetRedirect = () => {
+  return {
+    type: 'RESET_REDIRECT',
+    redirect: false
   }
 }
 
@@ -33,7 +40,6 @@ export const createEvent = (allUsers) => {
   axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token')
   return (dispatch) => {
     dispatch(submitNewEvent())
-
     axios.post('/events', eventInfo)
       .then(({ data }) => {
         const inviteFriends = () => {

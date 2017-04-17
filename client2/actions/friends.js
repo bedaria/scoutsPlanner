@@ -9,7 +9,7 @@ const requestFriends = () => {
 
 const receiveFriends = (status, friends) => {
   const payload = status === "success" ?
-      {isFetching: false, redirectToNewEvent: true, friends} :
+      {isFetching: false, friends} :
       {isFetching: false, errorFetching: true}
 
   return {

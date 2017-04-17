@@ -13,18 +13,21 @@ export default combineReducers({
 //friends:  {
 //   friends: [],
 //   isFetching: false,
-//   errorFetching: false,
-//   redirecToNewEvent: false,
+//   errorFetching: false
 // }
-// 
+//
 // newEvent: {
 //   isSubmitting: [],
 //   updateAdminList: false,
-//   redirectToProfile: true,
-//   errorCreating: false
+//   errorCreating: false,
+//   redirect: false
 // }
 //
 // fakeLogin: {
 //   isLoggingIn: false,
 //   loginError: false
+// }
+//
+// topbarTabs: {
+//    goTo: "/"
 // }
