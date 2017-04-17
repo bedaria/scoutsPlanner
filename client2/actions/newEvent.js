@@ -50,11 +50,10 @@ export const createEvent = (allUsers) => {
 
         axios.all(requests.map(request => request()))
           .then(axios.spread((friendsInvited, tasksAdded) => {
-            console.log("adding friends and tasks")
-              if(friendsInvited.data.success && tasksAdded.data.success)
-                dispatch(doneCreating("success"))
+              dispatch(doneCreating("success"))
               axios.post('/fakeAnswers/' + data.eventId)
-          }))
+            })
+          )
           .catch(error => {
             dispatch(doneCreating("error"))
           })

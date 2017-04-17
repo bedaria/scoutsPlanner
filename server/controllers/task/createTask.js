@@ -34,7 +34,6 @@ const createTask = function(req, res) {
         return event.getTasks()
       })
       .then(tasks => {
-        console.log("Created all tasks:", tasks.length === req.body.tasks.length)
         res.json({success: true}).status(200).end()
       })
     }

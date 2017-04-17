@@ -21,8 +21,9 @@ app.use(cors())
 
 
 app.post('/login', fakeLogin)
-app.use('/', authenticate, routes)
 app.use('/fakeAnswers', tempRoutes)
+app.use('/', authenticate, routes)
+
 
 app.use((err, req, res, next) => {
   console.error(err.stack)

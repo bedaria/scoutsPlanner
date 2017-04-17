@@ -36,7 +36,6 @@ const sendInvite = function(req, res) {
         return event.addVolunteer(users)
       })
       .then(volunteers => {
-        console.log("Invited all users: ", volunteers[0].length == invitedUsers.length)
         res.json({success: true}).status(200).end()
       })
     }

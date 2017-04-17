@@ -22,7 +22,7 @@ const fakeInviteAnswers = (req, res) => {
 
       const filteredVolunteers = volunteers.filter((volunteer, idx) => answers[idx].taskIdx !== null)
       const filteredAnswers = answers.filter(answer => answer.taskIdx !== null)
-      console.log("Adding ", volunteers.length + filteredAnswers.length)
+
       return Promise.all(
         volunteers.map((volunteer,idx) => {
           const eventVolunteer = volunteer.dataValues.EventVolunteer
@@ -37,14 +37,13 @@ const fakeInviteAnswers = (req, res) => {
       )
     })
     .then(results => {
-      console.log("Added ", results.length)
       console.log("Done fake answering!")
-      res.status(200).end()
+      res.json({success: true}).status(200).end()
     })
     .catch(error => {
       console.log("Error faking answers: ", error)
       console.log(error.stack)
-      res.end()
+      res.json({success: false}).status(500).end()
     })
 }
 
