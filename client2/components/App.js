@@ -7,8 +7,8 @@ import thunk from 'redux-thunk'
 import reducer from '../reducers'
 import ProfileContainer from '../containers/ProfileContainer'
 import NewEventContainer from '../containers/NewEventContainer'
+import TabsContainer  from '../containers/TabsContainer'
 import { TopBar } from './TopBar'
-import { Tabs } from './Tabs'
 
 const middleware = [ thunk, createLogger() ]
 // const middleware = [ thunk ]
@@ -23,7 +23,7 @@ const App = () => (
     <Router>
       <div className="container">
         <div className="sidebar">
-          <Tabs />
+          <TabsContainer />
           <div className="eventButtons">item</div>
         </div>
         <div className="main">

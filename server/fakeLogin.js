@@ -2,7 +2,7 @@ const models = require('./models/index.js')
 const jwt = require('jsonwebtoken')
 
 const fakeLogin = (req, res) => {
-  models.User.findAll({attributes: ['name']})
+  models.User.findAll({attributes: ['name', 'id']})
   .then(users => {
      const idx = getRandomNumberBetween(0, users.length)
      const username = users[idx].dataValues.name

@@ -5,10 +5,10 @@ const models = require('../../models/index.js')
 //Gets all the events a user has been invited to.
 const getInvites = (req, res) => {
   models.User.findOne({
-    where: {name: req.user.name},
+    where: {id: req.user.id},
     include: [{
       model: models.Event,
-      attributes:  ['name', 'id', 'startDate', 'endDate', 'message', 'startTime', 'endTime']
+      attributes:  ['name', 'id']
      }]
    })
    .then(user => {
@@ -17,7 +17,7 @@ const getInvites = (req, res) => {
      if(user.dataValues.Events)
        userEvents = user.dataValues.Events.map(event => event.dataValues)
 
-    res.json({success: true, userEvents: events}).status(200).end()
+    res.json({success: true, userEvents}).status(200).end()
    })
 }
 

@@ -1,7 +1,7 @@
 'use strict'
 
 const router = require('express').Router()
-const controllers = require('../controllers/index.js')
+const controllers = require('./controllers/index.js')
 
 router.param('event_id', (req, res, next, id) => {
   req.event = {id}
