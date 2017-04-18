@@ -1,5 +1,10 @@
 const models = require('../models/index.js')
 
+//For each user invited to an event, fakeInviteAnswers() will generate a
+//random answer.
+// answer: isAttending: ['Yes', 'No', 'Maybe', null]
+//         startTime/endTime: picks at least an hour during the event hours
+//         tasks: picks one of the tasks if there are any
 const fakeInviteAnswers = (req, res) => {
   var startTime = ''
   var endTime = ''
