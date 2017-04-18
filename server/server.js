@@ -24,7 +24,7 @@ app.use('/', authenticate, routes)
 
 
 app.use((err, req, res, next) => {
-  console.error(err.stack)
+  console.error(err, err.stack)
   res.status(500).end()
 })
 
