@@ -8,7 +8,7 @@ const submitNewEvent = () => {
 }
 
 const doneCreating = (status) => {
-  status === "success" ?
+  const payload = status === "success" ?
     {isSubmitting: false, redirect: true, updateAdminList: true} :
     {isSubmitting: false, errorCreating: true}
 
