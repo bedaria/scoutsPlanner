@@ -32,25 +32,7 @@ const getButtonText = (invites) => {
     inviteButtons
   }
 }
-/*
-{ info:
-     { name: 'Bury lizards',
-       id: 136,
-       startTime: '05:00',
-       endTime: '05:30',
-       startDate: '04/17/2017',
-       endDate: '04/17/2017',
-       EventVolunteer: [Object] },
-    answer:
-     { startTime: null,
-       endTime: null,
-       isAttending: 'No',
-       seen: false,
-       createdAt: Mon Apr 17 2017 11:40:29 GMT-0700 (Pacific Daylight Time),
-       updatedAt: Mon Apr 17 2017 11:40:29 GMT-0700 (Pacific Daylight Time),
-       EventId: 136,
-       UserId: 75 } } ]
-*/
+
 export const getInvites = () => {
   axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token')
   return (dispatch) => {

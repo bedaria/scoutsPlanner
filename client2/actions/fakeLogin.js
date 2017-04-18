@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { getInvites } from './invites'
 
 const loggingIn = () => {
   return {
@@ -27,6 +28,7 @@ export const fakeLogin = () => {
         localStorage.setItem('username', username)
         localStorage.setItem('token', token)
         dispatch(loggedIn("success"))
+        dispatch(getInvites())
       })
       .catch(error => dispatch(loggedIn("error", error)))
   }
