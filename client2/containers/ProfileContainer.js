@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { fakeLogin } from '../actions/fakeLogin'
+import { getInvites } from '../actions/invites'
 import { Profile } from '../components/Profile'
 
 class ProfileContainer extends Component {
@@ -9,6 +10,9 @@ class ProfileContainer extends Component {
   }
 
   render = () => {
+    if(this.props.loggedIn)
+      this.props.getInvites()
+
     return (
       <Profile isLoggingIn={this.props.isLoggingIn}
           loginError={this.props.loginError}/>
@@ -19,11 +23,12 @@ class ProfileContainer extends Component {
 const mapStateToProps = ({fakeLogin, newEvent}) => {
   return {
     isLoggingIn: fakeLogin.isLoggingIn,
-    loginError: fakeLogin.loginError
+    loginError: fakeLogin.loginError,
+    loggedIn: fakeLogin.loggedIn
   }
 }
 
 export default connect(
   mapStateToProps,
-  { fakeLogin }
+  { fakeLogin, getInvites }
 )(ProfileContainer)

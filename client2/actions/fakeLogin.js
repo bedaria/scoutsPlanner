@@ -9,7 +9,7 @@ const loggingIn = () => {
 
 const loggedIn = (status, token) => {
   const payload = status === "success" ?
-    { isLoggingIn: false }:
+    { isLoggingIn: false, loggedIn: true }:
     { isLogginIn: false, loginError: true }
 
   return {

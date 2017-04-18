@@ -3,12 +3,14 @@ import { fakeLogin } from './fakeLogin'
 import { friends } from './friends'
 import { newEvent } from './newEvent'
 import { invites } from './invites'
+import { tabs } from './tabs'
 
 export default combineReducers({
   friends,
   fakeLogin,
   newEvent,
-  invites
+  invites,
+  tabs
 })
 
 //initial states:
@@ -27,16 +29,16 @@ export default combineReducers({
 //
 // fakeLogin: {
 //   isLoggingIn: false,
-//   loginError: false
+//   loginError: false,
+//   loggedIn: false
 // }
 //
-// const inititalState = {
+// invites = {
 //   isFetching: false,
 //   invites: [],
 //   errorFetching: false,
-//   redirect: false
 // }
 //
-// topbarTabs: {
-//    goTo: "/"
+// tabs = {
+//   onInvites: true
 // }

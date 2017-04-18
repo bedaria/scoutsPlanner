@@ -1,6 +1,7 @@
 const initialState = {
   isLoggingIn: false,
-  loginError: false
+  loginError: false,
+  loggedIn: false
 }
 
 export const fakeLogin = (state = initialState, action) => {

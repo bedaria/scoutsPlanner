@@ -2,11 +2,16 @@
   height: 800px;
 }
 
-.sidebar, .main, form {
+.sidebar, .main, form, .eventButtons{
   display: -webkit-flex;
   display: flex;
   -webkit-flex-flow: column nowrap;
   flex-flow: column nowrap;
+}
+
+.eventButtons {
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .tabs, .topbar, .container {
@@ -20,8 +25,8 @@
   border-right: solid;
 }
 
-.tabs {
-  height: 50px;
+.tabs, .topbar {
+  flex-shrink: 1;
   align-items: flex-end;
   border-bottom: solid;
 }
@@ -33,12 +38,6 @@
 .main {
   -webkit-flex-grow: 4;
   flex-grow:         4;
-}
-
-.topbar {
-  height: 50px;
-  align-items: flex-end;
-  border-bottom: solid;
 }
 
 .activity {

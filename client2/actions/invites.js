@@ -9,7 +9,7 @@ const requestInvites = () => {
 
 const receiveInvites = (status, invites) => {
   const payload = status === "success" ?
-    {invites: invites, isFetching: false} :
+    {invites, isFetching: false} :
     {isFetching: false, errorFetching: true}
 
   return {
