@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import { darkenTab } from '../actions/tabs'
+import { getInvites } from '../actions/invites'
+import { getMyEvents } from '../actions/myEvents'
 
 class TabsContainer extends Component {
 
@@ -12,6 +14,7 @@ class TabsContainer extends Component {
 
   handleMyEventClick = (event) => {
     this.props.darkenTab(event.target.id)
+    this.props.getMyEvents()
   }
 
   render = () => {
@@ -53,5 +56,5 @@ const mapStateToProps = ({invites, tabs}) => {
 
 export default connect(
   mapStateToProps,
-  { darkenTab }
+  { darkenTab, getInvites, getMyEvents }
 )(TabsContainer)

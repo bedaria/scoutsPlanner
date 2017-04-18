@@ -4,13 +4,15 @@ import { friends } from './friends'
 import { newEvent } from './newEvent'
 import { invites } from './invites'
 import { tabs } from './tabs'
+import { myEvents } from './myEvents'
 
 export default combineReducers({
   friends,
   fakeLogin,
   newEvent,
   invites,
-  tabs
+  tabs,
+  myEvents
 })
 
 //initial states:
@@ -41,4 +43,10 @@ export default combineReducers({
 //
 // tabs = {
 //   onInvites: true
+// }
+//
+//  myEvents = {
+//   isFetching: false,
+//   myEvents: [],
+//   errorFetching: false
 // }

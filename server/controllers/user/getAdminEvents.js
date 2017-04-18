@@ -8,14 +8,6 @@ const getAdminEvents = (req, res) => {
     attributes: ['id', 'name']
   })
   .then(adminEvents => {
-    if(adminEvents.length)
-      adminEvents = adminEvents.map(event => (
-        {
-          id: event.dataValues.id,
-          name: event.dataValues.name
-        }
-      ))
-
      res.json({success: true, adminEvents}).status(200).end()
   })
 }
