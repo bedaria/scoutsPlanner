@@ -81,26 +81,33 @@ const getRandomTimeBetween = (start, end) => {
 }
 
 const fakeAnswers = (taskCount, startTime, endTime) => {
-  const number = getRandomNumberBetween(0,3)
+  const attendanceIdx = getRandomNumberBetween(0,4)
   var pickedTaskIdx = null
   var updateInfo = {}
   var volunteerTimes = {}
 
-  if(number === 0) {
-    updateInfo['isAttending'] = 'Yes'
-    volunteerTimes = getRandomTimeBetween(startTime, endTime)
-    updateInfo['startTime'] = volunteerTimes.startTime
-    updateInfo['endTime'] = volunteerTimes.endTime
+  switch(attendanceIdx) {
+    case 0:
+      updateInfo['isAttending'] = 'Yes'
+      volunteerTimes = getRandomTimeBetween(startTime, endTime)
+      updateInfo['startTime'] = volunteerTimes.startTime
+      updateInfo['endTime'] = volunteerTimes.endTime
 
-    if(taskCount)
-       pickedTaskIdx = getRandomNumberBetween(0, taskCount - 1)
+      if(taskCount)
+         pickedTaskIdx = getRandomNumberBetween(0, taskCount - 1)
+      break;
+    case 1:
+      updateInfo['isAttending'] = 'No'
+      break;
+    case 2:
+      updateInfo['isAttending'] = 'Maybe'
+      break;
+    case 3:
+      updateInfo['isAttending'] = null
+      break;
+    default:
+      console.log("....hmmm")
   }
-
-  if(number === 1)
-    updateInfo['isAttending'] = 'No'
-
-  if(number === 2)
-    updateInfo['isAttending'] = 'Maybe'
 
   return {updateInfo, taskIdx: pickedTaskIdx}
 }
