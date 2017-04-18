@@ -4,7 +4,7 @@ var username = ''
 var config = {}
 
 export const getUsers = (callback) => {
-  axios.get('/users/admin')
+  axios.get('/users')
     .then(({data}) => {
       callback({users: data.users})
     })
@@ -16,7 +16,7 @@ export const getUsers = (callback) => {
 
 export const createEventAndInvite = (state, callback) => {
   var eventId = null
-  axios.post('/users/admin/'+ username + '/events', {
+  axios.post('/admin/events', config, {
     name: state.name,
     startTime: state.startTime,
     endTime: state.endTime,
@@ -47,10 +47,11 @@ export const getUserEvents = (updateEvents) => {
 
   axios.post('/login')
     .then(({data}) => {
-      const username = data.username
-      const token = data.token
+      const { username, token } = data
+
       localStorage.setItem('username', username)
       config = { headers : {'x-access-token': token }}
+
       axios.get('/events', config)
         .then(events => {
           updateEvents({
