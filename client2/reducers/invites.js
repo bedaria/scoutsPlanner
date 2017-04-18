@@ -2,7 +2,8 @@ const initialState = {
   isFetching: false,
   invites: [],
   errorFetching: false,
-  inviteButtons: []
+  inviteButtons: [],
+  invitesById: {}
 }
 
 export const invites = (state = initialState, action) => {
@@ -12,7 +13,9 @@ export const invites = (state = initialState, action) => {
     case 'RECEIVE_INVITES':
       return { ...state, ...action.payload }
     case 'FILTER_BUTTON_TEXT':
-      return {...state, inviteButtons: action.inviteButtons}
+      return {...state, inviteButtons: action.inviteButtons }
+    case 'ARRANGE_INIVTES_BY_ID':
+     return { ...state, invitesById: action.invitesById }
     default:
       return state
   }

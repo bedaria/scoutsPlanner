@@ -26,10 +26,22 @@ const getButtonText = (invites) => {
       isAttending: invite.answer.isAttending
     }
   })
-  console.log("inviteButtons: ", inviteButtons)
+
   return {
     type: 'FILTER_BUTTON_TEXT',
     inviteButtons
+  }
+}
+
+const arrangeInvitesById = (invites) => {
+  const invitesById = invites.reduce((byId, invite) => {
+    byId[invite.info.id] = invite
+    return byId
+  }, {})
+  console.log("invites by id: ", invitesById)
+  return {
+    type: 'ARRANGE_INIVTES_BY_ID',
+    invitesById
   }
 }
 
@@ -41,6 +53,7 @@ export const getInvites = () => {
       .then(({data}) => {
         dispatch(receiveInvites("success", data.userEvents))
         dispatch(getButtonText(data.userEvents))
+        dispatch(arrangeInvitesById(data.userEvents))
       })
       .catch(error => {
         dispatch(receiveInvites("error"))
