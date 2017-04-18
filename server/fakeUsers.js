@@ -37,6 +37,9 @@ const fakeUsers = ["Copper",
                 "Jessee Williams",
                 "Jerrika Hinton"]
 
+const fakeUserEmails = fakeUsers.map(user =>  user + "@" + "someplace.com")
+const fakePhoneNumber = "(111) 111-1111"
+  
 fakeUsers.forEach((fakeUser, idx) => setTimeout(() => {
   console.log("creating: ", fakeUser)
   DB.User.create({name: fakeUser})

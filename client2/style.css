@@ -2,14 +2,14 @@
   height: 800px;
 }
 
-.sidebar, .main, form, .eventButtons, .invite{
+.sidebar, .main, form, .eventButtons, .invite, .event{
   display: -webkit-flex;
   display: flex;
   -webkit-flex-flow: column nowrap;
   flex-flow: column nowrap;
 }
 
-.invite {
+.invite, .event {
   justify-content: center;
   align-items: center
 }

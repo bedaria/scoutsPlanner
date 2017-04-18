@@ -10,10 +10,11 @@ import NewEventContainer from '../containers/NewEventContainer'
 import TabsContainer from '../containers/TabsContainer'
 import EventListContainer from '../containers/EventListContainer'
 import InviteContainer from '../containers/InviteContainer'
+import EventContainer from '../containers/EventContainer'
 import { TopBar } from './TopBar'
 
-// const middleware = [ thunk, createLogger() ]
-const middleware = [ thunk ]
+const middleware = [ thunk, createLogger() ]
+// const middleware = [ thunk ]
 
 const store = createStore(
   reducer,
@@ -33,6 +34,7 @@ const App = () => (
           <Route exact path="/" component={ProfileContainer}/>
           <Route path="/newEvent" component={NewEventContainer}/>
           <Route path="/invites/:id" component={InviteContainer}/>
+          <Route path="/events/:id" component={EventContainer}/>
         </div>
       </div>
     </Router>

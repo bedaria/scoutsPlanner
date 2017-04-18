@@ -14,3 +14,5 @@ bundle.js
 
 #testing stuff
 server/testDatabase.js
+profile_pictures
+server/algosForAdminEvent.js

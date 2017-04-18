@@ -2,11 +2,16 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { toInvite } from '../actions/invites'
+import { getMyEvent } from '../actions/myEvents'
 
 class EventListContainer extends Component {
 
   inviteClick = (event) => {
     this.props.toInvite(event.target.id)
+  }
+
+  myEventClick = (event) => {
+    this.props.getMyEvent(event.target.id)
   }
 
   render = () => {
@@ -17,10 +22,17 @@ class EventListContainer extends Component {
           <InviteList invites={this.props.invites} eventHandler={this.inviteClick} />
         </div>
       )
-    if(this.props.invites.length && this.props.onInvites) 
+    if(this.props.redirectToEvent)
+      return (
+        <div>
+          <Redirect push to={`/events/${this.props.redirectToEventId}`} />
+          <EventList events={this.props.myEvents} eventHandler={this.myEventClick} />
+        </div>
+      )
+    if(this.props.invites.length && this.props.onInvites)
       return <InviteList invites={this.props.invites} eventHandler={this.inviteClick} />
     else if(this.props.myEvents.length && !this.props.onInvites)
-      return <EventList events={this.props.myEvents} eventHandler={() => {console.log("clicked on an admin event")}} />
+      return <EventList events={this.props.myEvents} eventHandler={this.myEventClick} />
     else if(this.props.fetchingInvites || this.props.fetchingMyEvents)
       return <div className="eventButtons"> Loading... </div>
     else
@@ -31,7 +43,11 @@ class EventListContainer extends Component {
 const EventList = ({events, eventHandler}) => (
   <div className="eventButtons">
     {
-      events.map(event => <button key={event.id} id={event.id} onClick={eventHandler}> {event.name} </button>)
+      events.map(event => (
+        <button key={event.id} id={event.id} onClick={eventHandler}>
+          {event.name}
+        </button>)
+      )
     }
   </div>
 )
@@ -40,7 +56,9 @@ const InviteList = ({invites, eventHandler}) => (
   <div className="eventButtons">
     {
       invites.map(invite => (
-        <button key={invite.id} id={invite.id} onClick={eventHandler}> {invite.name} | {invite.isAttending || "Please answer"}</button>
+        <button key={invite.id} id={invite.id} onClick={eventHandler}>
+          {invite.name} | {invite.isAttending || "Please answer"}
+        </button>
       ))
     }
   </div>
@@ -54,11 +72,13 @@ const mapStateToProps = ({invites, myEvents, tabs}) => {
     fetchingInvites: invites.isFetching,
     onInvites: tabs.onInvites,
     redirectToInvite: invites.redirect,
-    redirectToInviteId: invites.redirectToId
+    redirectToInviteId: invites.redirectToId,
+    redirectToEvent: myEvents.redirectToEvent,
+    redirectToEventId: myEvents.redirectToId
   }
 }
 
 export default connect(
   mapStateToProps,
-  { toInvite }
+  { toInvite, getMyEvent }
 )(EventListContainer)
