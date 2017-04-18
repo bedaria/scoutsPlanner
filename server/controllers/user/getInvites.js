@@ -8,14 +8,25 @@ const getInvites = (req, res) => {
     where: {id: req.user.id},
     include: [{
       model: models.Event,
-      attributes:  ['name', 'id']
+      attributes:  ['name', 'id', 'startTime', 'endTime', 'startDate', 'endDate']
      }]
    })
    .then(user => {
      var userEvents = []
-
-     if(user.dataValues.Events)
-       userEvents = user.dataValues.Events.map(event => event.dataValues)
+     if(user.dataValues.Events.length)
+      userEvents = user.dataValues.Events.map(event => {
+        return {
+          info: {
+            name: event.dataValues.name,
+            id: event.dataValues.id,
+            startTime: event.dataValues.startTime,
+            endTime: event.dataValues.endTime,
+            startDate: event.dataValues.startDate,
+            endDate: event.dataValues.endDate
+          },
+          answer: event.EventVolunteer.dataValues
+        }
+      })
 
     res.json({success: true, userEvents}).status(200).end()
    })

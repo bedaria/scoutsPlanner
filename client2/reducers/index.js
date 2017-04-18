@@ -39,6 +39,7 @@ export default combineReducers({
 //   isFetching: false,
 //   invites: [],
 //   errorFetching: false,
+//   buttonText: []
 // }
 //
 // tabs = {
