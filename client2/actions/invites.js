@@ -38,10 +38,26 @@ const arrangeInvitesById = (invites) => {
     byId[invite.info.id] = invite
     return byId
   }, {})
-  console.log("invites by id: ", invitesById)
+
   return {
     type: 'ARRANGE_INIVTES_BY_ID',
     invitesById
+  }
+}
+
+export const toInvite = (inviteId) => {
+  return {
+    type: 'REDIRECT',
+    redirect: true,
+    inviteId
+  }
+}
+
+export const doneRedirecting = () => {
+  return {
+    type: 'REDIRECTED',
+    redirect: false,
+    inviteId: ''
   }
 }
 

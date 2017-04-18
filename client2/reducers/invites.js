@@ -3,7 +3,9 @@ const initialState = {
   invites: [],
   errorFetching: false,
   inviteButtons: [],
-  invitesById: {}
+  invitesById: {},
+  redirect: false,
+  redirectToId: ''
 }
 
 export const invites = (state = initialState, action) => {
@@ -16,6 +18,10 @@ export const invites = (state = initialState, action) => {
       return {...state, inviteButtons: action.inviteButtons }
     case 'ARRANGE_INIVTES_BY_ID':
      return { ...state, invitesById: action.invitesById }
+    case 'REDIRECT':
+      return { ...state, redirect: action.redirect, redirectToId: action.inviteId }
+    case 'REDIRECTED':
+      return { ...state, redirect: action.redirect, redirectToId: action.inviteId }
     default:
       return state
   }
