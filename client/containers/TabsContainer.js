@@ -18,38 +18,26 @@ class TabsContainer extends Component {
   }
 
   render = () => {
+    const { onInvites, errorFetchingEvents, errorFetchingInvites } = this.props
     const darker = { background: 'grey' }
     const lighter = { background: 'white' }
-    if(this.props.errorFetchingInvites)
-      return (
-        <div className="tabs">
-          <button id="adminEventsTab" onClick={this.handleMyEventClick} >My Events</button>
-          <button id="invitesTab" onClick={this.handleInviteClick} >My Invites</button>
-          <div> Couldnt get invites, please try again.. </div>
-        </div>
-      )
-    else if(this.props.onInvites){
-      return (
-        <div className="tabs">
-          <button id="adminEventsTab" style={lighter} onClick={this.handleMyEventClick}>My Events</button>
-          <button id="invitesTab" style={darker} onClick={this.handleInviteClick}>My Invites</button>
-        </div>
-      )
-    }
-    else {
-      return (
-        <div className="tabs">
-          <button id="adminEventsTab" style={darker} onClick={this.handleMyEventClick}>My Events</button>
-          <button id="invitesTab" style={lighter} onClick={this.handleInviteClick} >My Invites</button>
-        </div>
-      )
-    }
+
+    return (
+      <div className="tabs">
+        <button id="adminEventsTab" style={onInvites ? lighter : darker} onClick={this.handleMyEventClick}>My Events</button>
+        <button id="invitesTab" style={onInvites ? darker : lighter} onClick={this.handleInviteClick}>My Invites</button>
+        {
+          errorFetchingInvites || errorFetchingEvents ? <div> Please try again.. </div>: <div></div>
+        }
+      </div>
+    )
   }
 }
 
-const mapStateToProps = ({invites, tabs}) => {
+const mapStateToProps = ({invites, tabs, myEvents}) => {
   return {
     errorFetchingInvites: invites.errorFetching,
+    errorFetchingEvents: myEvents.errorFetcing,
     onInvites: tabs.onInvites
   }
 }

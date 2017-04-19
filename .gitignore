@@ -13,6 +13,5 @@ bundle.js
 .env
 
 #testing stuff
-server/testDatabase.js
 profile_pictures
 server/algosForAdminEvent.js

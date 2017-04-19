@@ -2,15 +2,14 @@ import axios from 'axios'
 
 const submitNewEvent = () => {
   return {
-    type: 'SUBMIT_NEW_EVENT',
-    isSubmitting: true
+    type: 'SUBMIT_NEW_EVENT'
   }
 }
 
 const doneCreating = (status) => {
   const payload = status === "success" ?
-    {isSubmitting: false, redirect: true, updateAdminList: true} :
-    {isSubmitting: false, errorCreating: true}
+    {redirect: true, updateAdminList: true} :
+    {errorCreating: true}
 
   return {
     type: 'NEW_EVENT_CREATED',
@@ -20,8 +19,7 @@ const doneCreating = (status) => {
 
 export const resetRedirect = () => {
   return {
-    type: 'RESET_REDIRECT',
-    redirect: false
+    type: 'RESET_REDIRECT'
   }
 }
 

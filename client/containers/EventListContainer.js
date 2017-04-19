@@ -15,24 +15,22 @@ class EventListContainer extends Component {
   }
 
   render = () => {
-    if(this.props.redirectToInvite)
+    if(this.props.invites.length && this.props.onInvites)
       return (
-        <div>
-          <Redirect push to={`/invites/${this.props.redirectToInviteId}`} />
+        <div> {
+          this.props.redirectToInvite ?
+          <Redirect push to={`/invites/${this.props.redirectToInviteId}`} /> : <div></div> }
           <InviteList invites={this.props.invites} eventHandler={this.inviteClick} />
         </div>
       )
-    if(this.props.redirectToEvent)
+    else if(this.props.myEvents.length && !this.props.onInvites)
       return (
-        <div>
-          <Redirect push to={`/events/${this.props.redirectToEventId}`} />
+        <div> {
+          this.props.redirectToEvent ?
+          <Redirect push to={`/events/${this.props.redirectToEventId}`} /> : <div></div>}
           <EventList events={this.props.myEvents} eventHandler={this.myEventClick} />
         </div>
       )
-    if(this.props.invites.length && this.props.onInvites)
-      return <InviteList invites={this.props.invites} eventHandler={this.inviteClick} />
-    else if(this.props.myEvents.length && !this.props.onInvites)
-      return <EventList events={this.props.myEvents} eventHandler={this.myEventClick} />
     else if(this.props.fetchingInvites || this.props.fetchingMyEvents)
       return <div className="eventButtons"> Loading... </div>
     else

@@ -20,7 +20,6 @@ class NewEventContainer extends Component {
       // return <NewEvent isSubmitting={this.props.isSubmitting}
       //                  redirect={this.props.redirect}
       //                  errorCreating={this.props.errorCreating}
-      //                  friends={this.props.friends}
       //                  createEvent={(eventInfo) => this.props.createEvent(eventInfo)}
       //                  resetRedirect={this.props.resetRedirect}/>
   }
