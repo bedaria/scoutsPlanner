@@ -10,6 +10,7 @@ import DropdownList from 'react-widgets/lib/DropdownList'
 import 'react-widgets/lib/less/react-widgets.less'
 
 momentLocaliser(moment)
+
 const renderTasks = ({ fields }) => {
   return (
     <div>
@@ -24,7 +25,6 @@ const renderTasks = ({ fields }) => {
             onClick={() => fields.remove(index)}>X</button>
             <Field name={`${task}.name`} component="input" type="text"/>
         </div>
-
       )}
     </div>
     )
@@ -32,11 +32,11 @@ const renderTasks = ({ fields }) => {
 
 const renderMultiSelect = ({input, data, valueField, textField }) =>
   <Multiselect {...input}
+    onBlur={() => input.onBlur()}
     data={data}
     value={input.value || []}
     valueField={valueField}
-    textField={textField}
-    onChange={input.onChange} />
+    textField={textField} />
 
 const renderDateTimePicker = ({input: { onChange, value } }) =>
   <DateTimePicker
@@ -44,7 +44,23 @@ const renderDateTimePicker = ({input: { onChange, value } }) =>
     min={new Date()}
     value={!value ? null: new Date(value)} />
 
-// const friends = [{name: "Copper", id: 1}, {name: "Frankie", id: 2}]
+class Autocomplete extends Component {
+  wrapInput = (input, onChange) => {
+    var autocomplete = new google.maps.places.Autocomplete(input)
+    autocomplete.addListener('place_changed', () => {fillInAddress()})
+
+    const fillInAddress = () => {
+      const place = autocomplete.getPlace()
+      onChange(place.formatted_address)
+    }
+  }
+
+  render = () => {
+    const {input: {value, onChange }} = this.props
+    return <input ref={(input) => {this.wrapInput(input, onChange)}} type="text"  placeholder="Enter an address"/>
+  }
+}
+
 class NewEventForm extends Component {
   render() {
     const { handleSubmit } = this.props;
@@ -55,9 +71,9 @@ class NewEventForm extends Component {
           <Field name="eventName" component="input" type="text"/>
         </div>
         <div>
-          <label htmlFor="invitees">Send to </label>
+          <label>Send to </label>
           <Field
-            name="invitees"
+            name="invited"
             component={renderMultiSelect}
             data={this.props.friends}
             valueField="id"
@@ -65,18 +81,22 @@ class NewEventForm extends Component {
           />
         </div>
         <div>
-          <label htmlFor="when">From </label>
+          <label>From </label>
           <Field
-            name="when"
+            name="from"
             component={renderDateTimePicker}
           />
         </div>
         <div>
-          <label htmlFor="when">Till </label>
+          <label>Till </label>
           <Field
-            name="when"
+            name="till"
             component={renderDateTimePicker}
           />
+        </div>
+        <div>
+          <label> Where </label>
+          <Field name="where" component={Autocomplete}/>
         </div>
         <FieldArray name="tasks" component={renderTasks} />
         <button type="submit">Submit</button>
