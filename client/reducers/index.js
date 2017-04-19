@@ -5,6 +5,7 @@ import { newEvent } from './newEvent'
 import { invites } from './invites'
 import { tabs } from './tabs'
 import { myEvents } from './myEvents'
+import { reducer as formReducer } from 'redux-form'
 
 export default combineReducers({
   friends,
@@ -12,7 +13,8 @@ export default combineReducers({
   newEvent,
   invites,
   tabs,
-  myEvents
+  myEvents,
+  form: formReducer
 })
 
 //initial states:

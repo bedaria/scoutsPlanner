@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import SelectMultiple  from './SelectMultiple'
+import Autocomplete from './Autocomplete'
 import Tasks from './Tasks'
 import DatePicker from 'react-datepicker'
 import moment from 'moment'
@@ -55,10 +56,9 @@ export default class NewEvent extends Component {
       return (
           <div className="form">
           <div> Create Event </div>
-            <form onSubmit={this.handleSubmit} id="eventInfo">
+            <form  id="eventInfo">
+              <Autocomplete />
               <input type="text" id="name" placeholder="Event Name: " value={this.state.name} onChange={this.handleChange}  />
-              <SelectMultiple getSelectedUsers={this.getSelectedUsers}
-                              friends={this.props.friends}/>
               <Tasks tasks={this.state.tasks} getTasks={this.getTasks}/>
               <textarea id="message" placeholder="Add message (optional): " value={this.state.message} onChange={this.handleChange} form="eventInfo" />
               <label>

@@ -13,8 +13,8 @@ import InviteContainer from '../containers/InviteContainer'
 import EventContainer from '../containers/EventContainer'
 import { TopBar } from './TopBar'
 
-const middleware = [ thunk, createLogger() ]
-// const middleware = [ thunk ]
+// const middleware = [ thunk, createLogger() ]
+const middleware = [ thunk ]
 
 const store = createStore(
   reducer,

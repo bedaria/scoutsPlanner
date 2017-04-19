@@ -12,7 +12,7 @@ const authenticate = require('./middleware/authentication.js')
 
 const app = express()
 
-app.use(express.static(path.join('./client2')))
+app.use(express.static(path.join('./client')))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(cors())

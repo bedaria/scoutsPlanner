@@ -1,7 +1,8 @@
 import React, { Component } from 'react'
 import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
-import NewEvent from '../components/NewEvent'
+// import NewEvent from '../components/NewEvent'
+import NewEventForm from './NewEventForm'
 import { createEvent, resetRedirect } from '../actions/newEvent'
 import { fetchFriends } from '../actions/friends'
 
@@ -16,12 +17,13 @@ class NewEventContainer extends Component {
     else if(this.props.errorFetchingFriends)
       return <Redirect to="/newEvent" />
     else
-      return <NewEvent isSubmitting={this.props.isSubmitting}
-                       redirect={this.props.redirect}
-                       errorCreating={this.props.errorCreating}
-                       friends={this.props.friends}
-                       createEvent={(eventInfo) => this.props.createEvent(eventInfo)}
-                       resetRedirect={this.props.resetRedirect}/>
+      return <NewEventForm friends={this.props.friends} onSubmit={(value) => {console.log(value)}}/>
+      // return <NewEvent isSubmitting={this.props.isSubmitting}
+      //                  redirect={this.props.redirect}
+      //                  errorCreating={this.props.errorCreating}
+      //                  friends={this.props.friends}
+      //                  createEvent={(eventInfo) => this.props.createEvent(eventInfo)}
+      //                  resetRedirect={this.props.resetRedirect}/>
   }
 }
 
