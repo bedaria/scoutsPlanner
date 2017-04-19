@@ -3,6 +3,22 @@
 const models = require('../../models/index.js')
 
 //Gets all the events a user has been invited to.
+//NEED user id (from authentication)
+//res will have:
+//    userEvents:
+//    <array <{
+//              info: {
+//                  name <string>,
+//                  id <number>,
+//                  startTime <string>,
+//                  endTime <string>,
+//                  startDate <string>,
+//                  endDate <string>}
+//              answer: {
+//                  isAttending <string>,
+//                  startTime<string>,
+//                  endTime <string>}
+//            }
 const getInvites = (req, res) => {
   models.User.findOne({
     where: {id: req.user.id},

@@ -3,6 +3,8 @@
 const models = require('../../models/index.js')
 
 //req needs: task: {name, id}
+//NEED user id (from router.param)
+//req needs {taskId<integer>}
 //res will have: {success: <boolean>}
 const volunteerForTask = function(req, res) {
 

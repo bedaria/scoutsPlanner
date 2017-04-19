@@ -3,6 +3,7 @@
 const models = require('../../models/index.js')
 
 //Returns all of the Tasks for a given event.
+//Need event id (from router.param)
 //res will have: tasks: <array> {id, name}
 const getEventTasks = function(req, res) {
 

@@ -3,6 +3,7 @@
 const models = require('../../models/index.js')
 
 //Adds models.Event to models.User (s) if the users were invited
+//NEED event id (from router.param)
 //req.body should have:
 //        {invited: <array<integers>>}
 //res will have: {sentTo: <array<UserIds>>}

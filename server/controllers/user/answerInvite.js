@@ -3,11 +3,12 @@
 const models = require('../../models/index.js')
 
 //Updates models.EventVolunteer
-//req.body should have at elast one:
+//NEED user id (from authentication)
+//req.body should have at least one:
 //                       {isAttending: <valueIn ['Yes', 'Maybe', 'No']>,
 //                        startTime: <string>,
 //                        endTime: <string>}
-//res will have: {success: <boolen>, volunteerInfo: <models.EventVolunteer>}
+//res will have: {success: <boolen>}
 const answerInvite = (req, res) => {
 
   if(!req.body.isAttending)
@@ -17,11 +18,11 @@ const answerInvite = (req, res) => {
     res.json({success: false, error: "Please provide both a startTime and an endTime for volunteer who is attending."}).status(200).end()
   else {
     models.User.findOne({
-      where: {name: req.user.name},
+      where: {id: req.user.id},
       include: [{
         model: models.Event,
         through: {
-          where: {EventId: req.params.event}
+          where: {EventId: req.event.id}
         }
       }]
     })

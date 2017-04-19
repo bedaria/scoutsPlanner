@@ -3,7 +3,8 @@
 const models = require('../../models/index.js')
 
 //Finds all the users.
-//resp wil lhave: <array> models.User.dataValues
+//resp will have:
+//        array<{id <number>, name <string> }>
 const getAllUsers = (req, res) => {
     models.User.findAll({
       attributes: ['name', 'id']

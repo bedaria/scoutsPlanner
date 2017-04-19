@@ -3,6 +3,7 @@
 const models = require('../../models/index.js')
 
 //Creates a task for a given event
+//NEED event id (from router.param)
 //req should have: tasks: <array>{ name: <string>, description: <string>}
 //res will have: {success: <boolean>}
 const createTask = function(req, res) {

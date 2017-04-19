@@ -3,6 +3,7 @@
 const models = require('../../models/index.js')
 
 //Gets info on event for an admin
+//NEED event id (from router.param)
 //resp.body will have:
 //    <array<{info: <array>{name: <string>,
 //                         id: <string>,
@@ -11,6 +12,7 @@ const models = require('../../models/index.js')
 //                         endTime: <string>}
 const getAdminEventVolunteers = (req, res) => {
 
+//check if user is an admin!!
   models.Event.findOne({where: {id: req.event.id}})
     .then(event => event.getVolunteer({attributes: ['id', 'name']}))
     .then(volunteers => {
@@ -25,8 +27,7 @@ const getAdminEventVolunteers = (req, res) => {
 
         return info
       }, [])
-      console.log("invited: ", volunteers.length)
-      console.log("Returning: ", volunteerInfo)
+
       res.json({volunteerInfo}).status(200).end()
     })
 }
