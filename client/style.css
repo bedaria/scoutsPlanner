@@ -2,7 +2,7 @@
   height: 800px;
 }
 
-.sidebar, .main, form, .eventButtons, .invite, .event {
+.sidebar, .main, form, .eventButtons, .invite, .event, .login {
   display: -webkit-flex;
   display: flex;
   -webkit-flex-flow: column nowrap;
