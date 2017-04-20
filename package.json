@@ -53,6 +53,7 @@
     "webpack": "^2.3.2"
   },
   "devDependencies": {
+    "babel-preset-airbnb": "^2.2.3",
     "babel-register": "^6.24.0",
     "chai": "^3.5.0",
     "css-loader": "^0.28.0",
