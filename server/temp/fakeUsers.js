@@ -1,4 +1,4 @@
-const DB = require('./models/index.js')
+const DB = require('../models/index.js')
 const fakeUsers = ["Copper",
                 "Frankie",
                 "Aidan",
@@ -39,7 +39,7 @@ const fakeUsers = ["Copper",
 
 const fakeUserEmails = fakeUsers.map(user =>  user + "@" + "someplace.com")
 const fakePhoneNumber = "(111) 111-1111"
-  
+//profile_pictures + / + user.removeWhiteSpaces
 fakeUsers.forEach((fakeUser, idx) => setTimeout(() => {
   console.log("creating: ", fakeUser)
   DB.User.create({name: fakeUser})

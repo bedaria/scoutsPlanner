@@ -8,6 +8,10 @@ router.param('event_id', (req, res, next, id) => {
   next()
 })
 
+// router.route('/profile')
+//   .get(controllers.user.getProfilePicture)
+//   .post(controllers.user.changeProfilePicture)
+
 router.route('/users')
   .get(controllers.user.getAllUsers)
 

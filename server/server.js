@@ -6,7 +6,7 @@ const cors = require('cors')
 const port = require('./config/config.js').port
 const db = require('./models/index.js')
 const routes = require('./routes.js')
-const fakeLogin = require('./fakeLogin.js')
+const fakeLogin = require('./temp/fakeLogin.js')
 const tempRoutes = require('./temp/tempRoutes.js')
 const authorize = require('./middleware/authorization.js')
 
@@ -21,6 +21,7 @@ app.post('/login', fakeLogin)
 app.use('/fakeAnswers', tempRoutes)
 app.use('/api', authorize, routes)
 
+//send back static files on reload
 app.get('*', (req, res) => {
   const re = /dist\/bundle\.js$|style\.css$/
   const matched = req.url.match(re)
@@ -46,7 +47,7 @@ app.set('port', port)
 
 // db.sequelize.sync({force: true})
 //   .then(success => {
-//    require('./fakeUsers.js')
+//    require('./temp/fakeUsers.js')
 // })
 db.sequelize.sync()
 app.listen(app.get('port'), () =>

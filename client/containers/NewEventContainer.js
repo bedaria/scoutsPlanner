@@ -17,9 +17,13 @@ class NewEventContainer extends Component {
 
     return (
       <div>
-        { isFetchingFriends || isSubmittingEvent ? <div className="loader" /> : null }
-        { errorFetchingFriends ? <div> Error fetching friends, please reload... </div> : null }
-        { errorCreatingEvent ? <div> Error creating event, please resubmit </div> : null }
+        <Row>
+          <Col xs={4} md={4} xsOffset={4} mdOffset={4}>
+            { isFetchingFriends || isSubmittingEvent || true ? <div className="loader" /> : null }
+            { errorFetchingFriends ? <div> Error fetching friends, please reload... </div> : null }
+            { errorCreatingEvent ? <div> Error creating event, please resubmit </div> : null }
+          </Col>
+        </Row>
         <Row>
           <Col xs={4} md={4} xsOffset={4} mdOffset={4}>
             <h1 style={{'textAlign':'center'}}> New Event </h1>

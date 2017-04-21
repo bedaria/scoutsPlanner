@@ -1,4 +1,4 @@
-const models = require('./models/index.js')
+const models = require('../models/index.js')
 const jwt = require('jsonwebtoken')
 
 //Picks a random user to be logged in as
