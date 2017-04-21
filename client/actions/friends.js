@@ -9,8 +9,8 @@ const requestFriends = () => {
 
 const receiveFriends = (status, friends) => {
   const payload = status === "success" ?
-      {isFetching: false, friends} :
-      {isFetching: false, errorFetching: true}
+      {isFetching: false, errorFetching: false, friends} :
+      {isFetching: false, errorFetching: true }
 
   return {
     type: 'RECEIVE_FRIENDS',

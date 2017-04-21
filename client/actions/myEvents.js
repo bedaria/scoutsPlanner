@@ -8,7 +8,7 @@ const requestMyEvents = () => {
 
 const receiveMyEvents = (status, myEvents) => {
   const payload = status === "success" ?
-    { myEvents } : { errorFetching: true }
+    { myEvents, errorFetching: false } : { errorFetching: true }
 
   return {
     type: 'RECEIVE_MY_EVENTS',
