@@ -27,13 +27,13 @@ const validate = (values) => {
   if(!values.startTime)
     errors.startTime = 'Required!'
 
-  if(!values.till)
-    errors.till = 'Required!'
+  if(!values.endTime)
+    errors.endTime = 'Required!'
 
-  if(values.startTime && values.till && values.till.getTime() < values.startTime.getTime())
-    errors.till = 'Invalid time, event can\'t end before starting'
-  else if(values.startTime && values.till && values.till.getTime() - values.startTime.getTime() < 900000)
-    errors.till = 'Event must bet at least 15 minutes...'
+  if(values.startTime && values.endTime && (values.endTime.getTime() < values.startTime.getTime()))
+    errors.endTime = 'Event can\'t end before starting'
+  else if(values.startTime && values.endTime && (values.endTime.getTime() - values.startTime.getTime() < 900000))
+    errors.endTime = 'Event must bet at least 15 minutes...'
 
   if(!values.address && !values.TBD)
     errors.address = 'Address TBD?'
@@ -117,19 +117,21 @@ const renderDatePicker = ({input: { onChange, value }, placeholder, meta: {error
     </div>
 
 const renderTimePicker = ({input: { name, onChange, value }, placeholder, meta: {error}}) => {
-  return <span>
-    <DateTimePicker
-      placeholder={placeholder}
-      onChange={onChange}
-      style={{
-        'display': 'inline-block',
-        'marginTop':'10px',
-        'marginRight':'10px'
-      }}
-      calendar={false}
-      value={!value ? null: new Date(value)} />
-      {error && name === "till" && <span style={{'color': '#a94442'}}> {error} </span>}
-  </span>
+  return (
+    <div>
+      <DateTimePicker
+        placeholder={placeholder}
+        onChange={onChange}
+        style={{
+          'display': 'inline-block',
+          'marginTop':'10px',
+          'marginRight':'10px'
+        }}
+        calendar={false}
+        value={!value ? null: new Date(value)} />
+        {error && <span style={{'color': '#a94442'}}> {error} </span>}
+    </div>
+  )
 }
 
 class Autocomplete extends Component {
@@ -178,7 +180,7 @@ class NewEventForm extends Component {
           component={renderDatePicker}
           placeholder="Pick a date"
         />
-        <div style={{'display': 'inline-block'}}>
+        <div className="times">
           <Field
             name="startTime"
             component={renderTimePicker}
