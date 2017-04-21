@@ -65,7 +65,7 @@ export const getInvites = () => {
   axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token')
   return (dispatch) => {
     dispatch(requestInvites())
-    axios.get('/invites')
+    axios.get('/api/invites')
       .then(({data}) => {
         dispatch(receiveInvites("success", data.userEvents))
         dispatch(getButtonText(data.userEvents))

@@ -13,7 +13,8 @@ import InviteContainer from '../containers/InviteContainer'
 import EventContainer from '../containers/EventContainer'
 import LoginContainer from '../containers/LoginContainer'
 import SidebarTabsContainer from '../containers/SidebarTabsContainer'
-import { TopBar } from './TopBar'
+import { Navbar, Nav, NavItem } from 'react-bootstrap'
+import  { LinkContainer } from 'react-router-bootstrap'
 
 // const middleware = [ thunk, createLogger() ]
 const middleware = [ thunk ]
@@ -26,19 +27,38 @@ const store = createStore(
 const App = () => (
   <Provider store={store}>
     <Router>
-      <div className="container">
-        <div className="sidebar">
-          <Route path="/" component={SidebarTabsContainer} />
-          <Route path="/profile/invites" component={InviteListContainer} />
-          <Route path="/profile/myEvents" component={EventListContainer} />
-        </div>
-        <div className="main">
-          <TopBar />
-          <Route exact path="/" component={LoginContainer}/>
-          <Route path="/profile" component={ProfileContainer}/>
-          <Route path="/newEvent" component={NewEventContainer}/>
-          <Route path="/invites/:id" component={InviteContainer}/>
-          <Route path="/events/:id" component={EventContainer}/>
+      <div>
+        <Navbar style={{height: '50px'}} inverse >
+          <Navbar.Header>
+            <Navbar.Brand>
+              Welcome
+            </Navbar.Brand>
+          </Navbar.Header>
+          <Nav>
+            <LinkContainer to="/newEvent">
+              <NavItem>
+                New Event
+              </NavItem>
+            </LinkContainer>
+            <LinkContainer to="/profile">
+              <NavItem>
+                Profile
+              </NavItem>
+            </LinkContainer>
+          </Nav>
+        </Navbar>
+        <div className="container2">
+          <div className="sidebar">
+            <Route path="/profile/invites" component={InviteListContainer} />
+            <Route path="/profile/myEvents" component={EventListContainer} />
+          </div>
+          <div className="main">
+            <Route exact path="/" component={LoginContainer}/>
+            <Route path="/profile" component={ProfileContainer}/>
+            <Route path="/newEvent" component={NewEventContainer}/>
+            <Route path="/invites/:id" component={InviteContainer}/>
+            <Route path="/events/:id" component={EventContainer}/>
+          </div>
         </div>
       </div>
     </Router>

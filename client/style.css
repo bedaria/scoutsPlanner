@@ -1,51 +1,19 @@
-.container {
-  height: 800px;
+.loader {
+  border: 10px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 10px solid #3498db;
+  width: 30px;
+  height: 30px;
+  -webkit-animation: spin 2s linear infinite;
+  animation: spin 2s linear infinite;
 }
 
-.sidebar, .main, form, .eventButtons, .invite, .event, .login {
-  display: -webkit-flex;
-  display: flex;
-  -webkit-flex-flow: column nowrap;
-  flex-flow: column nowrap;
+@-webkit-keyframes spin {
+  0% { -webkit-transform: rotate(0deg); }
+  100% { -webkit-transform: rotate(360deg); }
 }
 
-.invite, .event {
-  justify-content: center;
-  align-items: center
-}
-
-.eventButtons {
-  overflow-y: scroll;
-  overflow-x: hidden;
-}
-
-.tabs, .topbar, .container {
-  display: -webkit-flex;
-  display: flex;
-}
-
-.sidebar {
-  -webkit-flex-grow: 1;
-  flex-grow:         1;
-  border-right: solid;
-}
-
-.tabs, .topbar {
-  flex-shrink: 1;
-  align-items: flex-end;
-  border-bottom: solid;
-}
-
-#invitesTab, #newEvent {
-  margin-left: 5px
-}
-
-.main {
-  -webkit-flex-grow: 4;
-  flex-grow:         4;
-}
-
-.activity {
-  -webkit-flex-grow: 10;
-  flex-grow:         10;
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }

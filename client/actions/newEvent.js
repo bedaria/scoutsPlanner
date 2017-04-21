@@ -7,47 +7,34 @@ const submitNewEvent = () => {
 }
 
 const doneCreating = (status) => {
-  const payload = status === "success" ?
-    {redirect: true, updateAdminList: true} :
-    {errorCreating: true}
-
   return {
     type: 'NEW_EVENT_CREATED',
-    payload
+    errorCreating: status === "success"
   }
 }
 
-export const resetRedirect = () => {
-  return {
-    type: 'RESET_REDIRECT'
-  }
-}
+export const createEvent = (eventInfo, friends) => {
+  if(eventInfo.invited[0].id === 0)
+    eventInfo.invited = friends
 
-export const createEvent = (allUsers) => {
-  const eventInfo = {
-    name: "Bury lizards",
-    tasks: [{name: "Guard"}, {name: "Digger"}, {name: "Feeder"}],
-    message: "",
-    startTime: "05:00",
-    endTime: "05:30",
-    startDate: "04/17/2017",
-    endDate: "04/17/2017",
-    invited: allUsers.map(user => user.id)
-  }
-
+  eventInfo.endDate = eventInfo.date
+  eventInfo.startDate = eventInfo.date
+  eventInfo.invited = eventInfo.invited.map(invitee => invitee.id)
+  //eventInfo.name, eventInfo.address
+  
   axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token')
   return (dispatch) => {
     dispatch(submitNewEvent())
-    axios.post('/events', eventInfo)
+    axios.post('/api/events', eventInfo)
       .then(({ data }) => {
         const inviteFriends = () => {
-          return axios.post('/events/' + data.eventId + '/invites', {invited: eventInfo.invited})
+          return axios.post('/api/events/' + data.eventId + '/invites', {invited: eventInfo.invited})
         }
         var requests = [inviteFriends]
 
         if(eventInfo.tasks.length) {
           const addTasks = () => {
-            return axios.post('/events/' + data.eventId + '/tasks', {tasks: eventInfo.tasks})
+            return axios.post('/api/events/' + data.eventId + '/tasks', {tasks: eventInfo.tasks})
           }
           requests.push(addTasks)
         }
@@ -55,7 +42,7 @@ export const createEvent = (allUsers) => {
         axios.all(requests.map(request => request()))
           .then(axios.spread((friendsInvited, tasksAdded) => {
               dispatch(doneCreating("success"))
-              axios.post('/fakeAnswers/' + data.eventId)
+              // axios.post('/fakeAnswers/' + data.eventId)
             })
           )
           .catch(error => {

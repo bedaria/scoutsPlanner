@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom'
 
 class LoginContainer extends Component {
   componentDidMount = () => {
-      this.props.fakeLogin()
+    this.props.fakeLogin()
   }
 
   render = () => {
@@ -14,7 +14,7 @@ class LoginContainer extends Component {
       <div className="login">
         {isLoggingIn ? "Loading....": null}
         {loginError ? "Ooops, please reload....":null}
-        {isLoggedIn ? <Redirect push to="/profile/invites" />: null}
+        {isLoggedIn ? <Redirect push to="/newEvent" />: null}
         <input type="text" placeholder="Getting you a random user :D" disabled/>
         <input type="password" placeholder="No need for a password yet" disabled/>
       </div>

@@ -1,8 +1,6 @@
 const initialState = {
   isSubmitting: false,
-  updateAdminList: false,
-  errorCreating: false,
-  redirect: false
+  errorCreating: false
 }
 
 export const newEvent = (state = initialState, action) => {
@@ -10,9 +8,7 @@ export const newEvent = (state = initialState, action) => {
     case 'CREATE_NEW_EVENT':
       return { ...state, isSubmitting: true }
     case 'NEW_EVENT_CREATED':
-      return { ...state, isSubmitting: false, ...action.payload }
-    case 'RESET_REDIRECT':
-      return { ...state, redirect: false}
+      return { ...state, isSubmitting: false, errorCreating: action.errorCreating }
     default:
       return state
   }

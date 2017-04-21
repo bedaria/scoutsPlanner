@@ -28,7 +28,7 @@ export const fetchFriends = () => {
       }
     }
 
-    return axios.get('/users', config)
+    return axios.get('/api/users', config)
       .then(({data}) => {
         dispatch(receiveFriends("success", data.users))
       })

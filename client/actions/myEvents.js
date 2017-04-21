@@ -72,8 +72,8 @@ export const getMyEvent = (eventId) => {
   return (dispatch) => {
     dispatch(requestMyEvent(eventId))
 
-    const getVolunteerInfo = () => (axios.get('/events/' + eventId))
-    const getEventTasks = () => (axios.get('/events/' + eventId + '/tasks'))
+    const getVolunteerInfo = () => (axios.get('/api/events/' + eventId))
+    const getEventTasks = () => (axios.get('/api/events/' + eventId + '/tasks'))
 
     axios.all([getVolunteerInfo(), getEventTasks()])
       .then(axios.spread((event, eventTasks) => {
@@ -91,7 +91,7 @@ export const getMyEvents = () => {
   axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token')
   return (dispatch) => {
     dispatch(requestMyEvents())
-    axios.get('/events')
+    axios.get('/api/events')
       .then(({data}) => {
         dispatch(receiveMyEvents("success", data.adminEvents))
       })
