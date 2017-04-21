@@ -22,7 +22,7 @@ router.route('/events')
   .get(controllers.user.getAdminEvents)
 
 router.route('/events/:event_id')
-  .get(controllers.event.getAdminEventVolunteers) 
+  .get(controllers.event.getAdminEventVolunteers)
   // .post(controllers.event.changeEvent)
   // .delete(controllers.event.deleteEvent)
 

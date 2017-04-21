@@ -1,8 +1,9 @@
 const models = require('../models/index.js')
 const jwt = require('jsonwebtoken')
 
-const authenticate =  function (req, res, next) {
+const authorize =  function (req, res, next) {
   const token = req.headers['x-access-token']
+
   if(token) {
     jwt.verify(token, 'copperAndFrankie', function(err, decoded) {
       if(err)
@@ -20,4 +21,4 @@ const authenticate =  function (req, res, next) {
     return res.status(403).send({success: false, message: 'No token provided.'})
 }
 
-module.exports = authenticate
+module.exports = authorize
