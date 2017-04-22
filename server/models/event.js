@@ -6,20 +6,12 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false
     },
-    startTime: {
-      type: DataTypes.STRING,
+    startDateTime: {
+      type: DataTypes.DATE,
       allowNull: false
     },
-    endTime: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    startDate: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    endDate: {
-      type: DataTypes.STRING,
+    endDateTime: {
+      type: DataTypes.DATE,
       allowNull: false
     },
     message: DataTypes.STRING,
