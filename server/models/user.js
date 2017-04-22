@@ -8,12 +8,11 @@ module.exports = function(sequelize, DataTypes) {
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true
     },
-    phoneNumber: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
+    phoneAreaCode: DataTypes.STRING,
+    phoneNumber: DataTypes.STRING,
     profilePicturePath: DataTypes.STRING
   }, {
     classMethods: {
@@ -21,6 +20,14 @@ module.exports = function(sequelize, DataTypes) {
         User.belongsToMany(models.Group, {through: 'GroupMembers'})
         User.belongsToMany(models.Event, {through: models.EventVolunteer})
         User.belongsToMany(models.Task, {through: 'VolunteerTasks'})
+      }
+    }
+  }, {
+    hooks: {
+      beforeValidate: function(user, options) {
+        console.log("validating: ", user.name)
+        if(user.phoneAreaCode.length !== 3 || user.phoneNumber.length !== 7)
+          return sequelize.Promise.reject("Invalid phone number!")
       }
     }
   })

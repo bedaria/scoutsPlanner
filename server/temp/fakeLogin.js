@@ -8,6 +8,7 @@ const fakeLogin = (req, res) => {
      const idx = getRandomNumberBetween(0, users.length)
      const username = users[idx].dataValues.name
      const id = users[idx].dataValues.id
+     console.log("You are: ", id, username)
      const token = jwt.sign({username, id}, 'copperAndFrankie')
      res.json({username, token}).status(200).end()
   })

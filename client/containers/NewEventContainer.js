@@ -4,7 +4,7 @@ import { connect } from 'react-redux'
 import NewEventForm from './NewEventForm'
 import { createEvent, resetRedirect } from '../actions/newEvent'
 import { fetchFriends } from '../actions/friends'
-import { Grid, Row, Col } from 'react-bootstrap'
+import { Row, Col } from 'react-bootstrap'
 
 class NewEventContainer extends Component {
   componentWillMount = () => {

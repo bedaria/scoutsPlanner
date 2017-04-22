@@ -1,17 +1,18 @@
 import axios from 'axios'
-import { getInvites } from './invites'
 
 const loggingIn = () => {
   return {
     type: 'LOGGING_IN',
-    isLoggingIn: true
+    isLoggingIn: true,
+    isLoggedIn: false,
+    loginError: false
   }
 }
 
 const loggedIn = (status, token) => {
   const payload = status === "success" ?
-    { isLoggingIn: false, loggedIn: true, loginError: false }:
-    { isLoggingIn: false, loginError: true, loggedIn: false }
+    { isLoggingIn: false, isLoggedIn: true, loginError: false }:
+    { isLoggingIn: false, loginError: true, isLoggedIn: false }
 
   return {
     type: 'LOGGED_IN',
@@ -28,7 +29,6 @@ export const fakeLogin = () => {
         localStorage.setItem('username', username)
         localStorage.setItem('token', token)
         dispatch(loggedIn("success"))
-        dispatch(getInvites())
       })
       .catch(error => dispatch(loggedIn("error", error)))
   }

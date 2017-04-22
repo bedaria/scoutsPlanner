@@ -11,8 +11,12 @@ const tempRoutes = require('./temp/tempRoutes.js')
 const authorize = require('./middleware/authorization.js')
 
 const app = express()
-
+app.use((req,res,next)=> {
+  console.log("getting req: ", req.url)
+  next()
+})
 app.use(express.static(path.join(__dirname, '/../client')))
+app.use('/profile/picture', express.static(path.join(__dirname, 'profile_pictures')))
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(bodyParser.json())
 app.use(cors())
@@ -49,6 +53,7 @@ app.set('port', port)
 //   .then(success => {
 //    require('./temp/fakeUsers.js')
 // })
+
 db.sequelize.sync()
 app.listen(app.get('port'), () =>
   console.log('Express server listening on port: ', app.get('port'))

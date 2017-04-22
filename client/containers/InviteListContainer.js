@@ -5,7 +5,7 @@ import { getInvites } from '../actions/invites'
 
 class InviteListContainer extends Component {
   componentWillMount = () => {
-    this.props.getInvites()
+    // this.props.getInvites()
   }
 
   inviteClick = (event) => {
