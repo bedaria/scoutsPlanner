@@ -72,7 +72,6 @@ const birthdays = ["October 10 2017",
                    "August 9 2017",
                    "August 5 2017",
                    "September 21 2017"]
-
 const birthdayDates = birthdays.map(date => new Date(date))
 const fakeUserEmails = fakeUsers.map(user =>  user + "@" + "someplace.com")
 const fakePhoneNumber = "(111) 111-1111"
@@ -80,6 +79,11 @@ const fakeProfilePicPaths = fakeUsers.map((user, idx) => {
   const path = user.split(' ').join('')
   return profilePics.has(path) ? path : null
 })
+
+var invites = []
+for(var i = 0; i < fakeUsers.length; i++)
+  invites[i] = i
+
 var startTime = new Date()
 var endTime = new Date()
 startTime.setHours(20)
@@ -89,37 +93,63 @@ endTime.setHours(23)
 endTime.setMinutes(0)
 endTime.setSeconds(0)
 
-fakeUsers.forEach((fakeUser, idx) => setTimeout(() => {
-  console.log("creating: ", fakeUser, fakeUserEmails[idx], fakeProfilePicPaths[idx])
-  DB.User.create({
-    name: fakeUser,
-    email: fakeUserEmails[idx],
-    profilePicturePath: fakeProfilePicPaths[idx],
-    phoneNumber: '1234567',
-    phoneAreaCode: '111'
+
+var countUsersAndEvents = 0
+var users = []
+var events = []
+
+const createUsers = fakeUsers.map((fakeUser, idx) => {
+  return () =>  (
+      DB.User.create({
+        name: fakeUser,
+        email: fakeUserEmails[idx],
+        profilePicturePath: fakeProfilePicPaths[idx],
+        phoneNumber: '1234567',
+        phoneAreaCode: '111'
+      })
+    )
   })
-  .then(user => {
-    DB.Event.create({
-      name: "A birthday event.",
-      startTime: startTime,
-      endTime: endTime,
-      startDate: birthdayDates[idx],
-      endDate: birthdayDates[idx],
-      message: "MY BIRTHDAAAYY",
-      address: "TBD"
-    })
-    .then(event => {
-      return event.setMainAdmin(user)
-    })
-    .then(() => {
-      console.log(fakeUser, " created event")
-    })
-    .catch(error => {
-      console.log("error: ", error)
+
+const createEvents = birthdayDates.map(birthday => {
+  return () => (
+      DB.Event.create({
+        name: "Save the world on my birthday",
+        startTime: startTime,
+        endTime: endTime,
+        startDate: birthday,
+        endDate: birthday,
+        message: "Need help with stuff!",
+        address: "TBD"
+      })
+  )
+})
+
+const createUsersAndEvents = createUsers.concat(createEvents)
+var volunteers = []
+Promise.all(createUsersAndEvents.map(fn => fn()))
+  .then(results => {
+    console.log("done creating", results.length/2, "events and users.")
+    var users = results.splice(0, results.length/2)
+    var events = results
+    volunteers = users
+
+    const addAdmins = events.map((event, idx) => {
+      return () => (event.setMainAdmin(users[idx]))
     })
 
+    return Promise.all(addAdmins.map(fn => fn()))
+  })
+  .then(events => {
+    console.log("done setting main admins for", events.length, "events.")
+    const addVolunteers = events.map((event, idx) => {
+      return () => (event.addVolunteer(volunteers))
+    })
+
+    return Promise.all(addVolunteers.map(fn => fn()))
+  })
+  .then((events) => {
+    console.log("done inviting to", events.length, "events.")
   })
   .catch(error => {
-    console.log("error: ", error)
+    console.log("error with populating database: ", error)
   })
-}, 1000*idx))
