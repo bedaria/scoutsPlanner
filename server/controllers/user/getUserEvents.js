@@ -19,19 +19,16 @@ const models = require('../../models/index.js')
 const getUserEvents = (req, res) => {
   const query = {
     where: {id: req.user.id},
+    order: [[models.Event, 'startDateTime', 'ASC']],
     include: [{
       model: models.Event,
       attributes: ['id', 'mainAdminId', 'name', 'startDateTime', 'endDateTime', 'message', 'address'],
-      order: ['startDateTime', 'ASC']
     }]
    }
 
   models.User.findOne(query)
    .then(user => {
      var events = []
-     user.dataValues.Events.forEach(event => {
-       console.log("event: ", event.dataValues.startDateTime)
-     })
      if(user.dataValues.Events.length)
       events = user.dataValues.Events.map(event => {
         return {
