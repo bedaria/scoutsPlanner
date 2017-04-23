@@ -21,18 +21,19 @@ export const createEvent = (eventInfo, friends) => {
   eventInfo.startDate = eventInfo.date
   eventInfo.invited = eventInfo.invited.map(invitee => invitee.id)
   //eventInfo.name, eventInfo.address
-  
+
   axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token')
   return (dispatch) => {
     dispatch(submitNewEvent())
     axios.post('/api/events', eventInfo)
       .then(({ data }) => {
+        console.log("got data: ", data)
         const inviteFriends = () => {
           return axios.post('/api/events/' + data.eventId + '/invites', {invited: eventInfo.invited})
         }
         var requests = [inviteFriends]
 
-        if(eventInfo.tasks.length) {
+        if(eventInfo.tasks) {
           const addTasks = () => {
             return axios.post('/api/events/' + data.eventId + '/tasks', {tasks: eventInfo.tasks})
           }

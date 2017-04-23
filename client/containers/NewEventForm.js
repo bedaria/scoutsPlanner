@@ -194,6 +194,13 @@ class NewEventForm extends Component {
         </div>
         <Field name="address" component={Autocomplete}/>
         <label style={{'marginTop':'10px'}}>
+          <Field name="TBD" component="input" type="radio" value="addressRadio"/>
+          <span style={{
+            'marginLeft':'5px',
+            'marginRight':'5px'
+          }}> Address </span>
+        </label>
+        <label style={{'marginTop':'10px'}}>
           <Field name="TBD" component="input" type="radio" value="TBD"/>
           <span style={{'marginLeft':'5px'}}> TBD </span>
         </label>

@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { doneRedirecting } from '../actions/myEvents'
 
 class EventContainer extends Component {
   componentDidMount = () => {
-    this.props.doneRedirecting()
   }
 
   render = () => {
@@ -67,5 +65,4 @@ const mapStateToProps = ({myEvents}) => {
 
 export default connect(
   mapStateToProps,
-  { doneRedirecting }
 )(EventContainer)

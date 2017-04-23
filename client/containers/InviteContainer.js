@@ -1,10 +1,8 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { doneRedirecting } from '../actions/invites'
 
 class InviteContainer extends Component {
   componentWillMount = () => {
-    this.props.doneRedirecting()
   }
 
   render = () => {
@@ -32,6 +30,5 @@ const mapStateToProps = ({invites}) => {
 }
 
 export default connect(
-  mapStateToProps,
-  { doneRedirecting }
+  mapStateToProps
 )(InviteContainer)

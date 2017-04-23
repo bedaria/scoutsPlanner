@@ -7,17 +7,16 @@ import thunk from 'redux-thunk'
 import reducer from '../reducers'
 import ProfileContainer from '../containers/ProfileContainer'
 import NewEventContainer from '../containers/NewEventContainer'
-import InviteListContainer from '../containers/InviteListContainer'
-import EventListContainer from '../containers/EventListContainer'
 import InviteContainer from '../containers/InviteContainer'
 import EventContainer from '../containers/EventContainer'
 import LoginContainer from '../containers/LoginContainer'
 import SidebarTabsContainer from '../containers/SidebarTabsContainer'
+import EventListContainer from '../containers/EventListContainer'
 import { Navbar, Nav, NavItem } from 'react-bootstrap'
 import  { LinkContainer } from 'react-router-bootstrap'
 
-const middleware = [ thunk, createLogger() ]
-// const middleware = [ thunk ]
+// const middleware = [ thunk, createLogger() ]
+const middleware = [ thunk ]
 
 const store = createStore(
   reducer,
@@ -45,6 +44,11 @@ const App = () => (
                 Profile
               </NavItem>
             </LinkContainer>
+            <LinkContainer to="/events">
+              <NavItem>
+                Events
+              </NavItem>
+            </LinkContainer>
           </Nav>
         </Navbar>
         <div className="container2">
@@ -52,6 +56,7 @@ const App = () => (
             <Route exact path="/" component={LoginContainer}/>
             <Route path="/profile" component={ProfileContainer}/>
             <Route path="/newEvent" component={NewEventContainer}/>
+            <Route path="/events" component={EventListContainer}/>
           </div>
         </div>
       </div>

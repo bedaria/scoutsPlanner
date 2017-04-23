@@ -11,10 +11,12 @@ class ProfileContainer extends Component {
   render = () => {
     const { errorFetching, isFetchingProfile } = this.props
     const { email, name, phoneAreaCode, phoneNumber, profilePicturePath } = this.props
-    const path = profilePicturePath ?  profilePicturePath + ".jpeg" : "forrest.jpeg"
+    const path = profilePicturePath ?  profilePicturePath + ".png" : "forrest.png"
     return (
       <Row>
         <Col xs={6} md={4} mdOffset={2}>
+          {isFetchingProfile ? <div className="loader"/>:null}
+          {errorFetching ? <div> Error getting info... </div>:null}
           <h1> Hey, { name }</h1>
           <div> Email: { email }</div>
           <div> Phone Number: { toPhoneNumber(phoneAreaCode, phoneNumber) }</div>
