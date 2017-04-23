@@ -7,14 +7,15 @@ const models = require('../../models/index.js')
 //res will have:
 //    userEvents:
 //    <array <{
-//              info: {
-//                  name <string>,
-//                  id <number>,
-//                  startDateTime <datetime>,
-//                  endDateTime <datetime>
-//              }
-//              answer: {
-//                  isAttending <boolean>
+//              {
+//                isAdmin: <boolean>,
+//                name <string>,
+//                id <number>,
+//                startDateTime <datetime>,
+//                endDateTime <datetime>,
+//                answer: ['Yes', 'Maybe', 'No', null],
+//                userTasks: []
+//                eventTasks: [{id, name, description}]
 //            }
 const getUserEvents = (req, res) => {
   const query = {
@@ -23,6 +24,13 @@ const getUserEvents = (req, res) => {
     include: [{
       model: models.Event,
       attributes: ['id', 'mainAdminId', 'name', 'startDateTime', 'endDateTime', 'message', 'address'],
+      include: [{
+        model: models.Task,
+        attributes: ['id', 'name', 'description']
+      }]
+    }, {
+      model: models.Task,
+      attributes: ['id', 'name', 'description']
     }]
    }
 
@@ -37,11 +45,16 @@ const getUserEvents = (req, res) => {
           id: event.dataValues.id,
           startDateTime: event.dataValues.startDateTime,
           endDateTime: event.dataValues.endDateTime,
-          answer: event.dataValues.EventVolunteer.dataValues.isAttending
+          eventTasks: event.dataValues.Tasks.map(task => task.dataValues),
+          answer: event.dataValues.EventVolunteer.dataValues.isAttending,
+          volunteerStartTime: event.dataValues.EventVolunteer.dataValues.startDateTime,
+          volunteerEndTime: event.dataValues.EventVolunteer.dataValues.endDateTime,
+          volunteerTasks: user.Tasks
         }
       })
-    res.json({success: true, events}).status(200).end()
-   })
+
+      res.json({success: true, events}).status(200).end()
+    })
 }
 
 module.exports = getUserEvents
