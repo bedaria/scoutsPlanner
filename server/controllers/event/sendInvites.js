@@ -7,7 +7,8 @@ const models = require('../../models/index.js')
 //req.body should have:
 //        {invited: <array<integers>>}
 //res will have: {sentTo: <array<UserIds>>}
-const sendInvite = function(req, res) {
+const sendInvites = function(req, res) {
+
   if(!Array.isArray(req.body.invited) || typeof req.body.invited[0] !== 'number')
     res.json({success: false, error: "'invited' must be an array of integers."}).status(400).end()
   else {
@@ -37,9 +38,10 @@ const sendInvite = function(req, res) {
         return event.addVolunteer(users)
       })
       .then(volunteers => {
+        console.log("successfully invited a few")
         res.json({success: true}).status(200).end()
       })
     }
 }
 
-module.exports = sendInvite
+module.exports = sendInvites

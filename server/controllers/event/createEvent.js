@@ -5,14 +5,13 @@ const models = require('../../models/index.js')
 //NEED user id (from authentication)
 //req.body should have:
 //       {name: <string>,
-//        startTime: <string>,
-//        endTime: <string>,
-//        startDate: <string>,
-//        endDate: <string>
+//        startTime: <datetime>,
+//        endTime: <datetime>,
+//        startDate: <datetime>,
+//        endDate: <datetime>
 //        message: <string> (optional)}
 //res will have: { eventId: <integer> }
-const createEvent = function(req, res){
-  console.log("req.body: ", req.body)
+const createEvent = function(req, res) {
   if(!req.body.name || !req.body.startTime || !req.body.endTime || !req.body.startDate)
     res.json({"error": "Must have name, startTime, endTime, startDate, endDate and/or message."}).status(400).end()
   else {
@@ -31,7 +30,7 @@ const createEvent = function(req, res){
         return event.setMainAdmin(user)
       })
       .then(event =>
-        res.json({success: true}).status(200).end()
+        res.json({success: true, eventId: event.dataValues.id}).status(200).end()
       )
   }
 }

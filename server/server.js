@@ -11,8 +11,8 @@ const tempRoutes = require('./temp/tempRoutes.js')
 const authorize = require('./middleware/authorization.js')
 
 const app = express()
-app.use((req,res,next)=> {
-  console.log("getting req: ", req.url)
+app.use((req, res, next) => {
+  console.log("got: ", req.url)
   next()
 })
 app.use(express.static(path.join(__dirname, '/../client')))
@@ -43,16 +43,15 @@ app.use((req, res, next) => {
 })
 
 app.use((err, req, res, next) => {
-  console.error(err)
-  res.status(err.status || 500).end()
+  res.json({success: false, error: err}).status(err.status || 500).end()
 })
 
 app.set('port', port)
 
 // db.sequelize.sync({force: true})
 //   .then(success => {
-//    require('./temp/fakeUsers.js')
-// })
+//    require('./temp/populateDB.js')
+//   })
 
 db.sequelize.sync()
 app.listen(app.get('port'), () =>
