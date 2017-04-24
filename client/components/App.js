@@ -7,8 +7,8 @@ import thunk from 'redux-thunk'
 import reducer from '../reducers'
 import ProfileContainer from '../containers/ProfileContainer'
 import NewEventContainer from '../containers/NewEventContainer'
-import EventContainer from '../containers/EventContainer'
 import LoginContainer from '../containers/LoginContainer'
+import InviteContainer from '../components/InviteContainer'
 import EventListContainer from '../containers/EventListContainer'
 import { Navbar, Nav, NavItem, Row, Col } from 'react-bootstrap'
 import  { LinkContainer } from 'react-router-bootstrap'
@@ -58,7 +58,7 @@ const App = () => (
           <Route path="/newEvent" component={NewEventContainer}/>
           <div className="eventsContainer">
               <Route path="/events" component={EventListContainer}/>
-              <Route path="/events/:event" component={EventContainer}/>
+              <Route path="/events/:event/invite" component={InviteContainer}/>
           </div>
         </div>
       </div>

@@ -18,7 +18,7 @@ export const EventList = ({events}) => {
               <ListGroupItem >
                   {event.name}
                   <span className="right">
-                    <Link to={`/events/${event.id}`} >
+                    <Link to={event.isAdmin ? `/events/${event.id}/admin` : `/events/${event.id}/invite`} >
                       {event.isAdmin ? "Admin": event.answer || "Volunteer!"}
                     </Link>
                   </span>
