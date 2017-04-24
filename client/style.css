@@ -32,6 +32,7 @@
 
 .right {
   float: right;
+  margin-left: 5px;
 }
 
 .eventsContainer {
@@ -50,6 +51,8 @@
 .eventsSidebar {
   flex-grow: 0;
 }
+
+
 /*@media only screen and (max-device-width: 480px) {
       .show-mobile {
         display: block;
