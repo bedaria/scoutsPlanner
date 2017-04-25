@@ -8,8 +8,9 @@ import reducer from '../reducers'
 import ProfileContainer from '../containers/ProfileContainer'
 import NewEventContainer from '../containers/NewEventContainer'
 import LoginContainer from '../containers/LoginContainer'
-import InviteContainer from '../components/InviteContainer'
+import InviteContainer from '../containers/InviteContainer'
 import EventListContainer from '../containers/EventListContainer'
+import AnswerContainer from '../containers/AnswerContainer'
 import { Navbar, Nav, NavItem, Row, Col } from 'react-bootstrap'
 import  { LinkContainer } from 'react-router-bootstrap'
 
@@ -57,8 +58,9 @@ const App = () => (
           <Route path="/profile" component={ProfileContainer}/>
           <Route path="/newEvent" component={NewEventContainer}/>
           <div className="eventsContainer">
-              <Route path="/events" component={EventListContainer}/>
-              <Route path="/events/:event/invite" component={InviteContainer}/>
+            <Route path="/events" component={EventListContainer}/>
+            <Route path="/events/:event/invite" component={InviteContainer}/>
+            <Route path="/events/:event/answer" component={AnswerContainer}/>
           </div>
         </div>
       </div>
