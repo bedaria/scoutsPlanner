@@ -15,30 +15,39 @@ class NewEventContainer extends Component {
     const { friends, isFetchingFriends, errorFetchingFriends } = this.props
     const { createEvent, errorCreatingEvent, isSubmittingEvent } = this.props
 
-    return (
-      <div>
-        <Row>
-          <Col xs={4} md={4} xsOffset={4} mdOffset={4}>
-            { isFetchingFriends || isSubmittingEvent ? <div className="loader" /> : null }
-            { errorFetchingFriends ? <div> Error fetching friends, please reload... </div> : null }
-            { errorCreatingEvent ? <div> Error creating event, please resubmit </div> : null }
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={4} md={4} xsOffset={4} mdOffset={4}>
-            <h1 style={{'textAlign':'center'}}> New Event </h1>
-          </Col>
-        </Row>
-        <Row>
-          <Col xs={4} md={4} xsOffset={4} mdOffset={4}>
-            <NewEventForm friends={friends}
-                          onSubmit={(eventInfo) => createEvent(eventInfo, friends)}/>
-          </Col>
-        </Row>
-      </div>
-    )
+    if(isFetchingFriends || isSubmittingEvent)
+      return showErrorMessageOrLoader("loader")
+    if(errorFetchingFriends)
+      return showErrorMessageOrLoader("error", "Error fetching friends, please reload...")
+    else if(errorCreatingEvent)
+      return showErrorMessageOrLoader("error", "Error creating event, please resubmit...")
+    else
+      return (
+        <div>
+          <Row>
+            <Col xs={4} md={4} xsOffset={4} mdOffset={4}>
+              <h1 style={{'textAlign':'center'}}> New Event </h1>
+            </Col>
+          </Row>
+          <Row>
+            <Col xs={4} md={4} xsOffset={4} mdOffset={4}>
+              <NewEventForm friends={friends}
+                            onSubmit={(eventInfo) => createEvent(eventInfo, friends)}/>
+            </Col>
+          </Row>
+        </div>
+      )
   }
 }
+
+//type: "error" or "loader", message: string
+const showErrorMessageOrLoader = (type, message) => (
+  <Row>
+    <Col xs={4} md={4} xsOffset={4} mdOffset={4}>
+      {type === "error" ? <div> {message} </div> : <div className="loader" />}
+    </Col>
+  </Row>
+)
 
 const mapStateToProps = ({newEvent, friends}) => {
   return {

@@ -11,45 +11,55 @@ class EventListContainer extends Component {
  }
 
   render = () => {
-    const {errorFetchingEvents, isFetchingEvents, events} = this.props
-    return (
-      <div className="eventsSidebar">
-        <Tabs id="events" defaultActiveKey={1} style={{borderRight: "1px solid #ddd", overflowY:"scroll", overflowX: "hidden"}}>
+    const { errorFetchingEvents, isFetchingEvents } = this.props
+    const { events, adminEvents, invites } = this.props
+
+    if(isFetchingEvents)
+      return showErrorMessageOrLoader("loader")
+    else if(errorFetchingEvents)
+      return showErrorMessageOrLoader("error", "You have no events!")
+    else
+      return (
+        <Tabs className="eventsSidebar" id="events" defaultActiveKey={1}>
+          <div className="sort">
+            Sort by date: ascending descending
+          </div>
           <Tab eventKey={1} title="All">
-              <div className="sort">
-                Sort by date: ascending descending
-              </div>
-              { errorFetchingEvents ? <span> An error occurred getting events..hold on </span>:null }
-              { isFetchingEvents ? <div className="loader"/>: null}
               { events.length ? <EventList events={events}/> : "You have no events!"}
           </Tab>
           <Tab eventKey={2} title="Admin">
-            <div className="sort">
-              Sort by date: ascending descending
-            </div>
-             { errorFetchingEvents ? <span> An error occurred getting events..hold on </span>:null }
-             { isFetchingEvents ? <div className="loader"/>: null}
-             { events.length ? <EventList events={events} /> : "You have no events!"}
+             { invites.length ? <EventList events={adminEvents} /> : "You're not an admin of any events!"}
           </Tab>
           <Tab eventKey={3} title="Invites">
-            <div className="sort">
-              Sort by date: ascending descending
-            </div>
-              { errorFetchingEvents ? <span> An error occurred getting events..hold on </span>:null }
-              { isFetchingEvents ? <div className="loader"/>: null}
-              { events.length ? <EventList events={events} /> : "You have no events!"}
+              { adminEvents.length ? <EventList events={invites} /> : "You have no invites!"}
           </Tab>
         </Tabs>
-      </div>
     )
   }
 }
+
+//type: "error" or "loader", message: string
+const showErrorMessageOrLoader = (type, message) => (
+  <Tabs className="eventsSidebar" id="events" defaultActiveKey={1}>
+    <Tab eventKey={1} title="All" >
+      {
+        type === "error" ?
+        <span> {message} </span> :
+        <div className="loader" />
+      }
+    </Tab>
+    <Tab eventKey={2} title="Admin"/>
+    <Tab eventKey={3} title="Invites"/>
+  </Tabs>
+)
 
 const mapStateToProps = ({events}) => {
   return {
     events: events.events,
     isFetchingEvents: events.isFetching,
-    errorFetchingEvents: events.errorFetching
+    errorFetchingEvents: events.errorFetching,
+    invites: events.invites,
+    adminEvents: events.adminEvents
   }
 }
 
