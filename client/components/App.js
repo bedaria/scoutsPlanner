@@ -10,7 +10,7 @@ import NewEventContainer from '../containers/NewEventContainer'
 import LoginContainer from '../containers/LoginContainer'
 import InviteContainer from '../containers/InviteContainer'
 import EventListContainer from '../containers/EventListContainer'
-import AnswerContainer from '../containers/AnswerContainer'
+import ReplyContainer from '../containers/ReplyContainer'
 import { Navbar, Nav, NavItem, Row, Col } from 'react-bootstrap'
 import  { LinkContainer } from 'react-router-bootstrap'
 
@@ -60,7 +60,7 @@ const App = () => (
           <div className="eventsContainer">
             <Route path="/events" component={EventListContainer}/>
             <Route path="/events/:event/invite" component={InviteContainer}/>
-            <Route path="/events/:event/answer" component={AnswerContainer}/>
+            <Route path="/events/:event/reply" component={ReplyContainer}/>
           </div>
         </div>
       </div>

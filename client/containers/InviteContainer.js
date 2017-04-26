@@ -4,7 +4,7 @@ import { Panel, PanelGroup, Button, Well } from 'react-bootstrap'
 
 class InviteContainer extends Component {
   handleClick = () => {
-    this.props.history.push(`/events/${this.props.match.params.event}/answer`)
+    this.props.history.push(`/events/${this.props.match.params.event}/reply`)
   }
 
   render = () => {
