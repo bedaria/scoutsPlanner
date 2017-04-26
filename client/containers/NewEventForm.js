@@ -2,14 +2,14 @@ import React, { Component } from 'react'
 import { connect } from 'redux'
 import { Field, FieldArray, reduxForm } from 'redux-form'
 import moment from 'moment'
+import localizer from 'react-widgets/lib/localizers/simple-number'
 import momentLocaliser from 'react-widgets/lib/localizers/moment'
-import Multiselect from 'react-widgets/lib/Multiselect'
-import DateTimePicker from 'react-widgets/lib/DateTimePicker'
-import DropdownList from 'react-widgets/lib/DropdownList'
+import { Multiselect, DateTimePicker, DropdownList, NumberPicker } from 'react-widgets'
 import { FormControl, Button, Glyphicon, InputGroup } from 'react-bootstrap'
-
 import 'react-widgets/lib/less/react-widgets.less'
+
 momentLocaliser(moment)
+localizer()
 
 const validate = (values) => {
   const errors = {}
@@ -52,33 +52,45 @@ const renderTextField = ({input, placeholder, meta: {touched, error}}) =>
   </div>
 
 const renderTextAreaField = ({input, placeholder}) =>
-    <FormControl
-      {...input}
-      componentClass="textarea"
-      placeholder={placeholder}
-      style={{'marginTop':'10px'}}
-    />
+  <FormControl
+    {...input}
+    componentClass="textarea"
+    placeholder={placeholder}
+    style={{'marginTop':'10px'}}
+  />
+
+
+const renderNumberPicker = ({input: {value, onChange}}) =>
+  <NumberPicker
+    value={Number(value)}
+    onChange={onChange}
+  />
 
 const renderTasks = ({ fields }) =>
     <div style={{'marginTop':'10px'}}>
       {fields.map((task, index) =>
         <div key={index}>
-          <InputGroup>
-            <Field name={`${task}.name`}
-                   component={renderTextField}
-                   placeholder="Add a task:"
-                   />
-            <InputGroup.Button>
-              <Button
-                style={{'marginTop':'10px'}}
-                bsStyle="danger"
-                type="button"
-                title="Remove Task"
-                onClick={() => fields.remove(index)}>
-                  <Glyphicon glyph="remove"/>
-              </Button>
-            </InputGroup.Button>
-          </InputGroup>
+            <InputGroup>
+              <Field name={`${task}.name`}
+                     component={renderTextField}
+                     placeholder="Task:"
+                     />
+              <InputGroup.Button>
+                <Button
+                  style={{'marginTop':'10px'}}
+                  bsStyle="danger"
+                  type="button"
+                  title="Remove Task"
+                  onClick={() => fields.remove(index)}>
+                    <Glyphicon glyph="remove"/>
+                </Button>
+              </InputGroup.Button>
+            </InputGroup>
+            <label> # needed:
+              <Field name={`${task}.count`}
+              component={renderNumberPicker}
+              />
+            </label>
         </div>
       )}
       <Button onClick={() => fields.push({})}>
