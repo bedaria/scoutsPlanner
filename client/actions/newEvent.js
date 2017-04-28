@@ -2,14 +2,22 @@ import axios from 'axios'
 
 const submitNewEvent = () => {
   return {
-    type: 'SUBMIT_NEW_EVENT'
+    type: 'SUBMIT_NEW_EVENT',
+    payload: {
+      isCreating: true,
+      errorCreating: false
+    }
   }
 }
 
 const doneCreating = (status) => {
+  payload = status === "success" ?
+    { isCreating: false, errorCreating: false } :
+    { isCreating: true, errorCreating: true }
+
   return {
     type: 'NEW_EVENT_CREATED',
-    errorCreating: status === "success"
+    payload
   }
 }
 
@@ -27,7 +35,6 @@ export const createEvent = (eventInfo, friends) => {
     dispatch(submitNewEvent())
     axios.post('/api/events', eventInfo)
       .then(({ data }) => {
-        console.log("got data: ", data)
         const inviteFriends = () => {
           return axios.post('/api/events/' + data.eventId + '/invites', {invited: eventInfo.invited})
         }

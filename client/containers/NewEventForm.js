@@ -191,7 +191,7 @@ class NewEventForm extends Component {
           component={renderDatePicker}
           placeholder="Pick a date"
         />
-        <div className="times">
+        <div className="inline">
           <Field
             name="startTime"
             component={renderTimePicker}

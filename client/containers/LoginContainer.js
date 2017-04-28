@@ -16,9 +16,9 @@ class LoginContainer extends Component {
       <div>
         <Row>
           <Col xs={4} md={4} xsOffset={4} mdOffset={4}>
-            {isLoggingIn ? <div className="loader" /> : null}
-            {loginError ?  <div> Error logging in, try again> </div> : null}
-            {isLoggedIn ? <Redirect push to="/profile" />: null}
+            {isLoggingIn && <div className="loader" />}
+            {loginError &&  <div> Error logging in, try again> </div>}
+            {isLoggedIn && <Redirect push to="/profile" />}
           </Col>
         </Row>
         <Form horizontal>

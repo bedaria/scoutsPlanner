@@ -5,10 +5,10 @@ const initialState = {
 
 export const newEvent = (state = initialState, action) => {
   switch(action.type) {
-    case 'CREATE_NEW_EVENT':
-      return { ...state, isSubmitting: true }
+    case 'SUBMIT_NEW_EVENT':
+      return { ...state, ...action.payload }
     case 'NEW_EVENT_CREATED':
-      return { ...state, isSubmitting: false, errorCreating: action.errorCreating }
+      return { ...state, ...action.payload }
     default:
       return state
   }

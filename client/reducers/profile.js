@@ -10,7 +10,7 @@ const initialState = {
 export const profile = (state = initialState, action) => {
     switch(action.type) {
       case 'GET_PROFILE':
-        return {...state, isFetching: action.isFetching }
+        return {...state, ...action.payload }
       case 'RECEIVE_PROFILE':
         return {...state, ...action.payload }
       default:

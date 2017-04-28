@@ -3,7 +3,10 @@ import axios from 'axios'
 const isFetchingProfile = () => {
   return {
     type: 'GET_PROFILE',
-    isFetching: true
+    payload: {
+      isFetching: true,
+      errorFetching: false
+    }
   }
 }
 

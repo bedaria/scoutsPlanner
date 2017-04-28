@@ -3,7 +3,10 @@ import axios from 'axios'
 const requestFriends = () => {
   return {
     type: 'REQUEST_FRIENDS',
-    isFetching: true
+    payload: {
+      isFetching: true,
+      errorFetching: false
+    }
   }
 }
 

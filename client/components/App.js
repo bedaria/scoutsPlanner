@@ -53,7 +53,7 @@ const App = () => (
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-        <div className="container2">
+        <div>
           <Route exact path="/" component={LoginContainer}/>
           <Route path="/profile" component={ProfileContainer}/>
           <Route path="/newEvent" component={NewEventContainer}/>

@@ -7,7 +7,7 @@ const initialState = {
 export const friends = (state = initialState, action) => {
   switch(action.type) {
     case 'REQUEST_FRIENDS':
-      return {...state, isFetching: action.isFetching}
+      return {...state, ...action.payload}
     case 'RECEIVE_FRIENDS':
       return {...state, ...action.payload}
     default:

@@ -20,7 +20,7 @@
   100% { transform: rotate(360deg); }
 }
 
-.times {
+.inline {
   display: -webkit-flex;
   display: flex;
 }
