@@ -81,7 +81,7 @@ const fakeProfilePicPaths = fakeUsers.map((user, idx) => {
 
 const tasks = []
 for(var i = 0; i < fakeUsers.length; i++)
-  tasks[i] = {'name': "a task " + i}
+  tasks[i] = {'name': 'a task ' + i, 'volunteersNeeded': 20 }
 
 var invites = []
 for(var i = 0; i < fakeUsers.length; i++)
@@ -111,7 +111,7 @@ const createEvents = birthdays.map((date,idx) => {
 
   return () => (
       DB.Event.create({
-        name: "Save the world on my birthday",
+        name: "Something",
         startDateTime: startDateTime,
         endDateTime: endDateTime,
         message: "Need help with stuff!",

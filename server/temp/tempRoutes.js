@@ -1,13 +1,13 @@
 'use strict'
 
 const router = require('express').Router()
-const fakeInviteAnswers = require('./fakeInviteAnswers')
+const fakeReplies = require('./fakeReplies')
 
 router.param('event_id', (req, res, next, id) => {
   req.event = {id}
   next()
 })
 
-router.post('/:event_id', fakeInviteAnswers)
+router.post('/:event_id', fakeReplies)
 
 module.exports = router

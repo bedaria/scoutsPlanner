@@ -22,14 +22,11 @@ module.exports = function(sequelize, DataTypes) {
         User.belongsToMany(models.Task, {through: 'VolunteerTasks'})
       }
     }
-  }, {
-    hooks: {
-      beforeValidate: function(user, options) {
-        console.log("validating: ", user.name)
-        if(user.phoneAreaCode.length !== 3 || user.phoneNumber.length !== 7)
-          return sequelize.Promise.reject("Invalid phone number!")
-      }
-    }
+  })
+
+  User.beforeValidate((user, options) => {
+    if(user.phoneAreaCode.length !== 3 || user.phoneNumber.length !== 7)
+      return sequelize.Promise.reject("Invalid phone number!")
   })
 
   return User

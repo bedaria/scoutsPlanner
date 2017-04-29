@@ -5,7 +5,7 @@ const models = require('../models/index.js')
 // answer: isAttending: ['Yes', 'No', 'Maybe', null]
 //         startTime/endTime: picks at least an hour during the event hours
 //         tasks: picks one of the tasks if there are any
-const fakeInviteAnswers = (req, res) => {
+const fakeReplies = (req, res) => {
   var startTime = ''
   var endTime = ''
   console.log("Faking answers")
@@ -117,4 +117,4 @@ const fakeAnswers = (taskCount, startTime, endTime) => {
   return {updateInfo, taskIdx: pickedTaskIdx}
 }
 
-module.exports = fakeInviteAnswers
+module.exports = fakeReplies
