@@ -15,7 +15,7 @@ const validate = (values) => {
   const errors = {}
 
   if(!values.name)
-    errors.eventName = 'Required!'
+    errors.name = 'Required!'
 
   if(!values.invited)
     errors.invited = 'Invite someone!'
@@ -30,7 +30,14 @@ const validate = (values) => {
     errors.endDateTime = 'Event must end at least 30 minutes after starting.'
 
   if(!values.addr)
-    errors.address = 'Add address?'
+    errors.addr = 'Address?'
+
+  let wrapperError = ''
+  values.tasks.forEach(task => {
+    if(!task.name)
+      wrapperError = 'Task name required!'
+  })
+  errors.tasksWrapper = wrapperError
 
   return errors
 }
@@ -61,7 +68,7 @@ class NewEventForm extends Component {
         </div>
         <Field name = 'addr' component={renderAddressRadio} />
         { addr === 'addr' && <Field name="address" component={Autocomplete}/> }
-        <FieldArray name="tasks" component={renderTasks} />
+        <Field name="tasksWrapper" component={renderTasksWrapper} />
         <Button type="submit"
                 bsSize="large"
                 style={{'marginTop':'10px'}}
@@ -75,7 +82,10 @@ class NewEventForm extends Component {
 
 NewEventForm = reduxForm({
   form: 'newEvent',
-  validate
+  validate,
+  initialValues: {
+    tasks: [{name: '', volunteersNeeded: 1}]
+  }
 })(NewEventForm)
 
 const selector = formValueSelector('newEvent')
@@ -91,7 +101,7 @@ NewEventForm = connect(
 
 export default NewEventForm
 
-const renderTextField = ({input, placeholder, meta: {touched, error}}) =>
+const renderTextField = ({input, placeholder, meta: {error}}) =>
   <div>
     <FormControl
       {...input }
@@ -110,7 +120,7 @@ const renderTextAreaField = ({input, placeholder}) =>
     style={{'marginTop':'10px'}}
   />
 
-const renderAddressRadio = ({input, meta: {error}}) => (
+const renderAddressRadio = ({input, meta: {error}}) =>
   <div>
     <label style={{'marginTop':'10px'}}>
       <Field name="addr" component="input" type="radio" value="addr"/>
@@ -123,9 +133,10 @@ const renderAddressRadio = ({input, meta: {error}}) => (
       <Field name="addr" component="input" type="radio" value="TBD"/>
       <span style={{'marginLeft':'5px'}}> TBD </span>
     </label>
-    {error && <span style={{'color': '#a94442'}}> {error} </span>}
+    <div>
+      {error && <span style={{'color': '#a94442'}}> {error} </span>}
+    </div>
   </div>
-)
 
 const renderNumberPicker = ({input: {value, onChange}}) =>
   <NumberPicker
@@ -135,39 +146,46 @@ const renderNumberPicker = ({input: {value, onChange}}) =>
     min={1}
   />
 
+const renderTasksWrapper = ({input, meta: {error}}) =>
+  <div>
+    <FieldArray name="tasks" component={renderTasks} />
+    {error && <span style={{'color': '#a94442'}}> {error} </span>}
+  </div>
+
+
 const renderTasks = ({ fields }) =>
-    <div>
-      {fields.map((task, index) =>
-        <div key={index}>
-          <label style={{"marginTop": '15px'}}> Task name and number of volunteers needed: </label>
-          <div style={{display: 'flex'}}>
-              <InputGroup>
-                <Field name={`${task}.name`}
-                       component={renderTextField}
-                       placeholder="Task:"
-                       />
-                <InputGroup.Button>
-                  <Button
-                    bsStyle="danger"
-                    type="button"
-                    title="Remove Task"
-                    style={{"marginTop": '10px'}}
-                    onClick={() => fields.remove(index)}>
-                      <Glyphicon glyph="remove"/>
-                  </Button>
-                </InputGroup.Button>
-              </InputGroup>
-              <Field name={`${task}.volunteersNeeded`}
-                     component={renderNumberPicker}
-              />
-          </div>
+  <div>
+    {fields.map((task, index) =>
+      <div key={index}>
+        <label style={{"marginTop": '15px'}}> Task name and number of volunteers needed: </label>
+        <div style={{display: 'flex'}}>
+            <InputGroup>
+              <Field name={`${task}.name`}
+                     component={renderTextField}
+                     placeholder="Task:"
+                     />
+              <InputGroup.Button>
+                <Button
+                  bsStyle="danger"
+                  type="button"
+                  title="Remove Task"
+                  style={{"marginTop": '10px'}}
+                  onClick={() => fields.remove(index)}>
+                    <Glyphicon glyph="remove"/>
+                </Button>
+              </InputGroup.Button>
+            </InputGroup>
+            <Field name={`${task}.volunteersNeeded`}
+                   component={renderNumberPicker}
+            />
         </div>
-      )}
-      <Button onClick={() => fields.push({})} style={{marginTop: '10px'}}>
-        <Glyphicon glyph="plus"/>
-          Add Task
-      </Button>
-    </div>
+      </div>
+    )}
+    <Button onClick={() => fields.push({})} style={{marginTop: '10px'}}>
+      <Glyphicon glyph="plus"/>
+        Add Task
+    </Button>
+  </div>
 
 const renderMultiSelect = ({input, data, valueField, textField, placeholder, meta: {error}}) =>
     <div>

@@ -14,7 +14,7 @@ class NewEventContainer extends Component {
     const { friends, isFetchingFriends, errorFetchingFriends } = this.props
     const { createEvent, errorCreatingEvent, isSubmittingEvent } = this.props
 
-    if(isFetchingFriends || isSubmittingEvent)
+    if(isFetchingFriends)
       return <Loader />
     if(errorFetchingFriends)
       return <ErrorMessage message="Error fetching friends, please reload..." />
@@ -26,6 +26,7 @@ class NewEventContainer extends Component {
           <Row>
             <Col xs={4} md={4} xsOffset={4} mdOffset={4}>
               <h1 style={{'textAlign':'center'}}> New Event </h1>
+              {isSubmittingEvent && <Loader />}
             </Col>
           </Row>
           <Row>
@@ -34,15 +35,16 @@ class NewEventContainer extends Component {
                 friends={friends}
                 onSubmit={(eventInfo) => {
                   const newEvent = {}
-                  const invited = eventInfo.invited[0].name === 'All'? friends : eventInfo.invited
+                  const hasAll = eventInfo.invited.reduce((hasAll, current) => {
+                    return hasAll || current.name === 'All'
+                  }, false)
+                  const invited = hasAll ? friends : eventInfo.invited
                   newEvent.invited = invited.map(friend => friend.id)
                   newEvent.address = eventInfo.addr === 'addr' ? eventInfo.address : 'TBD'
                   newEvent.name = eventInfo.name
                   newEvent.startDateTime = eventInfo.startDateTime
                   newEvent.endDateTime = eventInfo.endDateTime
-                  newEvent.tasks = eventInfo.tasks
-                    .filter(task => (task.name))
-                    .map(task => {
+                  newEvent.tasks = eventInfo.tasks.map(task => {
                       task.volunteersNeeded = task.volunteersNeeded ? task.volunteersNeeded : 1
                       return task
                     })
