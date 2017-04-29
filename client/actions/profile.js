@@ -31,7 +31,7 @@ export const getProfileInfo = () => {
       }
     }
 
-    return axios.get('/api/users/profile', config)
+    return axios.get('/api/user', config)
       .then(({data}) => {
         dispatch(receiveProfile("success", data.profileInfo))
       })

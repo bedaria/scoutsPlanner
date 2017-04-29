@@ -12,7 +12,7 @@ class InviteContainer extends Component {
     let event = eventsById[this.props.match.params.event]
 
     if(!Object.keys(eventsById).length)
-      return <div className="laoder"/>
+      return <div className="loader"/>
     else if(!event)
       return <div> Event not found. </div>
     else {
