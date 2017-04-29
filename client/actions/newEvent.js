@@ -21,44 +21,20 @@ const doneCreating = (status) => {
   }
 }
 
-export const createEvent = (eventInfo, friends) => {
-  if(eventInfo.invited[0].id === 0)
-    eventInfo.invited = friends
-
-  eventInfo.endDate = eventInfo.date
-  eventInfo.startDate = eventInfo.date
-  eventInfo.invited = eventInfo.invited.map(invitee => invitee.id)
-  //eventInfo.name, eventInfo.address
-
+export const createEvent = (eventInfo) => {
   axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token')
+
   return (dispatch) => {
     dispatch(submitNewEvent())
-    axios.post('/api/events', eventInfo)
+    axios.post('/api/user/events', eventInfo)
       .then(({ data }) => {
-        const inviteFriends = () => {
-          return axios.post('/api/events/' + data.eventId + '/invites', {invited: eventInfo.invited})
-        }
-        var requests = [inviteFriends]
-
-        if(eventInfo.tasks) {
-          const addTasks = () => {
-            return axios.post('/api/events/' + data.eventId + '/tasks', {tasks: eventInfo.tasks})
-          }
-          requests.push(addTasks)
-        }
-
-        axios.all(requests.map(request => request()))
-          .then(axios.spread((friendsInvited, tasksAdded) => {
-              dispatch(doneCreating("success"))
-              // axios.post('/fakeAnswers/' + data.eventId)
-            })
-          )
-          .catch(error => {
-            dispatch(doneCreating("error"))
-          })
+        console.log("got data: ", data)
       })
       .catch(error => {
-        dispatch(doneCreating("error"))
+        console.log(" myerror: ", error)
       })
-  }
+
+    }
+
+
 }
