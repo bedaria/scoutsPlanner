@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { connect } from 'redux'
-import { Field, FieldArray, reduxForm } from 'redux-form'
+import { connect } from 'react-redux'
+import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import moment from 'moment'
 import localizer from 'react-widgets/lib/localizers/simple-number'
 import momentLocaliser from 'react-widgets/lib/localizers/moment'
@@ -20,28 +20,79 @@ const validate = (values) => {
   if(!values.invited)
     errors.invited = 'Invite someone!'
 
-  if(!values.date)
-    errors.date = 'Required!'
+  if(!values.startDateTime)
+    errors.startDateTime = 'Required!'
 
-  if(!values.startTime)
-    errors.startTime = 'Required!'
+  if(!values.endDateTime)
+    errors.endDateTime = 'Required!'
 
-  if(!values.endTime)
-    errors.endTime = 'Required!'
+  if(values.startDateTime && values.endDateTime && (values.startDateTime.getTime() + 1740000 > values.endDateTime.getTime()))
+    errors.endDateTime = 'Event must end at least 30 minutes after starting.'
 
-  if(values.startTime && values.endTime && (values.endTime.getTime() < values.startTime.getTime()))
-    errors.endTime = 'Event can\'t end before starting'
-  else if(values.startTime && values.endTime && (values.endTime.getTime() - values.startTime.getTime() < 900000))
-    errors.endTime = 'Event must bet at least 15 minutes...'
-
-  if(!values.address && !values.TBD)
-    errors.address = 'Address TBD?'
+  if(!values.addr)
+    errors.address = 'Add address?'
 
   return errors
 }
 
+class NewEventForm extends Component {
+  render() {
+    const { handleSubmit, friends, addr } = this.props;
+    return (
+      <form onSubmit={handleSubmit}>
+        <Field name="name" component={renderTextField} placeholder="Event name: "/>
+        <Field name="message" component={renderTextAreaField} placeholder="Message: "/>
+        <Field name="invited"
+               component={renderMultiSelect}
+               data={[{id: 0, name: 'All'}].concat(friends)}
+               valueField="id"
+               textField="name"
+               placeholder="Pick who to invite: "
+        />
+        <div className="inline">
+          <Field name="startDateTime"
+                 component={renderDateTimePicker}
+                 placeholder="Pick a startDate"
+          />
+          <Field name="endDateTime"
+                 component={renderDateTimePicker}
+                 placeholder="Pick an endDate"
+          />
+        </div>
+        <Field name = 'addr' component={renderAddressRadio} />
+        { addr === 'addr' && <Field name="address" component={Autocomplete}/> }
+        <FieldArray name="tasks" component={renderTasks} />
+        <Button type="submit"
+                bsSize="large"
+                style={{'marginTop':'10px'}}
+                block>
+        Submit
+        </Button>
+      </form>
+    )
+  }
+}
+
+NewEventForm = reduxForm({
+  form: 'newEvent',
+  validate
+})(NewEventForm)
+
+const selector = formValueSelector('newEvent')
+NewEventForm = connect(
+  state => {
+    let addr = selector(state, 'addr')
+
+    return {
+      addr
+    }
+  }
+)(NewEventForm)
+
+export default NewEventForm
+
 const renderTextField = ({input, placeholder, meta: {touched, error}}) =>
-<div>
+  <div>
     <FormControl
       {...input }
       placeholder={placeholder}
@@ -59,41 +110,60 @@ const renderTextAreaField = ({input, placeholder}) =>
     style={{'marginTop':'10px'}}
   />
 
+const renderAddressRadio = ({input, meta: {error}}) => (
+  <div>
+    <label style={{'marginTop':'10px'}}>
+      <Field name="addr" component="input" type="radio" value="addr"/>
+      <span style={{
+        'marginLeft':'5px',
+        'marginRight':'5px'
+      }}> Address </span>
+    </label>
+    <label style={{'marginTop':'10px'}}>
+      <Field name="addr" component="input" type="radio" value="TBD"/>
+      <span style={{'marginLeft':'5px'}}> TBD </span>
+    </label>
+    {error && <span style={{'color': '#a94442'}}> {error} </span>}
+  </div>
+)
 
 const renderNumberPicker = ({input: {value, onChange}}) =>
   <NumberPicker
     value={Number(value)}
     onChange={onChange}
+    style={{"marginTop": '10px'}}
+    min={1}
   />
 
 const renderTasks = ({ fields }) =>
-    <div style={{'marginTop':'10px'}}>
+    <div>
       {fields.map((task, index) =>
         <div key={index}>
-            <InputGroup>
-              <Field name={`${task}.name`}
-                     component={renderTextField}
-                     placeholder="Task:"
-                     />
-              <InputGroup.Button>
-                <Button
-                  style={{'marginTop':'10px'}}
-                  bsStyle="danger"
-                  type="button"
-                  title="Remove Task"
-                  onClick={() => fields.remove(index)}>
-                    <Glyphicon glyph="remove"/>
-                </Button>
-              </InputGroup.Button>
-            </InputGroup>
-            <label> # needed:
-              <Field name={`${task}.count`}
-              component={renderNumberPicker}
+          <label style={{"marginTop": '15px'}}> Task name and number of volunteers needed: </label>
+          <div style={{display: 'flex'}}>
+              <InputGroup>
+                <Field name={`${task}.name`}
+                       component={renderTextField}
+                       placeholder="Task:"
+                       />
+                <InputGroup.Button>
+                  <Button
+                    bsStyle="danger"
+                    type="button"
+                    title="Remove Task"
+                    style={{"marginTop": '10px'}}
+                    onClick={() => fields.remove(index)}>
+                      <Glyphicon glyph="remove"/>
+                  </Button>
+                </InputGroup.Button>
+              </InputGroup>
+              <Field name={`${task}.volunteersNeeded`}
+                     component={renderNumberPicker}
               />
-            </label>
+          </div>
         </div>
       )}
-      <Button onClick={() => fields.push({})}>
+      <Button onClick={() => fields.push({})} style={{marginTop: '10px'}}>
         <Glyphicon glyph="plus"/>
           Add Task
       </Button>
@@ -115,34 +185,32 @@ const renderMultiSelect = ({input, data, valueField, textField, placeholder, met
         {error && <span style={{'color': '#a94442'}}> {error} </span>}
       </div>
 
-const renderDatePicker = ({input: { onChange, value }, placeholder, meta: {error}}) =>
+const renderDateTimePicker = ({input: { onChange, value }, placeholder, min, meta: {error}}) => {
+  const minDateTime = prettyfyTime(new Date())
+
+  return (
     <div>
       <DateTimePicker
         style={{'marginTop':'10px'}}
         placeholder="Pick a date:"
         onChange={onChange}
-        min={new Date()}
-        time={false}
-        value={!value ? null: new Date(value)} />
-        {error && <span style={{'color': '#a94442'}}> {error} </span>}
-    </div>
-
-const renderTimePicker = ({input: { name, onChange, value }, placeholder, meta: {error}}) => {
-  return (
-    <div>
-      <DateTimePicker
-        placeholder={placeholder}
-        onChange={onChange}
-        style={{
-          'display': 'inline-block',
-          'marginTop':'10px',
-          'marginRight':'10px'
-        }}
-        calendar={false}
-        value={!value ? null: new Date(value)} />
-        {error && <span style={{'color': '#a94442'}}> {error} </span>}
+        min={minDateTime}
+        value={value && prettyfyTime(new Date(value)) || null} />
+      {error && <span style={{'color': '#a94442'}}> {error} </span>}
     </div>
   )
+}
+
+// date: <Date>
+const prettyfyTime = (date) => {
+  const currentMinutes = date.getMinutes()
+  const minutes = currentMinutes/10 > 3 || currentMinutes === 0 ? 0 : 30
+  const hours = currentMinutes/10 > 3 ?  date.getHours() + 1 : date.getHours()
+  date.setMinutes(minutes)
+  date.setHours(hours)
+  date.setSeconds(0)
+
+  return date
 }
 
 class Autocomplete extends Component {
@@ -170,64 +238,3 @@ class Autocomplete extends Component {
     )
   }
 }
-
-class NewEventForm extends Component {
-  render() {
-    const { handleSubmit } = this.props;
-    return (
-      <form onSubmit={handleSubmit}>
-        <Field name="name" component={renderTextField} placeholder="Event name: "/>
-        <Field name="message" component={renderTextAreaField} placeholder="Message: "/>
-        <Field
-          name="invited"
-          component={renderMultiSelect}
-          data={[{id: 0, name: 'All'}].concat(this.props.friends)}
-          valueField="id"
-          textField="name"
-          placeholder="Pick who to invite: "
-        />
-        <Field
-          name="date"
-          component={renderDatePicker}
-          placeholder="Pick a date"
-        />
-        <div className="inline">
-          <Field
-            name="startTime"
-            component={renderTimePicker}
-            placeholder="Pick a start time"
-          />
-          <Field
-            name="endTime"
-            component={renderTimePicker}
-            placeholder="Pick an end time"
-          />
-        </div>
-        <Field name="address" component={Autocomplete}/>
-        <label style={{'marginTop':'10px'}}>
-          <Field name="TBD" component="input" type="radio" value="addressRadio"/>
-          <span style={{
-            'marginLeft':'5px',
-            'marginRight':'5px'
-          }}> Address </span>
-        </label>
-        <label style={{'marginTop':'10px'}}>
-          <Field name="TBD" component="input" type="radio" value="TBD"/>
-          <span style={{'marginLeft':'5px'}}> TBD </span>
-        </label>
-        <FieldArray name="tasks" component={renderTasks} />
-        <Button type="submit"
-                bsSize="large"
-                style={{'marginTop':'10px'}}
-                block>
-          Submit
-         </Button>
-      </form>
-    )
-  }
-}
-
-export default reduxForm({
-  form: 'newEvent',
-  validate
-})(NewEventForm)

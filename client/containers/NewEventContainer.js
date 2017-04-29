@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
-import { Redirect } from 'react-router-dom'
 import { connect } from 'react-redux'
 import NewEventForm from './NewEventForm'
-import { createEvent, resetRedirect } from '../actions/newEvent'
+import { createEvent } from '../actions/newEvent'
 import { fetchFriends } from '../actions/friends'
 import { Row, Col } from 'react-bootstrap'
 
@@ -16,11 +15,11 @@ class NewEventContainer extends Component {
     const { createEvent, errorCreatingEvent, isSubmittingEvent } = this.props
 
     if(isFetchingFriends || isSubmittingEvent)
-      return showErrorMessageOrLoader("loader")
+      return <Loader />
     if(errorFetchingFriends)
-      return showErrorMessageOrLoader("error", "Error fetching friends, please reload...")
+      return <ErrorMessage message="Error fetching friends, please reload..." />
     else if(errorCreatingEvent)
-      return showErrorMessageOrLoader("error", "Error creating event, please resubmit...")
+      return <ErrorMessage message="Error creating event, please resubmit..." />
     else
       return (
         <div>
@@ -31,8 +30,25 @@ class NewEventContainer extends Component {
           </Row>
           <Row>
             <Col xs={4} md={4} xsOffset={4} mdOffset={4}>
-              <NewEventForm friends={friends}
-                            onSubmit={(eventInfo) => createEvent(eventInfo, friends)}/>
+              <NewEventForm
+                friends={friends}
+                onSubmit={(eventInfo) => {
+                  const newEvent = {}
+                  const invited = eventInfo.invited[0].name === 'All'? friends : eventInfo.invited
+                  newEvent.invited = invited.map(friend => friend.id)
+                  newEvent.address = eventInfo.addr === 'addr' ? eventInfo.address : 'TBD'
+                  newEvent.name = eventInfo.name
+                  newEvent.startDateTime = eventInfo.startDateTime
+                  newEvent.endDateTime = eventInfo.endDateTime
+                  newEvent.tasks = eventInfo.tasks
+                    .filter(task => (task.name))
+                    .map(task => {
+                      task.volunteersNeeded = task.volunteersNeeded ? task.volunteersNeeded : 1
+                      return task
+                    })
+
+                  createEvent(newEvent)
+                }}/>
             </Col>
           </Row>
         </div>
@@ -41,10 +57,18 @@ class NewEventContainer extends Component {
 }
 
 //type: "error" or "loader", message: string
-const showErrorMessageOrLoader = (type, message) => (
+const ErrorMessage = (message) => (
   <Row>
     <Col xs={4} md={4} xsOffset={4} mdOffset={4}>
-      {type === "error" ? <div> {message} </div> : <div className="loader" />}
+      <div> {message} </div>
+    </Col>
+  </Row>
+)
+
+const Loader = () => (
+  <Row>
+    <Col xs={4} md={4} xsOffset={4} mdOffset={4}>
+      <div className="loader" />
     </Col>
   </Row>
 )
