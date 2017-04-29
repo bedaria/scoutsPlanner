@@ -6,10 +6,11 @@ const models = require('../../models/index.js')
 //NEED user id (from authentication)
 //req.body should have at least one:
 //                       {isAttending: <valueIn ['Yes', 'Maybe', 'No']>,
-//                        startTime: <string>,
-//                        endTime: <string>}
+//                        volunteerStartDateTime: <string>,
+//                        volunteerEndDateTime: <string>,
+//                        volunteerTask: <models.Task> }
 //res will have: {success: <boolen>}
-const answerInvite = (req, res) => {
+const replyToInvite = (req, res) => {
 
   if(!req.body.isAttending)
     res.json({success: false, error: "Req body must have isAttending"}).status(200).end()
@@ -38,4 +39,4 @@ const answerInvite = (req, res) => {
   }
 }
 
-module.exports = answerInvite
+module.exports = replyToInvite

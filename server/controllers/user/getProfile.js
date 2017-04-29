@@ -2,7 +2,7 @@
 const models = require('../../models/index.js')
 
 //Needs user id
-const getProfileInfo = (req, res) => {
+const getProfile = (req, res, next) => {
   models.User.findOne({
     where: {
       id: req.user.id
@@ -11,6 +11,7 @@ const getProfileInfo = (req, res) => {
   .then(user => {
     res.json({status: "success", profileInfo: user.dataValues}).status(200).end()
   })
+  .catch(err => next(err))
 }
 
-module.exports = getProfileInfo
+module.exports = getProfile

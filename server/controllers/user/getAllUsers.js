@@ -5,7 +5,7 @@ const models = require('../../models/index.js')
 //Finds all the users.
 //resp will have:
 //        array<{id <number>, name <string> }>
-const getAllUsers = (req, res) => {
+const getAllUsers = (req, res, next) => {
     models.User.findAll({
       attributes: ['name', 'id']
     })
@@ -16,6 +16,7 @@ const getAllUsers = (req, res) => {
 
       res.json({users: users}).status(200).end()
     })
+    .catch(err => next(err))
 }
 
 module.exports = getAllUsers

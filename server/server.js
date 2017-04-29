@@ -22,7 +22,7 @@ app.use(bodyParser.json())
 app.use(cors())
 
 app.post('/login', fakeLogin)
-app.use('/fakeAnswers', tempRoutes)
+app.use('/fakeReplies', tempRoutes)
 app.use('/api', authorize, routes)
 
 //send back static files on reload
@@ -42,8 +42,10 @@ app.use((req, res, next) => {
   next(err);
 })
 
+
 app.use((err, req, res, next) => {
-  res.json({success: false, error: err}).status(err.status || 500).end()
+  const message = [400, 404].indexOf(err.status) > -1 ? err.message: 'Sorry, server error...'
+  res.status(err.status || 500).json({success: false, error: message})
 })
 
 app.set('port', port)

@@ -17,7 +17,7 @@ const models = require('../../models/index.js')
 //                userTasks: []
 //                eventTasks: [{id, name, description}]
 //            }
-const getUserEvents = (req, res) => {
+const getUserEvents = (req, res, next) => {
   const query = {
     where: {id: req.user.id},
     order: [[models.Event, 'startDateTime', 'ASC']],
@@ -26,11 +26,11 @@ const getUserEvents = (req, res) => {
       attributes: ['id', 'mainAdminId', 'name', 'startDateTime', 'endDateTime', 'message', 'address'],
       include: [{
         model: models.Task,
-        attributes: ['id', 'name', 'description']
+        attributes: ['id', 'name', 'description', 'volunteerCount', 'volunteersNeeded']
       }]
     }, {
       model: models.Task,
-      attributes: ['id', 'name', 'description']
+      attributes: ['id', 'name', 'description', 'volunteerCount', 'volunteersNeeded']
     }]
    }
 
@@ -47,14 +47,15 @@ const getUserEvents = (req, res) => {
           endDateTime: event.dataValues.endDateTime,
           eventTasks: event.dataValues.Tasks.map(task => task.dataValues),
           answer: event.dataValues.EventVolunteer.dataValues.isAttending,
-          volunteerStartTime: event.dataValues.EventVolunteer.dataValues.startDateTime,
-          volunteerEndTime: event.dataValues.EventVolunteer.dataValues.endDateTime,
+          volunteerStartDateTime: event.dataValues.EventVolunteer.dataValues.startDateTime,
+          volunteerEndDateTime: event.dataValues.EventVolunteer.dataValues.endDateTime,
           volunteerTasks: user.Tasks
         }
       })
 
       res.json({success: true, events}).status(200).end()
     })
+    .catch(err => { next(err) })
 }
 
 module.exports = getUserEvents
