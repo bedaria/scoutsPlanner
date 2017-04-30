@@ -5,12 +5,12 @@ const submitReply = () => {
     type: 'SUBMIT_REPLY',
     payload: {
       isSubmitting: true,
-      errorSubmitting: falsee
+      errorSubmitting: false
     }
   }
 }
 
-const submittedReply = (status) => {
+const doneSubmittingReply = (status) => {
   const payload = status === "success" ?
     { isSubmitting: false, errorSubmitting: false }:
     { isSubmitting: false, errorSubmitting: true}
@@ -21,16 +21,19 @@ const submittedReply = (status) => {
   }
 }
 
-export const putReply = (reply) => {
+export const replyToEvent = (reply, eventId) => {
+  axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token')
+  axios.defaults.baseURL = 'http://localhost:3000'
   return (dispatch) => {
     dispatch(submitReply())
-    const config = {
-      headers: {
-        'x-access-token': localStorage.getItem('token')
-      }
-    }
-
-    // return axios.put()
+    axios.put('/api/user/events/' + eventId + '/reply', reply)
+      .then(({ data }) => {
+        dispatch(doneSubmittingReply('success'))
+      })
+      .catch(error => {
+        console.log("error: ", error.message)
+        dispatch(doneSubmittingReply('error'))
+      })
 
   }
 }

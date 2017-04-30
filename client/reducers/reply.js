@@ -1,9 +1,10 @@
 const initialState = {
   isSubmitting: false,
-  errorSubmitting: false
+  errorSubmitting: false,
+  successSubmitting: false
 }
 
-export const reply = (state = inititalState, action) => {
+export const reply = (state = initialState, action) => {
   switch(action.type) {
     case 'SUBMIT_REPLY':
       return { ...state, ...action.payload}

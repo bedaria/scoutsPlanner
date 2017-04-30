@@ -7,6 +7,7 @@ import { events } from './events'
 import { profile } from './profile'
 import { reply } from './reply'
 import { reducer as formReducer } from 'redux-form'
+
 export default combineReducers({
   friends,
   fakeLogin,
@@ -14,5 +15,6 @@ export default combineReducers({
   tabs,
   events,
   profile,
+  reply,
   form: formReducer
 })

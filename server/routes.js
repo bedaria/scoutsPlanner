@@ -16,9 +16,12 @@ router.route('/user')
 router.route('/users')
   .get(controllers.user.getAllUsers)
 
-  router.route('/user/events')
+router.route('/user/events')
   .post(controllers.event.createEvent)
   .get(controllers.user.getUserEvents)
+
+router.route('/user/events/:event_id/reply')
+  .put(controllers.user.replyToEvent)
 
   // router.route('/user/events/:event_id')
   // .get(controllers.event.getAdminEventVolunteers)

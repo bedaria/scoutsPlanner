@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import ReplyForm from './ReplyForm'
 import { Row, Col } from 'react-bootstrap'
+import { replyToEvent } from '../actions/reply'
 
 class ReplyContainer extends Component {
 
   render = () => {
-    const { eventsById } = this.props
+    const { eventsById, replyToEvent } = this.props
     let event = eventsById[this.props.match.params.event]
 
     if(!Object.keys(eventsById).length)
@@ -19,7 +20,18 @@ class ReplyContainer extends Component {
           <Col md={8} mdOffset={2}>
             <h1> Reply to '{event.name}'</h1>
             <ReplyForm event={event}
-                      onSubmit={(info) => {console.log("info: ", info)}}/>
+              onSubmit={(info) => {
+                const reply = {}
+                reply.isAttending = info.isAttending
+
+                if(info.isAttending === 'Yes') {
+                  reply.volunteerStartDateTime = info.entireEvent  === 'Yes'? event.startDateTime : info.volunteerStartDateTime
+                  reply.volunteerEndDateTime = info.entireEvent === 'Yes' ? event.endDateTime : info.volunteerEndDateTime
+                  reply.volunteerTask = info.task
+                }
+
+                replyToEvent(reply, event.id)
+              }}/>
           </Col>
         </Row>
        </div>
@@ -33,5 +45,5 @@ const mapStateToProps = ({ events: { eventsById }}) => {
 
 export default connect(
   mapStateToProps,
-  null
+  { replyToEvent }
 )(ReplyContainer)

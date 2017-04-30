@@ -44,6 +44,7 @@ app.use((req, res, next) => {
 
 
 app.use((err, req, res, next) => {
+  console.log("err: ", err.message, err.stack)
   const message = [400, 404].indexOf(err.status) > -1 ? err.message: 'Sorry, server error...'
   res.status(err.status || 500).json({success: false, error: message})
 })
