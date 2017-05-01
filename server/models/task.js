@@ -14,6 +14,14 @@ module.exports = function(sequelize, DataTypes) {
     volunteersNeeded: {
       type: DataTypes.INTEGER,
       allowNull: false
+    },
+    startDateTime: {
+      type: DataTypes.DATE,
+      allowNull: false
+    },
+    endDateTime: {
+      type: DataTypes.DATE,
+      allowNull: false
     }
   }, {
     classMethods: {
