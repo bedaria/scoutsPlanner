@@ -9,7 +9,7 @@ const getProfile = (req, res, next) => {
     }
   })
   .then(user => {
-    res.json({status: "success", profileInfo: user.dataValues}).status(200).end()
+    res.status(200).json({status: "success", profileInfo: user.dataValues})
   })
   .catch(err => next(err))
 }

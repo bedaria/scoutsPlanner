@@ -53,7 +53,7 @@ const getUserEvents = (req, res, next) => {
         }
       })
 
-      res.json({success: true, events}).status(200).end()
+      res.status(200).json({success: true, events})
     })
     .catch(err => { next(err) })
 }

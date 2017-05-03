@@ -50,7 +50,7 @@ export const getEvents = () => {
       }
     }
 
-    return axios.get('/api/events', config)
+    return axios.get('/api/user/events', config)
       .then(({data}) => {
         dispatch(gotEvents("success", data.events))
         dispatch(makeEventsObject(data.events))

@@ -28,6 +28,7 @@ export const fakeLogin = () => {
         const { username, token } = data
         localStorage.setItem('username', username)
         localStorage.setItem('token', token)
+
         dispatch(loggedIn("success"))
       })
       .catch(error => dispatch(loggedIn("error", error)))

@@ -14,7 +14,7 @@ const getAllUsers = (req, res, next) => {
       if(users)
         users = users.map(user => user.dataValues)
 
-      res.json({users: users}).status(200).end()
+      res.status(200).json({users: users})
     })
     .catch(err => next(err))
 }

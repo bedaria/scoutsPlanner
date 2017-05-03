@@ -120,41 +120,43 @@ const createEvents = birthdays.map((date,idx) => {
   )
 })
 
-const createUsersAndEvents = createUsers.concat(createEvents)
-var volunteers = []
-var eventList = []
-Promise.all(createUsersAndEvents.map(fn => fn()))
-  .then(results => {
-    console.log("done creating", results.length/2, "events and users.")
-    var users = results.splice(0, results.length/2)
-    var events = results
-    volunteers = users
-    eventList = events
-    const addAdmins = events.map((event, idx) => {
-      return () => (event.setMainAdmin(users[idx]))
-    })
-
-    return Promise.all(addAdmins.map(fn => fn()))
-  })
-  .then(events => {
-    console.log("done setting main admins for", events.length, "events.")
-    const addVolunteers = events.map((event, idx) => {
-      return () => (event.addVolunteer(volunteers))
-    })
-
-    return Promise.all(addVolunteers.map(fn => fn()))
-  })
-  .then((invitedUsers) => {
-    console.log("done adding volunteers to", invitedUsers.length, "events")
-    return Promise.all(tasks.map(task => DB.Task.create(task)))
-  })
-  .then(tasks => {
-    console.log("created", tasks.length, "tasks.")
-    return Promise.all(eventList.map((event, idx) =>(event.setTasks([tasks[idx]]))))
-  })
-  .then(eventTasks => {
-    console.log("created tasks for", eventTasks.length, "events.")
-  })
-  .catch(error => {
-    console.log("error with populating database: ", error)
-  })
+Promise.all(createUsers.map(createUser => createUser()))
+  .then(done => console.log("done"))
+// const createUsersAndEvents = createUsers.concat(createEvents)
+// var volunteers = []
+// var eventList = []
+// Promise.all(createUsersAndEvents.map(fn => fn()))
+//   .then(results => {
+//     console.log("done creating", results.length/2, "events and users.")
+//     var users = results.splice(0, results.length/2)
+//     var events = results
+//     volunteers = users
+//     eventList = events
+//     const addAdmins = events.map((event, idx) => {
+//       return () => (event.setMainAdmin(users[idx]))
+//     })
+//
+//     return Promise.all(addAdmins.map(fn => fn()))
+//   })
+//   .then(events => {
+//     console.log("done setting main admins for", events.length, "events.")
+//     const addVolunteers = events.map((event, idx) => {
+//       return () => (event.addVolunteer(volunteers))
+//     })
+//
+//     return Promise.all(addVolunteers.map(fn => fn()))
+//   })
+//   .then((invitedUsers) => {
+//     console.log("done adding volunteers to", invitedUsers.length, "events")
+//     return Promise.all(tasks.map(task => DB.Task.create(task)))
+//   })
+//   .then(tasks => {
+//     console.log("created", tasks.length, "tasks.")
+//     return Promise.all(eventList.map((event, idx) =>(event.setTasks([tasks[idx]]))))
+//   })
+//   .then(eventTasks => {
+//     console.log("created tasks for", eventTasks.length, "events.")
+//   })
+//   .catch(error => {
+//     console.log("error with populating database: ", error)
+//   })

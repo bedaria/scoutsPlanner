@@ -28,10 +28,10 @@ class EventListContainer extends Component {
               { events.length ? <EventList events={events}/> : "You have no events!"}
           </Tab>
           <Tab eventKey={2} title="Admin">
-             { invites.length ? <EventList events={adminEvents} /> : "You're not an admin of any events!"}
+             { adminEvents.length ? <EventList events={adminEvents} /> : "You're not an admin of any events!"}
           </Tab>
           <Tab eventKey={3} title="Invites">
-              { adminEvents.length ? <EventList events={invites} /> : "You have no invites!"}
+              { invites.length ? <EventList events={invites} /> : "You have no invites!"}
           </Tab>
         </Tabs>
     )

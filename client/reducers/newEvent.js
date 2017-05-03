@@ -1,6 +1,8 @@
 const initialState = {
-  isSubmitting: false,
-  errorCreating: false
+  isCreating: false,
+  errorCreating: false,
+  eventId: '',
+  successCreating: false
 }
 
 export const newEvent = (state = initialState, action) => {
@@ -9,6 +11,8 @@ export const newEvent = (state = initialState, action) => {
       return { ...state, ...action.payload }
     case 'NEW_EVENT_CREATED':
       return { ...state, ...action.payload }
+    case 'RESET':
+      return { ...state, successCreating: action.successCreating}
     default:
       return state
   }
