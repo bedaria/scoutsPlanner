@@ -34,6 +34,8 @@ const validate = (values) => {
 
   let wrapperError = ''
   values.tasks.forEach(task => {
+    if(!task.entireEvent || !task.customTimes)
+    wrapperError = 'Please pick times'
     if(!task.name)
       wrapperError = 'Task name required!'
   })
@@ -44,7 +46,8 @@ const validate = (values) => {
 
 class NewEventForm extends Component {
   render() {
-    const { handleSubmit, friends, addr } = this.props;
+    const { handleSubmit, friends, addr, tasks } = this.props;
+
     return (
       <form onSubmit={handleSubmit}>
         <Field name="name" component={renderTextField} placeholder="Event name: "/>
@@ -68,7 +71,7 @@ class NewEventForm extends Component {
         </div>
         <Field name = 'addr' component={renderAddressRadio} />
         { addr === 'addr' && <Field name="address" component={Autocomplete}/> }
-        <Field name="tasksWrapper" component={renderTasksWrapper} />
+        <Field name="tasksWrapper" component={renderTasksWrapper} tasks={tasks}/>
         <Button type="submit"
                 bsSize="large"
                 style={{'marginTop':'10px'}}
@@ -92,9 +95,10 @@ const selector = formValueSelector('newEvent')
 NewEventForm = connect(
   state => {
     let addr = selector(state, 'addr')
-
+    let tasks = selector(state, 'tasks')
     return {
-      addr
+      addr,
+      tasks
     }
   }
 )(NewEventForm)
@@ -126,17 +130,32 @@ const renderAddressRadio = ({input, meta: {error}}) =>
       <Field name="addr" component="input" type="radio" value="addr"/>
       <span style={{
         'marginLeft':'5px',
-        'marginRight':'5px'
+        'marginRight':'10px'
       }}> Address </span>
     </label>
     <label style={{'marginTop':'10px'}}>
       <Field name="addr" component="input" type="radio" value="TBD"/>
-      <span style={{'marginLeft':'5px'}}> TBD </span>
+      <span> TBD </span>
     </label>
     <div>
       {error && <span style={{'color': '#a94442'}}> {error} </span>}
     </div>
   </div>
+
+const renderTimeChoiceRadio = ({input, task }) =>
+<div>
+  <label style={{'marginTop':'10px'}}>
+    <Field name={`${task}.entireEvent`} component="input" type="radio" value="entireEvent"/>
+    <span style={{
+      'marginLeft':'5px',
+      'marginRight':'10px'
+    }}> Entire Event </span>
+  </label>
+  <label style={{'marginTop':'10px'}}>
+    <Field name={`${task}.entireEvent`} component="input" type="radio" value="customTime"/>
+    <span> Custom Time </span>
+  </label>
+</div>
 
 const renderNumberPicker = ({input: {value, onChange}}) =>
   <NumberPicker
@@ -146,19 +165,22 @@ const renderNumberPicker = ({input: {value, onChange}}) =>
     min={1}
   />
 
-const renderTasksWrapper = ({input, meta: {error}}) =>
+const renderTasksWrapper = ({input, tasks, meta: {error}}) =>
   <div>
-    <FieldArray name="tasks" component={renderTasks} />
+    <FieldArray name="tasks" component={renderTasks} tasks={tasks}/>
     {error && <span style={{'color': '#a94442'}}> {error} </span>}
   </div>
 
 
-const renderTasks = ({ fields }) =>
+const renderTasks = ({ fields, tasks }) => {
+  console.log("tasks: ", tasks)
+  return(
   <div>
     {fields.map((task, index) =>
       <div key={index}>
         <label style={{"marginTop": '15px'}}> Task name and number of volunteers needed: </label>
-        <div style={{display: 'flex'}}>
+        <div >
+          <div className="inline">
             <InputGroup>
               <Field name={`${task}.name`}
                      component={renderTextField}
@@ -178,6 +200,24 @@ const renderTasks = ({ fields }) =>
             <Field name={`${task}.volunteersNeeded`}
                    component={renderNumberPicker}
             />
+          </div>
+          <Field name={`${task}.entireEvent`}
+                 component={renderTimeChoiceRadio}
+                 task={task} />
+          {
+            tasks && tasks[index].entireEvent === 'customTime' &&
+            <div className="inline">
+              <Field name={`${task}.startDateTime`}
+                     component={renderDateTimePicker}
+                     placeholder="Pick a startDate"
+              />
+              <Field name={`${task}.endDateTime`}
+                     component={renderDateTimePicker}
+                     placeholder="Pick an endDate"
+              />
+            </div>
+          }
+
         </div>
       </div>
     )}
@@ -186,6 +226,7 @@ const renderTasks = ({ fields }) =>
         Add Task
     </Button>
   </div>
+)}
 
 const renderMultiSelect = ({input, data, valueField, textField, placeholder, meta: {error}}) =>
     <div>
