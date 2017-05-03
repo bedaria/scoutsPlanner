@@ -34,7 +34,7 @@ const validate = (values) => {
 
   let wrapperError = ''
   values.tasks.forEach(task => {
-    if(!task.entireEvent || !task.customTimes)
+    if(!task.entireEvent)
     wrapperError = 'Please pick times'
     if(!task.name)
       wrapperError = 'Task name required!'
@@ -172,9 +172,7 @@ const renderTasksWrapper = ({input, tasks, meta: {error}}) =>
   </div>
 
 
-const renderTasks = ({ fields, tasks }) => {
-  console.log("tasks: ", tasks)
-  return(
+const renderTasks = ({ fields, tasks }) =>
   <div>
     {fields.map((task, index) =>
       <div key={index}>
@@ -226,7 +224,6 @@ const renderTasks = ({ fields, tasks }) => {
         Add Task
     </Button>
   </div>
-)}
 
 const renderMultiSelect = ({input, data, valueField, textField, placeholder, meta: {error}}) =>
     <div>

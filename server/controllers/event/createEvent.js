@@ -47,6 +47,7 @@ const createEvent = function(req, res, next) {
     })
 
     const fns = [createEvent, findAdmin, findInvitees].concat(createTasks)
+
     Promise.all(fns.map(fn => fn()))
       .then(results => {
         const event = results[0]
@@ -57,8 +58,8 @@ const createEvent = function(req, res, next) {
         return Promise.all([event.setMainAdmin(user), event.setTasks(tasks), event.addVolunteer(invited)])
       })
       .then(results => {
-
-        res.status(200).json({success: true})
+        const event = results[0]
+        res.status(200).json({success: true, eventId: event.dataValues.id})
       })
       .catch(err => { next(err) })
   }
