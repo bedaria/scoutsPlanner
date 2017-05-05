@@ -24,6 +24,7 @@ const doneSubmittingReply = (status) => {
 export const replyToEvent = (reply, eventId) => {
   axios.defaults.headers.common['x-access-token'] = localStorage.getItem('token')
   axios.defaults.baseURL = 'http://localhost:3000'
+
   return (dispatch) => {
     dispatch(submitReply())
     axios.put('/api/user/events/' + eventId + '/reply', reply)

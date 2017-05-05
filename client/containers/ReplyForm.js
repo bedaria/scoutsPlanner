@@ -4,18 +4,32 @@ import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import moment from 'moment'
 import momentLocaliser from 'react-widgets/lib/localizers/moment'
 import { SelectList, DateTimePicker, DropdownList } from 'react-widgets'
-import { FormControl, FormGroup, Button, Glyphicon, InputGroup, Radio } from 'react-bootstrap'
-import 'react-widgets/lib/less/react-widgets.less'
+import { FormControl, FormGroup, Button, Glyphicon, InputGroup, Radio, Checkbox } from 'react-bootstrap'
 
+import 'react-widgets/lib/less/react-widgets.less'
 momentLocaliser(moment)
 
 class ReplyForm extends Component {
+  componentDidMount = () => {
+    this.handleInitializing()
+  }
+
+  handleInitializing = () => {
+    const { event: {eventTasks, answer}} = this.props
+    let volunteerTasks = []
+    eventTasks.forEach(task => {
+      volunteerTasks.push({
+        id: task.id,
+        volunteerStartDateTime: task.startDateTime,
+        volunteerEndDateTime: task.endDateTime
+      })
+    })
+    this.props.initialize({volunteerTasks, isAttending: answer})
+  }
 
   render = () => {
-    const { handleSubmit, isAttending, entireEvent } = this.props
-    const { event: { answer, startDateTime, endDateTime,
-                     eventTasks, id, name,
-                     volunteerEndDateTime, volunteerStartDateTime, volunteerTasks }}  = this.props
+    const { handleSubmit, isAttending } = this.props
+    const { event: { eventTasks }}  = this.props
 
     return (
       <form onSubmit={handleSubmit}>
@@ -25,41 +39,13 @@ class ReplyForm extends Component {
           <div>
             <div>
               <label>
-              Pick a task:
+              Pick tasks:
               </label>
-              <Field name="task"
-                component={radioFormGroup}
-                fields={eventTasks}
-                groupName="task"
+              <FieldArray name="volunteerTasks"
+                component={renderTasks}
+                tasks={eventTasks}
               />
             </div>
-            <label> Can you attend the entire event?  </label>
-            <Field name="entireEvent" component={radioFormGroup} groupName="entireEvent" fields={['Yes', 'No']} />
-            { entireEvent === 'No' &&
-              <div>
-                <label>
-                 When can you help?
-                  <div className="inline">
-                    <Field
-                      name="volunteerStartDateTime"
-                      component={renderDatePicker}
-                      placeholder={new Date(startDateTime).toLocaleString()}
-                      min={startDateTime}
-                      max={endDateTime}
-                    />
-                    <Field
-                      name="volunteerEndDateTime"
-                      component={renderDatePicker}
-                      endDateTime={endDateTime}
-                      startDateTime={startDateTime}
-                      placeholder={new Date(endDateTime).toLocaleString()}
-                      min={startDateTime}
-                      max={endDateTime}
-                    />
-                  </div>
-                </label>
-              </div>
-             }
           </div>
         }
 
@@ -82,11 +68,8 @@ const selector = formValueSelector('reply')
 ReplyForm = connect(
   state => {
     let isAttending = selector(state, 'isAttending')
-    let entireEvent = selector(state, 'entireEvent')
-
     return {
-      isAttending,
-      entireEvent
+      isAttending
     }
   }
 )(ReplyForm)
@@ -108,18 +91,57 @@ const radioFormGroup = ({input: {onChange, value}, fields, groupName } ) => {
    )
 }
 
-const renderDatePicker = ({input: { onChange, value }, placeholder, min, max}) =>
+const renderTasks = ({ fields, tasks }) => {
+  return (
+    <div>
+      {fields.map((task, index) =>
+        <div key={index}>
+          <label style={{marginTop: '10px'}}>
+          <Field name={`${task}.volunteering`}
+                 id={`${task}.id`}
+                 component="input"
+                 type="checkbox"/>
+          <span style={{marginLeft: '10px'}}> {tasks[index].name} </span>
+          </label>
+          <div className="inline">
+            <Field name={`${task}.volunteerStartDateTime`}
+                   component={renderDateTimePicker}
+                   min={tasks[index].startDateTime}
+                   max={tasks[index].endDateTime}/>
+            <Field name={`${task}.volunteerEndDateTime`}
+                   component={renderDateTimePicker}
+                   min={tasks[index].startDateTime}
+                   max={tasks[index].endDateTime}/>
+          </div>
+        </div>
+    )}
+    </div>
+  )
+}
+
+const renderDateTimePicker = ({input: { onChange, value }, placeholder, min, max, meta: {error}}) => {
+  return (
     <div>
       <DateTimePicker
-        style={{
-          'marginTop':'10px',
-          'marginRight':'10px'
-        }}
-        placeholder={placeholder}
+        style={{'marginTop':'10px'}}
         onChange={onChange}
-        min={new Date(min) }
-        max={new Date(max) }
-        value={value && new Date(value) || null} />
+        min={min && new Date(min) || null}
+        max={max && new Date(max) || null}
+        value={value && prettyfyTime(new Date(value)) || null} />
+      {error && <span style={{'color': '#a94442'}}> {error} </span>}
     </div>
+  )
+}
 
+// date: <Date>
+const prettyfyTime = (date) => {
+  const currentMinutes = date.getMinutes()
+  const minutes = currentMinutes/10 > 3 || currentMinutes === 0 ? 0 : 30
+  const hours = currentMinutes/10 > 3 ?  date.getHours() + 1 : date.getHours()
+  date.setMinutes(minutes)
+  date.setHours(hours)
+  date.setSeconds(0)
+
+  return date
+}
 export default ReplyForm

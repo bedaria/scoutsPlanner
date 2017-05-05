@@ -24,11 +24,8 @@ class ReplyContainer extends Component {
                 const reply = {}
                 reply.isAttending = info.isAttending
 
-                if(info.isAttending === 'Yes') {
-                  reply.volunteerStartDateTime = info.entireEvent  === 'Yes'? event.startDateTime : info.volunteerStartDateTime
-                  reply.volunteerEndDateTime = info.entireEvent === 'Yes' ? event.endDateTime : info.volunteerEndDateTime
-                  reply.volunteerTask = info.task
-                }
+                if(info.isAttending === 'Yes')
+                  reply.volunteerTasks = info.volunteerTasks
 
                 replyToEvent(reply, event.id)
               }}/>
