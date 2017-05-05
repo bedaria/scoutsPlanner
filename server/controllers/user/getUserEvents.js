@@ -26,11 +26,11 @@ const getUserEvents = (req, res, next) => {
       attributes: ['id', 'mainAdminId', 'name', 'startDateTime', 'endDateTime', 'message', 'address'],
       include: [{
         model: models.Task,
-        attributes: ['id', 'name', 'description', 'volunteerCount', 'volunteersNeeded']
+        attributes: ['id', 'name', 'description', 'volunteerCount', 'volunteersNeeded', 'startDateTime', 'endDateTime']
       }]
     }, {
       model: models.Task,
-      attributes: ['id', 'name', 'description', 'volunteerCount', 'volunteersNeeded']
+      attributes: ['id', 'name', 'description', 'volunteerCount', 'volunteersNeeded', 'startDateTime', 'endDateTime']
     }]
    }
 
