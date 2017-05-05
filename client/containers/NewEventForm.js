@@ -4,7 +4,7 @@ import { Field, FieldArray, reduxForm, formValueSelector } from 'redux-form'
 import moment from 'moment'
 import localizer from 'react-widgets/lib/localizers/simple-number'
 import momentLocaliser from 'react-widgets/lib/localizers/moment'
-import { Multiselect, DateTimePicker, DropdownList, NumberPicker } from 'react-widgets'
+import { Multiselect, DateTimePicker, NumberPicker } from 'react-widgets'
 import { FormControl, Button, Glyphicon, InputGroup } from 'react-bootstrap'
 import 'react-widgets/lib/less/react-widgets.less'
 
@@ -241,7 +241,7 @@ const renderMultiSelect = ({input, data, valueField, textField, placeholder, met
         {error && <span style={{'color': '#a94442'}}> {error} </span>}
       </div>
 
-const renderDateTimePicker = ({input: { onChange, value }, placeholder, min, meta: {error}}) => {
+const renderDateTimePicker = ({input: { onChange, value }, placeholder, meta: {error}}) => {
   const minDateTime = prettyfyTime(new Date())
 
   return (

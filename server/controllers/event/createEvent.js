@@ -41,8 +41,8 @@ const createEvent = function(req, res, next) {
     }
 
     const createTasks = req.body.tasks.map(task => {
-      if(!task.name || !task.volunteersNeeded)
-        next(throw400Error(`'task' must be of the form: <array> {name: <string>, volunteersNeeded: <integer>}`))
+      if(!task.name || !task.volunteersNeeded || !task.startDateTime || !task.endDateTime)
+        next(throw400Error(`'task' must be of the form: <array> {name: <string>, volunteersNeeded: <integer>}, startDateTime: <Date> , endDateTime: <Date>`))
       return () => (models.Task.create(task))
     })
 

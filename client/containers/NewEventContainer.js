@@ -49,10 +49,14 @@ class NewEventContainer extends Component {
                   newEvent.startDateTime = eventInfo.startDateTime
                   newEvent.endDateTime = eventInfo.endDateTime
                   newEvent.tasks = eventInfo.tasks.map(task => {
-                      task.volunteersNeeded = task.volunteersNeeded ? task.volunteersNeeded : 1
-                      return task
+                      const newTask = {}
+                      newTask.volunteersNeeded = task.volunteersNeeded ? task.volunteersNeeded : 1
+                      newTask.startDateTime = task.entireEvent === 'customTime' ? task.startDateTime : eventInfo.startDateTime
+                      newTask.endDateTime = task.entireEvent === 'customTime' ? task.endDateTime : eventInfo.endDateTime
+                      newTask.name = task.name
+                      return newTask
                     })
-                  
+
                   createEvent(newEvent)
                 }}/>
             </Col>
