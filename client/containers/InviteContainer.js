@@ -42,8 +42,6 @@ class InviteContainer extends Component {
   }
 }
 
-s
-
 const mapStateToProps = ({events: { eventsById }}) => {
   return { eventsById }
 }

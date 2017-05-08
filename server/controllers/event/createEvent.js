@@ -9,7 +9,7 @@ const models = require('../../models/index.js')
 //        endDateTime: <datetime>,
 //        message: <string> (optional),
 //        address: <string> (optional),
-//        tasks: array<{taskName, volunteerCount}>
+//        tasks: array<{taskName, volunteerCount, startDateTime, endDateTime}>
 //        invited: array<integer>
 //res will have: { eventId: <integer> }
 const createEvent = function(req, res, next) {

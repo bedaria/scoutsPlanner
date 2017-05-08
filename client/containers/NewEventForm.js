@@ -248,7 +248,7 @@ const renderDateTimePicker = ({input: { onChange, value }, placeholder, meta: {e
     <div>
       <DateTimePicker
         style={{'marginTop':'10px'}}
-        placeholder="Pick a date:"
+        placeholder={placeholder}
         onChange={onChange}
         min={minDateTime}
         value={value && prettyfyTime(new Date(value)) || null} />

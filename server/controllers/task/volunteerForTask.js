@@ -30,7 +30,7 @@ const volunteerForTask = function(req, res) {
 
       return user.addTask(task)
     })
-    .then(success => res.json({success: true}).status(200).end)
+    .then(success => res.json({success: true}).status(200).end())
 }
 
 module.exports = volunteerForTask
