@@ -25,7 +25,15 @@ class ReplyContainer extends Component {
                 reply.isAttending = info.isAttending
 
                 if(info.isAttending === 'Yes')
-                  reply.volunteerTasks = info.volunteerTasks
+                  reply.volunteerTasks = info.volunteerTasks.filter(task => task.volunteering)
+                    .map(task => {
+                      const { volunteerStartDateTime, volunteerEndDateTime, id } = task
+                      return {
+                        volunteerStartDateTime,
+                        volunteerEndDateTime,
+                        id
+                      }
+                    })
 
                 replyToEvent(reply, event.id)
               }}/>
