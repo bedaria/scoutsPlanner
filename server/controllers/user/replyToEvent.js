@@ -1,6 +1,6 @@
 'use strict'
 
-const models = require('../../models/index.js')
+const db = require('../../models/index.js')
 
 //Updates user answer, volunteerCount in tasks, and user tasks
 //NEED user id (from authentication), event id (from parameter)
@@ -22,7 +22,7 @@ const replyToEvent = (req, res, next) => {
 
   //Find volunteer invited to event
   const findInvite = () =>
-    models.EventVolunteer.findOne({
+    db.EventVolunteer.findOne({
       where: {
         UserId: req.user.id,
         EventId: req.event.id
@@ -31,7 +31,7 @@ const replyToEvent = (req, res, next) => {
 
   //Get all event tasks the volunteer already signed up for
   const findCurrentTasks = () =>
-    models.User.findOne({
+    db.User.findOne({
       where: {
         id: req.user.id
       }
@@ -55,10 +55,10 @@ const replyToEvent = (req, res, next) => {
         //function to delete user from a task
         const deleteUserFrom = (userTask) => {
           return () =>
-            models.sequelize.transaction(t =>
+            db.sequelize.transaction(t =>
               userTask.destroy({transaction: t})
                 .then(() =>
-                  models.Task.findOne({
+                  db.Task.findOne({
                     where: {
                       id: userTask.dataValues.TaskId
                     }
@@ -72,15 +72,15 @@ const replyToEvent = (req, res, next) => {
         //function to add user to a task
         const addUserTo = (userTask, taskId) => {
           return () =>
-            models.sequelize.transaction(t =>
-              models.VolunteerTask.create({
+            db.sequelize.transaction(t =>
+              db.VolunteerTask.create({
                 UserId: req.user.id,
                 TaskId: taskId,
                 startDateTime: userTask.startDateTime,
                 endDateTime: userTask.endDateTime
               }, { transaction: t})
               .then(results =>
-                models.Task.findOne({
+                db.Task.findOne({
                   where: {
                     id: taskId
                   }
@@ -97,7 +97,7 @@ const replyToEvent = (req, res, next) => {
 
         //if user can't go to event, delete user from any tasks he/she signed up for previously
         if(req.body.isAttending !== 'Yes') {
-          if(currentTasks.length) 
+          if(currentTasks.length)
             toUpdate = toUpdate.concat(currentTasks.map(currentTask => deleteUserFrom(currentTask)))
         }
         else { //if user can go
