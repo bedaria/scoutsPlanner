@@ -2,7 +2,7 @@
 
 const models = require('../../models/index.js')
 
-//req needs: task: {name, id}
+//Adds user to a task
 //NEED user id (from router.param)
 //req needs {taskId<integer>}
 //res will have: {success: <boolean>}
@@ -30,7 +30,7 @@ const volunteerForTask = function(req, res) {
 
       return user.addTask(task)
     })
-    .then(success => res.json({success: true}).status(200).end())
+    .then(success => res.status(200).json({success: true}))
 }
 
 module.exports = volunteerForTask

@@ -15,8 +15,10 @@ const db = require('../../models/index.js')
 const replyToEvent = (req, res, next) => {
   if(!req.body.isAttending)
     return next(throw400Error("Must include 'isAttending'"))
+
   if(req.body.isAttending === "Yes" && !req.body.volunteerTasks)
     return next(throw400Error("Missing 'volunteerTasks'"))
+
   if(req.body.isAttending === "Yes" && !Array.isArray(req.body.volunteerTasks))
     return next(throw400Error("volunteerTasks must be an array."))
 

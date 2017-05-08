@@ -16,7 +16,7 @@ const getAllUsers = (req, res, next) => {
 
       res.status(200).json({users: users})
     })
-    .catch(err => next(err))
+    .catch(err => { next(err) })
 }
 
 module.exports = getAllUsers

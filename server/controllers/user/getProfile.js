@@ -11,7 +11,7 @@ const getProfile = (req, res, next) => {
   .then(user => {
     res.status(200).json({status: "success", profileInfo: user.dataValues})
   })
-  .catch(err => next(err))
+  .catch(err => { next(err) })
 }
 
 module.exports = getProfile

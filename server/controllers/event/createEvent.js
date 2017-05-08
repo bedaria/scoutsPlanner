@@ -14,55 +14,59 @@ const models = require('../../models/index.js')
 //res will have: { eventId: <integer> }
 const createEvent = function(req, res, next) {
   if(!req.body.name || !req.body.startDateTime || !req.body.endDateTime || !req.body.tasks || !req.body.address || !req.body.invited)
-    next(throw400Error(`Must have name, startDateTime, endDateTime, address, tasks and/or message to create event.`))
-  else if(!Array.isArray(req.body.tasks) || !Array.isArray(req.body.invited))
-    next(throw400Error(`'tasks' and 'invited' must be arrays.`))
-  else {
-    const createEvent = () => (models.Event.create(req.body))
-    const findAdmin = () => {
-      return models.User.findOne({
-        where: {id: req.user.id}
-      })
-    }
+    return next(throw400Error(`Must have name, startDateTime, endDateTime, address, tasks and/or message to create event.`))
 
-    req.body.invited.forEach(invitee => {
-      if(!Number.isInteger(invitee))
-        next(throw400Error(`'invited' must be an array of integers.`))
+  if(!Array.isArray(req.body.tasks) || !Array.isArray(req.body.invited))
+    return next(throw400Error(`'tasks' and 'invited' must be arrays.`))
+
+  const createEvent = () => (models.Event.create(req.body))
+  const findAdmin = () => {
+    return models.User.findOne({
+      where: {id: req.user.id}
     })
-
-    const findInvitees = () => {
-      return models.User.findAll({
-        where: {
-          id: {
-            $in: req.body.invited
-          }
-        }
-      })
-    }
-
-    const createTasks = req.body.tasks.map(task => {
-      if(!task.name || !task.volunteersNeeded || !task.startDateTime || !task.endDateTime)
-        next(throw400Error(`'task' must be of the form: <array> {name: <string>, volunteersNeeded: <integer>}, startDateTime: <Date> , endDateTime: <Date>`))
-      return () => (models.Task.create(task))
-    })
-
-    const fns = [createEvent, findAdmin, findInvitees].concat(createTasks)
-
-    Promise.all(fns.map(fn => fn()))
-      .then(results => {
-        const event = results[0]
-        const user = results[1]
-        const invited = results[2]
-        const tasks = results.slice(3)
-
-        return Promise.all([event.setMainAdmin(user), event.setTasks(tasks), event.addVolunteer(invited)])
-      })
-      .then(results => {
-        const event = results[0]
-        res.status(200).json({success: true, eventId: event.dataValues.id})
-      })
-      .catch(err => { next(err) })
   }
+  var errorMessage = ''
+
+  req.body.invited.forEach(invitee => {
+    if(!Number.isInteger(invitee))
+      errorMessage = "'invited' must be an array of integers."
+  })
+
+  const createTasks = req.body.tasks.map(task => {
+    if(!task.name || !task.volunteersNeeded || !task.startDateTime || !task.endDateTime)
+      errorMessage = "'task' must be of the form: <array> {name: <string>, volunteersNeeded: <integer>}, startDateTime: <Date> , endDateTime: <Date>"
+    return () => (models.Task.create(task))
+  })
+
+  if(errorMessage)
+    return next(throw400Error(errorMessage))
+
+  const findInvitees = () => {
+    return models.User.findAll({
+      where: {
+        id: {
+          $in: req.body.invited
+        }
+      }
+    })
+  }
+    
+  const fns = [createEvent, findAdmin, findInvitees].concat(createTasks)
+
+  Promise.all(fns.map(fn => fn()))
+    .then(results => {
+      const event = results[0]
+      const user = results[1]
+      const invited = results[2]
+      const tasks = results.slice(3)
+
+      return Promise.all([event.setMainAdmin(user), event.setTasks(tasks), event.addVolunteer(invited)])
+    })
+    .then(results => {
+      const event = results[0]
+      res.status(200).json({success: true, eventId: event.dataValues.id})
+    })
+    .catch(err => { next(err) })
 }
 
 const throw400Error = (message) => {
