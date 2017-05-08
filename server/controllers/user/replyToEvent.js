@@ -29,18 +29,6 @@ const replyToEvent = (req, res, next) => {
       }
     })
 
-  //Get all event tasks
-  const findEventTasks = () =>
-    models.Event.findOne({
-      where: {
-        id: req.event.id
-      },
-      include: [{
-        model: models.Task,
-        attributes: ['id']
-      }]
-    })
-
   //Get all event tasks the volunteer already signed up for
   const findCurrentTasks = () =>
     models.User.findOne({
@@ -56,36 +44,62 @@ const replyToEvent = (req, res, next) => {
       })
     )
 
-  Promise.all([findEventTasks(), findCurrentTasks(), findInvite()])
+  Promise.all([findCurrentTasks(), findInvite()])
     .then(results => {
-      const eventTasks = results[0].dataValues.Tasks
-      const currentTasks = results[1].map(event => event.dataValues.VolunteerTask)
-      const invite = results[2]
+      const currentTasks = results[0].map(event => event.dataValues.VolunteerTask)
+      const invite = results[1]
 
       if(!invite)  //make sure user has been invited to event
         next(throw400Error("User can't volunteer for this event."))
       else {
-        //Create object out of eventTasks for easy access to event tasks
-        const allTasks = eventTasks.reduce((obj, task) => {
-          obj[task.dataValues.id] = task
-          return obj
-        }, {})
-        //delete user from task
+        //function to delete user from a task
         const deleteUserFrom = (userTask) => {
           return () =>
-          models.sequelize.transaction(t =>
-            userTask.destroy({transaction: t})
-            .then(() => {
-              const task = allTasks[userTask.dataValues.TaskId]
-              return task.decrement('volunteerCount', {by: 1}, {transaction: t})
-            })
-          )
+            models.sequelize.transaction(t =>
+              userTask.destroy({transaction: t})
+                .then(() =>
+                  models.Task.findOne({
+                    where: {
+                      id: userTask.dataValues.TaskId
+                    }
+                  }, {transaction: t})
+                )
+                .then(task =>
+                  task.decrement('volunteerCount', {by: 1}, {transaction: t})
+                )
+            )
         }
-        var toUpdate = [] //will hold Promises for all the updates that need to be made
+        //function to add user to a task
+        const addUserTo = (userTask, taskId) => {
+          return () =>
+            models.sequelize.transaction(t =>
+              models.VolunteerTask.create({
+                UserId: req.user.id,
+                TaskId: taskId,
+                startDateTime: userTask.startDateTime,
+                endDateTime: userTask.endDateTime
+              }, { transaction: t})
+              .then(results =>
+                models.Task.findOne({
+                  where: {
+                    id: taskId
+                  }
+                }, {transaction: t})
+              )
+              .then(task =>
+                task.increment('volunteerCount', {by: 1}, {transaction: t})
+              )
+            )
+
+        }
+        //will hold Promises for all the updates that need to be made
+        var toUpdate = []
 
         //if user can't go to event, delete user from any tasks he/she signed up for previously
-        if(req.body.isAttending !== 'Yes' && currentTasks.length)
+        if(req.body.isAttending !== 'Yes') {
+          if(currentTasks.length) 
             toUpdate = toUpdate.concat(currentTasks.map(currentTask => deleteUserFrom(currentTask)))
+        }
         else { //if user can go
           //Create object out of req.body.volunteerTasks array for easy access to tasks
           const volunteerFor = req.body.volunteerTasks.reduce((obj, task) => {
@@ -95,69 +109,43 @@ const replyToEvent = (req, res, next) => {
             }
             return obj
           }, {})
-          //filter out tasks from eventTasks that user is not volunteering for
-          const filteredEventTasks = eventTasks.filter(task => !!volunteerFor[task.dataValues.id])
 
-          //make sure all tasks to be added/updated belong to event
-          if(req.body.isAttending === "Yes" && filteredEventTasks.length !== req.body.volunteerTasks.length)
-            next(throw400Error("Incorrect tasks."))
-          else {
-            //update/delete tasks the user already volunteered for
-            var updateTasks = []
-            if(currentTasks.length)
-              updateTasks = currentTasks.map(currentTask => {
-                //delete task if user un-signed from it
-                if(!volunteerFor[currentTask.dataValues.TaskId])
-                  return deleteUserFrom(currentTask)
-                
+          //update/delete tasks the user already volunteered for
+          if(currentTasks.length)
+            currentTasks.forEach(currentTask => {
+              const taskId = currentTask.dataValues.TaskId
+
+              //delete task if user un-signed from it
+              if(!volunteerFor[taskId])
+                toUpdate.push(deleteUserFrom(currentTask))
+              else {
                 //otherwise update task times
-                const startDateTime = volunteerFor[currentTask.dataValues.TaskId].startDateTime
-                const endDateTime  = volunteerFor[currentTask.dataValues.TaskId].endDateTime
+                const startDateTime = volunteerFor[taskId].startDateTime
+                const endDateTime  = volunteerFor[taskId].endDateTime
 
                 //delete task from volunteerFor to not add it back in later
-                delete volunteerFor[currentTask.dataValues.TaskId]
+                delete volunteerFor[taskId]
 
-                return () =>
-                  currentTask.update({
-                    startDateTime,
-                    endDateTime
-                  })
-              })
+                toUpdate.push(() => currentTask.update({startDateTime, endDateTime }))
+              }
+            })
 
-            //add new tasks user signed up for
-            var addTasks = []
-            for(var taskId in volunteerFor) {
-              const id = taskId
-              addTasks.push(
-                () =>
-                  models.sequelize.transaction(t =>
-                    models.VolunteerTask.create({
-                      UserId: req.user.id,
-                      TaskId: id,
-                      startDateTime: volunteerFor[id].startDateTime,
-                      endDateTime: volunteerFor[id].endDateTime
-                    }, { transaction: t})
-                    .then(results => {
-                      const task = allTasks[id]
-                      return task.increment('volunteerCount', {by: 1}, {transaction: t})
-                    })
-                  )
-              )
-            }
-
-            toUpdate = updateTasks.concat(addTasks)
+          //add new tasks user signed up for
+          for(var taskId in volunteerFor) {
+            const id = taskId //addUserTo returns async  fn so need to save id in closure
+            toUpdate.push(addUserTo(volunteerFor[taskId], id))
           }
         }
 
         //update isAttending and seen attributes
         if(!invite.dataValues.seen || invite.dataValues.isAttending !== req.body.isAttending) {
-          const updateAnswer = () =>
-            invite.update({
-              isAttending: req.body.isAttending,
-              seen: true
-            })
-
-          toUpdate.push(updateAnswer)
+          toUpdate.push(
+            () =>
+              invite.update({
+                isAttending: req.body.isAttending,
+                seen: true
+              })
+          )
         }
 
         return Promise.all(toUpdate.map(fn => fn()))
